@@ -7,8 +7,8 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 def enviar_correo_a_manicurista(nombre, fecha, hora):
-    remitente = 'zonajah@gmail.com'
-    destinatario = 'zonajah@gmail.com'  # correo real de la manicurista
+    remitente = 'correo@gmail.com'
+    destinatario = 'correo@gmail.com'  # correo real de la manicurista
     contraseña = 'tu_contraseña_de_aplicacion'  # usa una contraseña de aplicación si usas Gmail
 
     asunto = "Nueva Reserva de Hora"
