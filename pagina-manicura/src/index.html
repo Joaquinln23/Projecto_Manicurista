@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicios de Manicura</title>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+    <link href='https://fonts.googleapis.com/css?family=Raleway:400,500,300' rel='stylesheet' type='text/css'>
+    <!-- Encabezado -->
+    <header class="main-header">
+        <div class="logo">
+            <img src="images/logo terminado.jpg" alt="Caterina Artist Nails" class="logo-img">
+        </div>
+        <span id="saludo-usuario" style="margin-left: 1rem; font-weight: bold;"></span>
+        <button id="btn-logout" class="btn-ingresar oculto">Cerrar sesión</button>
+        <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menú">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <nav id="main-nav">
+            <ul>
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#agenda">Reserva de Hora</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+                <li><a href="#" id="btn-ingresar" class="btn-ingresar">Ingresar</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Sección principal/hero -->
+    <section class="hero">
+        <img src="images/manicurista.jpg" alt="Manicura elegante">
+        <div class="hero-text">
+            <h1>Bienvenida a tu espacio de belleza</h1>
+            <p>Especialistas en manicura, uñas acrílicas y spa de manos</p>
+        </div>
+    </section>
+
+    <main>
+        <!-- Servicios -->
+        <section id="servicios" class="servicios">
+            <h2>Nuestros Servicios</h2>
+            <div class="servicios-grid">
+                <div class="servicio-card">
+                    <img src="images/servicio1.png" alt="Manicura Clásica">
+                    <h3>Manicura Clásica</h3>
+                    <p>Cuidado y esmaltado tradicional para tus manos.</p>
+                </div>
+                <div class="servicio-card">
+                    <img src="images/servicio2.png" alt="Manicura Spa">
+                    <h3>Manicura Spa</h3>
+                    <p>Relajación y belleza con exfoliación y masaje.</p>
+                </div>
+                <div class="servicio-card">
+                    <img src="images/servicio3.png" alt="Uñas Acrílicas">
+                    <h3>Uñas Acrílicas</h3>
+                    <p>Extensión y diseño personalizado de uñas.</p>
+                </div>
+                <div class="servicio-card">
+                    <img src="images/servicio4.png" alt="Diseño de Uñas">
+                    <h3>Diseño de Uñas</h3>
+                    <p>Arte y creatividad para lucir única.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Botón de Reserva y Formulario de Agenda -->
+        <section id="agenda" class="agenda">
+            <form id="form-agenda" class="form-agenda">
+                <h2>Reserva tu hora</h2>
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required>
+                
+                <label for="fecha">Fecha:</label>
+                <input type="date" id="fecha" name="fecha" required>
+                
+                <label for="hora">Hora:</label>
+                <input type="time" id="hora" name="hora" required>
+                
+                <button type="submit" class="btn-enviar">Confirmar Reserva</button>
+                <button type="button" id="btn-cerrar" class="btn-cerrar">Cancelar</button>
+            </form>
+            <div id="mensaje-confirmacion" class="mensaje-confirmacion oculto"></div>
+            <div id="mis-reservas" class="mis-reservas oculto"></div>
+        </section>
+
+        <!-- Contacto -->
+        <section id="contacto" class="contacto">
+            <h2>Contacto</h2>
+            <p>Para más información, contáctanos a través de nuestras redes sociales o llámanos:</p>
+            <div class="contacto-links">
+                <a href="https://www.instagram.com/caterinaartist/" target="_blank">
+                    <img src="images/Logos redes sociales/118546-logo-instagram-free-hd-image-3671209099.png" alt="Instagram" class="icono-red"> @caterinaartist
+                </a>
+                <!-- Otros enlaces, como WhatsApp -->
+            </div>
+        </section>
+
+        <!-- Modal de Login -->
+        <div id="login-modal" class="modal-login oculto">
+            <div class="modal-content-login">
+                <span class="close-login" id="close-login">&times;</span>
+                <h2>Iniciar Sesión</h2>
+                <input type="text" id="login-usuario" placeholder="Usuario o Correo">
+                <input type="password" id="login-password" placeholder="Contraseña">
+                <button id="login-btn">Ingresar</button>
+                <button id="abrir-registro" class="btn-registro" style="margin-top:1rem; background:#e09ca6; color:#fff;">¿No tienes cuenta? Regístrate</button>
+            </div>
+        </div>
+
+        <!-- Modal de Registro -->
+        <div id="register-modal" class="modal-login oculto">
+            <div class="modal-content-login">
+                <span class="close-login" id="close-register">&times;</span>
+                <h2>Registrar Usuario</h2>
+                <input type="text" id="register-rut" placeholder="RUT">
+                <input type="text" id="register-nombre" placeholder="Nombre">
+                <input type="text" id="register-apellido" placeholder="Apellido">
+                <input type="email" id="register-email" placeholder="Correo">
+                <input type="password" id="register-password" placeholder="Contraseña">
+                <input type="text" id="register-nombreusuario" placeholder="Nombre de usuario">
+                <button id="register-btn">Registrar</button>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Pie de página -->
+    <footer>
+        <p>&copy; 2025 Servicios de Manicura. Todos los derechos reservados.</p>
+    </footer>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/login.js"></script>
+    <script src="scripts/reservas.js"></script>
+</body>
+</html>
