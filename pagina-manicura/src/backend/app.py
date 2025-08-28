@@ -6,10 +6,22 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
+app = Flask(__name__)  # Crea la aplicación Flask
+CORS(app)  # Habilita CORS para toda la app
+
+# Función para enviar un correo electrónico a la manicurista
 def enviar_correo_a_manicurista(nombre, fecha, hora):
-    remitente = 'zonajah@gmail.com'
-    destinatario = 'zonajah@gmail.com'  # correo real de la manicurista
-    contraseña = 'tu_contraseña_de_aplicacion'  # usa una contraseña de aplicación si usas Gmail
+    """
+    Envía un correo electrónico de notificación a la manicurista con los detalles de una nueva reserva.
+    
+    Args:
+        nombre (str): Nombre del cliente que hizo la reserva.
+        fecha (str): Fecha de la reserva.
+        hora (str): Hora de la reserva.
+    """
+    remitente = 'ventasprocyj@gmail.com'
+    destinatario = 'joaquinln.23@gmail.com'  # Correo real de la manicurista
+    contraseña = 'gtuz nbwj fibm yjuf '  # Usar una contraseña de aplicación si usas Gmail
 
     asunto = "Nueva Reserva de Hora"
     cuerpo = f"El cliente {nombre} ha reservado una hora el {fecha} a las {hora}."
@@ -21,21 +33,20 @@ def enviar_correo_a_manicurista(nombre, fecha, hora):
     mensaje.attach(MIMEText(cuerpo, 'plain'))
 
     try:
+        # Configura el servidor SMTP de Gmail
         servidor = smtplib.SMTP('smtp.gmail.com', 587)
-        servidor.starttls()
+        servidor.starttls()  # Habilita la seguridad TLS
         servidor.login(remitente, contraseña)
         servidor.send_message(mensaje)
         servidor.quit()
+        print("Correo enviado exitosamente.")
     except Exception as e:
         print("Error enviando correo:", e)
-
-
-app = Flask(__name__)  # Crea la aplicación Flask
-CORS(app)  # Habilita CORS para toda la app
 
 # Ruta para iniciar sesión
 @app.route('/login', methods=['POST'])
 def login():
+    """Maneja el inicio de sesión de un usuario."""
     data = request.json  # Obtiene los datos enviados en formato JSON
     usuario = data.get('usuario')
     password = data.get('password')
@@ -72,6 +83,7 @@ def login():
 # Ruta para registrar un nuevo usuario
 @app.route('/register', methods=['POST'])
 def register():
+    """Maneja el registro de un nuevo usuario."""
     data = request.json
     rut = data.get('rut')
     nombreusuario = data.get('nombreusuario')
@@ -117,6 +129,7 @@ def register():
 # Ruta para crear una nueva reserva de hora
 @app.route('/api/reserva_horas', methods=['POST'])
 def crear_reserva():
+    """Maneja la creación de una nueva reserva de hora."""
     data = request.json
     usuario_id = data.get('usuario_id')
     nombre = data.get('nombre')
@@ -124,7 +137,7 @@ def crear_reserva():
     hora = data.get('hora')
 
     if not usuario_id:
-            return jsonify({"success": False, "mensaje": "Debes iniciar sesión para reservar."}), 401
+        return jsonify({"success": False, "mensaje": "Debes iniciar sesión para reservar."}), 401
 
     try:
         # Conexión a la base de datos
@@ -135,6 +148,7 @@ def crear_reserva():
             database="proyecto_manicura"
         )
         cursor = conexion.cursor()
+        
         # Verifica si ya existe una reserva para el usuario en la misma fecha
         cursor.execute("""
             SELECT id FROM reserva_horas 
@@ -152,14 +166,17 @@ def crear_reserva():
             VALUES (%s, %s, %s, %s)
         """, (usuario_id, nombre, fecha, hora))
         conexion.commit()
+
+        # Envía el correo después de confirmar que se guardó en la base de datos
+        enviar_correo_a_manicurista(nombre, fecha, hora)
+
         cursor.close()
         conexion.close()
         return jsonify({"success": True, "mensaje": "Reserva creada correctamente."})
-        # después de guardar en la base de datos
-        enviar_correo_a_manicurista(nombre, fecha, hora)  # Envía correo al manicurista
 
     except mysql.connector.Error as err:
-        if err.errno == 1062:
+        # Manejo de errores de base de datos
+        if err.errno == 1062:  # Código de error para duplicación
             return jsonify({"success": False, "mensaje": "Ya hay una reserva en esa fecha y hora."}), 400
         return jsonify({"success": False, "mensaje": str(err)}), 500
     
@@ -167,6 +184,7 @@ def crear_reserva():
 # Ruta para obtener las reservas de un usuario específico por su usuario_id
 @app.route('/api/mis_reservas/<int:usuario_id>', methods=['GET'])
 def obtener_reservas(usuario_id):
+    """Obtiene todas las reservas asociadas a un usuario específico."""
     try:
         # Conexión a la base de datos
         conexion = mysql.connector.connect(

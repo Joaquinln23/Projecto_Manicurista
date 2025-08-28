@@ -1,35 +1,68 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Definición de elementos del DOM
     const btnIngresar = document.getElementById('btn-ingresar');
     const modal = document.getElementById('login-modal');
     const closeBtn = document.getElementById('close-login');
     const loginBtn = document.getElementById('login-btn');
-    const btnCerrarSesion = document.getElementById('btn-logout'); // Usas este botón
+    const btnCerrarSesion = document.getElementById('btn-logout');
     const saludoUsuario = document.getElementById('saludo-usuario');
+    const misReservasDiv = document.getElementById('mis-reservas');
+    const registerModal = document.getElementById('register-modal');
+    const closeRegisterBtn = document.getElementById('close-register');
+    const abrirRegistroBtn = document.getElementById('abrir-registro');
+    const registerBtn = document.getElementById('register-btn');
 
-    const usuarioId = localStorage.getItem('usuario_id');
-    const usuarioNombre = localStorage.getItem('usuario_nombre');
+    // Función para mostrar mensajes personalizados en un modal
+    function showMessage(message, type = 'info') {
+        const messageBox = document.createElement('div');
+        messageBox.classList.add('message-box');
+        messageBox.textContent = message;
 
-    // Mostrar/ocultar botones según login
-    if (!usuarioId || usuarioId === 'null' || usuarioId === 'undefined' || usuarioId.trim() === '') {
-        btnCerrarSesion.style.display = 'none';
-        saludoUsuario.textContent = '';
-    } else {
-        btnCerrarSesion.style.display = 'inline-block';
-        saludoUsuario.textContent = `¡Hola! ${usuarioNombre}`;
-        btnIngresar.style.display = 'none';
+        const closeBtn = document.createElement('span');
+        closeBtn.classList.add('close-btn');
+        closeBtn.innerHTML = '&times;';
+        closeBtn.onclick = () => messageBox.remove();
+        messageBox.appendChild(closeBtn);
 
-        // Mostrar el div de reservas si aplica
-        const misReservasDiv = document.getElementById('mis-reservas');
-        if (misReservasDiv) {
-            misReservasDiv.classList.remove('oculto');
-        }
+        document.body.appendChild(messageBox);
+        
+        // Ocultar automáticamente después de 5 segundos
+        setTimeout(() => {
+            messageBox.remove();
+        }, 5000);
+    }
 
-        if (typeof cargarReservas === 'function') {
-            cargarReservas(usuarioId);
+    // Comprobar el estado de autenticación al cargar la página
+    function checkLoginStatus() {
+        const usuarioId = localStorage.getItem('usuario_id');
+        const usuarioNombre = localStorage.getItem('usuario_nombre');
+
+        if (!usuarioId || usuarioId === 'null' || usuarioId === 'undefined' || usuarioId.trim() === '') {
+            // Usuario no logueado
+            btnCerrarSesion.style.display = 'none';
+            saludoUsuario.textContent = '';
+            btnIngresar.style.display = 'inline-block';
+            if (misReservasDiv) {
+                misReservasDiv.classList.add('oculto');
+            }
+        } else {
+            // Usuario logueado
+            btnCerrarSesion.style.display = 'inline-block';
+            saludoUsuario.textContent = `¡Hola! ${usuarioNombre}`;
+            btnIngresar.style.display = 'none';
+
+            if (misReservasDiv) {
+                misReservasDiv.classList.remove('oculto');
+            }
+
+            // Cargar reservas si la función está disponible
+            if (typeof cargarReservas === 'function') {
+                cargarReservas(usuarioId);
+            }
         }
     }
 
-    // Lógica del login
+    // Lógica para el modal de inicio de sesión
     btnIngresar.addEventListener('click', function(e) {
         e.preventDefault();
         modal.classList.remove('oculto');
@@ -42,6 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('keyup', function(e) {
         if (e.key === "Escape") {
             modal.classList.add('oculto');
+            registerModal.classList.add('oculto');
         }
     });
 
@@ -57,43 +91,31 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                alert('¡Bienvenido, ' + data.nombre + '!');
-                saludoUsuario.textContent = `¡Hola! ${data.nombre}`;
-                btnIngresar.style.display = 'none';
-                btnCerrarSesion.style.display = 'inline-block';
-                modal.classList.add('oculto');
-
+                showMessage('¡Bienvenido, ' + data.nombre + '!');
                 localStorage.setItem('usuario_id', data.id);
                 localStorage.setItem('usuario_nombre', data.nombre);
-
-                const misReservasDiv = document.getElementById('mis-reservas');
-                if (misReservasDiv) {
-                    misReservasDiv.classList.remove('oculto');
-                }
-
-                if (typeof cargarReservas === 'function') {
-                    cargarReservas(data.id);
-                }
+                checkLoginStatus(); // Actualiza el estado de la UI
+                modal.classList.add('oculto');
             } else {
-                alert(data.error || 'Usuario o contraseña incorrectos');
+                showMessage(data.error || 'Usuario o contraseña incorrectos', 'error');
             }
         })
         .catch(() => {
-            alert('Error de conexión con el servidor');
+            showMessage('Error de conexión con el servidor', 'error');
         });
     });
 
-    // Modal de registro
-    document.getElementById('abrir-registro').addEventListener('click', function() {
-        document.getElementById('login-modal').classList.add('oculto');
-        document.getElementById('register-modal').classList.remove('oculto');
+    // Lógica para el modal de registro
+    abrirRegistroBtn.addEventListener('click', function() {
+        modal.classList.add('oculto');
+        registerModal.classList.remove('oculto');
     });
 
-    document.getElementById('close-register').addEventListener('click', function() {
-        document.getElementById('register-modal').classList.add('oculto');
+    closeRegisterBtn.addEventListener('click', function() {
+        registerModal.classList.add('oculto');
     });
 
-    document.getElementById('register-btn').addEventListener('click', function() {
+    registerBtn.addEventListener('click', function() {
         const rut = document.getElementById('register-rut').value;
         const nombreusuario = document.getElementById('register-nombreusuario').value;
         const nombre = document.getElementById('register-nombre').value;
@@ -109,14 +131,14 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                alert('¡Usuario registrado correctamente!');
-                document.getElementById('register-modal').classList.add('oculto');
+                showMessage('¡Usuario registrado correctamente!', 'success');
+                registerModal.classList.add('oculto');
             } else {
-                alert(data.error || 'Error al registrar usuario');
+                showMessage(data.error || 'Error al registrar usuario', 'error');
             }
         })
         .catch(() => {
-            alert('Error de conexión con el servidor');
+            showMessage('Error de conexión con el servidor', 'error');
         });
     });
 
@@ -139,16 +161,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Cerrar sesión
+    // Lógica para cerrar sesión
     btnCerrarSesion.addEventListener('click', function() {
         localStorage.clear();
-        saludoUsuario.textContent = '';
-        btnIngresar.style.display = 'inline-block';
-        btnCerrarSesion.style.display = 'none';
-
-        const misReservasDiv = document.getElementById('mis-reservas');
-        if (misReservasDiv) {
-            misReservasDiv.classList.add('oculto');
-        }
+        checkLoginStatus(); // Actualiza el estado de la UI
+        showMessage('Sesión cerrada correctamente.');
     });
+
+    // Llama a la función al inicio para verificar el estado de la sesión
+    checkLoginStatus();
 });

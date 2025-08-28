@@ -9,6 +9,53 @@ body {
     padding: 0;
 }
 
+/* Estilos de la caja de mensaje */
+.message-box {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 10px;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: slideInRight 0.5s forwards;
+}
+
+.message-box.info {
+    background-color: #2196F3;
+}
+
+.message-box.success {
+    background-color: #4CAF50;
+}
+
+.message-box.error {
+    background-color: #F44336;
+}
+
+.close-btn {
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    line-height: 1;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(120%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
 header {
     background: #ff6f61;
     color: white;

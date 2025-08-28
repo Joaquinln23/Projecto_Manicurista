@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Servicios de Manicura</title>
     <link rel="stylesheet" href="styles/style.css">
+    <!-- La fuente debe estar en el head para cargarse correctamente -->
+    <link href='https://fonts.googleapis.com/css?family=Raleway:400,500,300' rel='stylesheet' type='text/css'>
 </head>
 <body>
-    <link href='https://fonts.googleapis.com/css?family=Raleway:400,500,300' rel='stylesheet' type='text/css'>
     <!-- Encabezado -->
     <header class="main-header">
         <div class="logo">
@@ -83,6 +84,7 @@
                 <button type="submit" class="btn-enviar">Confirmar Reserva</button>
                 <button type="button" id="btn-cerrar" class="btn-cerrar">Cancelar</button>
             </form>
+            <!-- Los elementos para mensajes y reservas se muestran dinámicamente -->
             <div id="mensaje-confirmacion" class="mensaje-confirmacion oculto"></div>
             <div id="mis-reservas" class="mis-reservas oculto"></div>
         </section>
@@ -131,8 +133,13 @@
     <footer>
         <p>&copy; 2025 Servicios de Manicura. Todos los derechos reservados.</p>
     </footer>
+
+    <!-- Los scripts deben cargarse en un orden específico para evitar errores de dependencias -->
+    <!-- main.js debe ir primero para gestionar el menú hamburguesa -->
     <script src="scripts/main.js"></script>
+    <!-- login.js maneja la lógica de inicio de sesión y registro, es necesario antes de reservas.js -->
     <script src="scripts/login.js"></script>
+    <!-- reservas.js depende de las funciones de login.js para obtener el ID de usuario -->
     <script src="scripts/reservas.js"></script>
 </body>
 </html>
