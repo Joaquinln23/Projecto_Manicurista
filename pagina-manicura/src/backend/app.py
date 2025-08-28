@@ -11,17 +11,9 @@ CORS(app)  # Habilita CORS para toda la app
 
 # Función para enviar un correo electrónico a la manicurista
 def enviar_correo_a_manicurista(nombre, fecha, hora):
-    """
-    Envía un correo electrónico de notificación a la manicurista con los detalles de una nueva reserva.
-    
-    Args:
-        nombre (str): Nombre del cliente que hizo la reserva.
-        fecha (str): Fecha de la reserva.
-        hora (str): Hora de la reserva.
-    """
-    remitente = 'ventasprocyj@gmail.com'
-    destinatario = 'joaquinln.23@gmail.com'  # Correo real de la manicurista
-    contraseña = 'gtuz nbwj fibm yjuf '  # Usar una contraseña de aplicación si usas Gmail
+    remitente = 'zonajah@gmail.com'
+    destinatario = 'zonajah@gmail.com'  # correo real de la manicurista
+    contraseña = 'tu_contraseña_de_aplicacion'  # usa una contraseña de aplicación si usas Gmail
 
     asunto = "Nueva Reserva de Hora"
     cuerpo = f"El cliente {nombre} ha reservado una hora el {fecha} a las {hora}."
