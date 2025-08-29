@@ -297,7 +297,7 @@ footer {
 
 .servicios-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
     justify-items: center;
 }
@@ -397,8 +397,8 @@ footer {
 
 /* Iconos de redes sociales */
 .icono-red {
-    width: 48px;
-    height: 48px;
+    width: 100px;
+    height: 100px;
     vertical-align: middle;
     margin-right: 0.5rem;
     margin-right: 0.5rem;
@@ -532,4 +532,50 @@ footer {
         color: #fff !important;
         background: #e09ca6 !important;
     }
+}
+
+/* --- ESTILOS DE LA NUEVA SECCIÓN AGREGADOS AQUÍ --- */
+
+/* Estilos para la galería de trabajos */
+.trabajos-gallery-container {
+    padding: 3rem 1rem;
+    text-align: center;
+    background: #232323; /* Coincide con el color de la sección de servicios */
+    border-radius: 1rem;
+    margin-bottom: 2rem;
+}
+
+.trabajos-gallery-container h3 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #e09ca6; /* Coincide con el color de los títulos */
+    font-weight: 700;
+}
+
+.trabajos-grid {
+    display: grid;
+    /* Ajusta el número de columnas automáticamente según el ancho de la pantalla */
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 2rem;
+    max-width: 9000px;
+    margin: 0 auto;
+}
+
+.trabajo-item {
+    overflow: hidden;
+    border-radius: 0.75rem;
+    box-shadow: 0 8px 24px rgba(224,156,166,0.18);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.trabajo-item:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 8px 24px rgba(224,156,166,0.18);
+}
+
+.trabajo-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
