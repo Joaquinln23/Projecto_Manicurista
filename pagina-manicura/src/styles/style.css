@@ -320,10 +320,12 @@ footer {
 }
 
 .servicio-card img {
-    width: 64px;
-    height: 64px;
+    width: 400px;
+    height: 400px;
     margin-bottom: 1rem;
-    object-fit: contain;
+    object-fit: cover;
+    border-radius: 0.75rem;
+    display: block;
 }
 
 .servicio-card h3 {
@@ -534,13 +536,11 @@ footer {
     }
 }
 
-/* --- ESTILOS DE LA NUEVA SECCIÓN AGREGADOS AQUÍ --- */
-
 /* Estilos para la galería de trabajos */
 .trabajos-gallery-container {
     padding: 3rem 1rem;
     text-align: center;
-    background: #232323; /* Coincide con el color de la sección de servicios */
+    background: #232323; 
     border-radius: 1rem;
     margin-bottom: 2rem;
 }
@@ -548,7 +548,7 @@ footer {
 .trabajos-gallery-container h3 {
     font-size: 2rem;
     margin-bottom: 2rem;
-    color: #e09ca6; /* Coincide con el color de los títulos */
+    color: #e09ca6;
     font-weight: 700;
 }
 
