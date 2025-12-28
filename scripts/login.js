@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .catch(() => {
-            showMessage('Error de conexión con el servidor', 'error');
+            showMessage('Error de conexión con el servidor 1', 'error');
         });
     });
 
@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .catch(() => {
-            showMessage('Error de conexión con el servidor', 'error');
+            showMessage('Error de conexión con el servidor 2', 'error');
         });
     });
 
