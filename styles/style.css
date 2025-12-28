@@ -9,6 +9,11 @@ body {
     padding: 0;
 }
 
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
 /* Estilos de la caja de mensaje */
 .message-box {
     position: fixed;
@@ -242,7 +247,7 @@ footer {
 /* Hero Section */
 .hero {
     position: relative;
-    width: 100vw;
+    width: 100%;
     left: 50%;
     right: 50%;
     margin-left: -50vw;
@@ -322,7 +327,7 @@ footer {
 
 .servicio-card img {
     width: 100%;
-    max-width: 350px;
+    max-width: 300px;
     height: auto;
     aspect-ratio: 350 / 400;
     margin-bottom: 1rem;
