@@ -13,7 +13,7 @@ CORS(app)  # Habilita CORS para toda la app
 def enviar_correo_a_manicurista(nombre, fecha, hora):
     remitente = 'zonajah@gmail.com'
     destinatario = 'zonajah@gmail.com'  # correo real de la manicurista
-    contraseña = 'tu_contraseña_de_aplicacion'  # usa una contraseña de aplicación si usas Gmail
+    contraseña = 'zrhr maml qwbe kjxz'  # usa una contraseña de aplicación si usas Gmail
 
     asunto = "Nueva Reserva de Hora"
     cuerpo = f"El cliente {nombre} ha reservado una hora el {fecha} a las {hora}."
@@ -49,7 +49,7 @@ def login():
             host="localhost",
             user="root",
             password="",
-            database="proyecto_manicura"
+            database="caterinaartistdb"
         )
         cursor = conexion.cursor(dictionary=True)
 
@@ -92,7 +92,7 @@ def register():
             host="localhost",
             user="root",
             password="",
-            database="proyecto_manicura"
+            database="caterinaartistdb"
         )
         cursor = conexion.cursor()
 
@@ -137,7 +137,7 @@ def crear_reserva():
             host="localhost",
             user="root",
             password="",
-            database="proyecto_manicura"
+            database="caterinaartistdb"
         )
         cursor = conexion.cursor()
         
@@ -183,7 +183,7 @@ def obtener_reservas(usuario_id):
             host="localhost",
             user="root",
             password="",
-            database="proyecto_manicura"
+            database="caterinaartistdb"
         )
         cursor = conexion.cursor(dictionary=True)
         # Consulta las reservas asociadas al usuario, ordenadas por fecha y hora
