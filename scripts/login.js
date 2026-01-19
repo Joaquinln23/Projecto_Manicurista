@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // 1. CAMBIA ESTA URL por la que te dio Render (ej: https://proyecto-manicurista.onrender.com)
     const API_URL = 'https://projecto-manicurista.onrender.com';
 
     // Definición de elementos del DOM

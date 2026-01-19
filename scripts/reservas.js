@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. URL DE TU BACKEND EN RENDER
     const API_URL = 'https://projecto-manicurista.onrender.com';
 
     // Referencias a elementos del DOM
@@ -117,7 +116,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             console.error('Error cargando reservas:', error);
-            // No mostramos error intrusivo aquí para no molestar la navegación
         }
     }
 });
