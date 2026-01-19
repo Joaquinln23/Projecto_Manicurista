@@ -10,6 +10,34 @@ body {
     padding-top: 80px;
 }
 
+/* Estética para el formulario de reserva */
+#form-agenda input, 
+#form-agenda select {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #D4A5A5; /* Color rosa viejo */
+    border-radius: 8px;
+    font-size: 16px; /* Evita zoom automático en iPhone */
+    background-color: #fff;
+}
+
+#form-agenda button {
+    background-color: #D4A5A5;
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 25px;
+    width: 100%;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#form-agenda button:hover {
+    background-color: #b38686;
+}
+
 html, body {
     max-width: 100%;
     overflow-x: hidden;
