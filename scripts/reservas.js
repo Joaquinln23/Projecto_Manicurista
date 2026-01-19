@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // 1. URL DE TU BACKEND EN RENDER (Asegúrate de que sea la correcta)
     const API_URL = 'https://projecto-manicurista.onrender.com';
 
     // Referencias a elementos del DOM
     const formAgenda = document.getElementById('form-agenda');
-    const mensaje = document.getElementById('mensaje-confirmacion');
     const divReservas = document.getElementById('mis-reservas');
 
     // Función para mostrar mensajes personalizados
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => { if(messageBox) messageBox.remove(); }, 5000);
     }
 
-    // Obtiene el ID del usuario desde localStorage
+    // Obtiene el ID del usuario desde localStorage (si existe)
     function getUsuarioId() {
         const id = localStorage.getItem('usuario_id');
         return id && !['undefined', 'null', ''].includes(id.trim()) ? id.trim() : null;
@@ -30,34 +30,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const usuarioId = getUsuarioId();
 
-    // Comprueba el estado de la sesión al cargar
+    // Solo mostramos la sección "Mis Reservas" si hay un usuario logueado
     if (usuarioId) {
-        if (divReservas) divReservas.classList.remove('oculto');
-        cargarReservas(usuarioId);
+        if (divReservas) {
+            divReservas.classList.remove('oculto');
+            cargarReservas(usuarioId);
+        }
     } else {
         if (divReservas) divReservas.classList.add('oculto');
     }
 
-    // Maneja el envío del formulario (POST a Render)
+    // --- MANEJO DEL ENVÍO DEL FORMULARIO (Invitados + Logueados) ---
     formAgenda.addEventListener('submit', async function(e) {
         e.preventDefault();
 
-        const currentUsuarioId = getUsuarioId();
-        if (!currentUsuarioId) {
-            showMessage('Debes iniciar sesión para reservar.', 'error');
-            return;
-        }
-
+        const currentUsuarioId = getUsuarioId(); // Intentamos capturar el ID si existe
+        
+        // Captura de valores del formulario
         const nombre = document.getElementById('nombre').value;
         const fecha = document.getElementById('fecha').value;
         const hora = document.getElementById('hora').value;
 
+        // Validación básica de campos vacíos
+        if(!nombre || !fecha || !hora) {
+            return showMessage('Por favor, completa todos los campos.', 'error');
+        }
+
         try {
-            // CAMBIO: Ahora apunta a Render
             const response = await fetch(`${API_URL}/api/reserva_horas`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ nombre, fecha, hora, usuario_id: currentUsuarioId })
+                body: JSON.stringify({ 
+                    nombre: nombre, 
+                    fecha: fecha, 
+                    hora: hora, 
+                    usuario_id: currentUsuarioId // Si es null, el Backend lo tratará como invitado
+                })
             });
 
             const data = await response.json();
@@ -65,20 +73,23 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.success) {
                 showMessage(data.mensaje, 'success');
                 formAgenda.reset();
-                cargarReservas(currentUsuarioId);
+                // Si el usuario está logueado, actualizamos su lista de reservas personal
+                if (currentUsuarioId) {
+                    cargarReservas(currentUsuarioId);
+                }
             } else {
+                // Aquí se mostrará el mensaje de "cupos agotados" (máximo 5) que configuramos en Python
                 showMessage(data.mensaje || 'Error al crear la reserva', 'error');
             }
         } catch (error) {
             console.error('Error:', error);
-            showMessage('Error de conexión con el servidor en la nube.', 'error');
+            showMessage('Error de conexión con el servidor o límite diario alcanzado.', 'error');
         }
     });
 
-    // Función para cargar las reservas (GET desde Render)
+    // Función para cargar las reservas personales (Solo para logueados)
     async function cargarReservas(id) {
         try {
-            // CAMBIO: Ahora apunta a Render
             const response = await fetch(`${API_URL}/api/mis_reservas/${id}`);
             const data = await response.json();
 
@@ -94,8 +105,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 data.reservas.forEach(reserva => {
                     const item = document.createElement('li');
                     
-                    // Formateo de fecha
-                    const fechaObj = new Date(reserva.fecha + 'T00:00:00'); // T00:00:00 evita desfase de zona horaria
+                    // Formateo de fecha para evitar desfases
+                    const fechaObj = new Date(reserva.fecha + 'T00:00:00');
                     const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
                     const diaNombre = diasSemana[fechaObj.getDay()];
                     const dia = fechaObj.getDate().toString().padStart(2, '0');
@@ -111,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 divReservas.appendChild(lista);
             } else {
                 const mensajeVacio = document.createElement('p');
-                mensajeVacio.textContent = 'No tienes reservas actuales.';
+                mensajeVacio.textContent = 'No tienes reservas registradas con tu cuenta.';
                 divReservas.appendChild(mensajeVacio);
             }
         } catch (error) {

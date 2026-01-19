@@ -6,13 +6,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from datetime import datetime
 
 app = Flask(__name__)
 CORS(app)
 
 # --- FUNCIÓN DE CONEXIÓN SEGURA ---
 def get_db_connection():
-    """Establece conexión usando las variables de entorno de Render/Aiven."""
     return mysql.connector.connect(
         host=os.getenv('DB_HOST'),
         user=os.getenv('DB_USER'),
@@ -21,29 +21,30 @@ def get_db_connection():
         database=os.getenv('DB_NAME', 'defaultdb')
     )
 
-# Función para enviar correo (se mantiene igual)
+# --- FUNCIÓN PARA ENVIAR CORREO ---
 def enviar_correo_a_manicurista(nombre, fecha, hora):
     remitente = 'zonajah@gmail.com'
     destinatario = 'zonajah@gmail.com'
     contraseña = 'zrhr maml qwbe kjxz' 
-    asunto = "Nueva Reserva de Hora"
-    cuerpo = f"El cliente {nombre} ha reservado una hora el {fecha} a las {hora}."
+    asunto = f"Nueva Reserva: {nombre}"
+    cuerpo = f"El cliente {nombre} ha reservado para el {fecha} a las {hora}."
+    
     mensaje = MIMEMultipart()
     mensaje['From'] = remitente
     mensaje['To'] = destinatario
     mensaje['Subject'] = asunto
     mensaje.attach(MIMEText(cuerpo, 'plain'))
+    
     try:
         servidor = smtplib.SMTP('smtp.gmail.com', 587)
         servidor.starttls()
         servidor.login(remitente, contraseña)
         servidor.send_message(mensaje)
         servidor.quit()
-        print("✅ Correo enviado exitosamente.")
     except Exception as e:
         print("❌ Error enviando correo:", e)
 
-# --- RUTAS ACTUALIZADAS ---
+# --- RUTAS DE USUARIO ---
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -51,7 +52,7 @@ def login():
     usuario = data.get('usuario')
     password = data.get('password')
     try:
-        conexion = get_db_connection() # Usamos la nueva función
+        conexion = get_db_connection()
         cursor = conexion.cursor(dictionary=True)
         cursor.execute("SELECT * FROM usuarios WHERE nombreusuario = %s OR email = %s", (usuario, usuario))
         user = cursor.fetchone()
@@ -60,60 +61,63 @@ def login():
 
         if user and check_password_hash(user["password"], password):
             return jsonify({"success": True, "nombre": user["nombre"], "id": user["id"]})
-        else:
-            return jsonify({"success": False, "error": "Usuario o contraseña incorrectos"}), 401
+        return jsonify({"success": False, "error": "Credenciales incorrectas"}), 401
     except Exception as err:
         return jsonify({"success": False, "error": str(err)}), 500
 
 @app.route('/register', methods=['POST'])
 def register():
     data = request.json
-    rut, nombreusuario = data.get('rut'), data.get('nombreusuario')
-    nombre, apellido = data.get('nombre'), data.get('apellido')
-    email, password = data.get('email'), data.get('password')
+    hashed_password = generate_password_hash(data.get('password'))
     try:
-        hashed_password = generate_password_hash(password)
         conexion = get_db_connection()
         cursor = conexion.cursor()
-        cursor.execute("SELECT id FROM usuarios WHERE email = %s OR nombreusuario = %s", (email, nombreusuario))
-        if cursor.fetchone():
-            cursor.close()
-            conexion.close()
-            return jsonify({"success": False, "error": "El correo o nombre de usuario ya existe."}), 400
-
         consulta = "INSERT INTO usuarios (rut, nombreusuario, nombre, apellido, email, password) VALUES (%s, %s, %s, %s, %s, %s)"
-        cursor.execute(consulta, (rut, nombreusuario, nombre, apellido, email, hashed_password))
+        cursor.execute(consulta, (data.get('rut'), data.get('nombreusuario'), data.get('nombre'), data.get('apellido'), data.get('email'), hashed_password))
         conexion.commit()
         cursor.close()
         conexion.close()
-        return jsonify({"success": True, "message": "Usuario registrado correctamente."})
+        return jsonify({"success": True})
     except Exception as err:
         return jsonify({"success": False, "error": str(err)}), 500
+
+# --- RUTA DE RESERVAS (MODIFICADA) ---
 
 @app.route('/api/reserva_horas', methods=['POST'])
 def crear_reserva():
     data = request.json
-    usuario_id, nombre = data.get('usuario_id'), data.get('nombre')
-    fecha, hora = data.get('fecha'), data.get('hora')
-    if not usuario_id:
-        return jsonify({"success": False, "mensaje": "Inicia sesión para reservar."}), 401
+    usuario_id = data.get('usuario_id') # Puede venir como None/null
+    nombre = data.get('nombre')
+    fecha = data.get('fecha')
+    hora = data.get('hora')
+    
     try:
         conexion = get_db_connection()
         cursor = conexion.cursor()
-        cursor.execute("SELECT id FROM reserva_horas WHERE usuario_id = %s AND fecha = %s", (usuario_id, fecha))
-        if cursor.fetchone():
+
+        # 1. VALIDACIÓN: Máximo 5 reservas totales por día
+        cursor.execute("SELECT COUNT(*) FROM reserva_horas WHERE fecha = %s", (fecha,))
+        total_dia = cursor.fetchone()[0]
+        
+        if total_dia >= 5:
             cursor.close()
             conexion.close()
-            return jsonify({"success": False, "mensaje": "Ya tienes una reserva este día."}), 400
-        
-        cursor.execute("INSERT INTO reserva_horas (usuario_id, nombre, fecha, hora) VALUES (%s, %s, %s, %s)", (usuario_id, nombre, fecha, hora))
+            return jsonify({"success": False, "mensaje": "Lo sentimos, ya no quedan cupos disponibles para este día (máximo 5)."}), 400
+
+        # 2. INSERTAR RESERVA (usuario_id puede ser NULL)
+        consulta = "INSERT INTO reserva_horas (usuario_id, nombre, fecha, hora) VALUES (%s, %s, %s, %s)"
+        cursor.execute(consulta, (usuario_id, nombre, fecha, hora))
         conexion.commit()
+        
+        # 3. NOTIFICACIÓN
         enviar_correo_a_manicurista(nombre, fecha, hora)
+        
         cursor.close()
         conexion.close()
-        return jsonify({"success": True, "mensaje": "Reserva creada correctamente."})
+        return jsonify({"success": True, "mensaje": "Reserva creada exitosamente."})
+    
     except Exception as err:
-        return jsonify({"success": False, "mensaje": str(err)}), 500
+        return jsonify({"success": False, "mensaje": f"Error en el servidor: {str(err)}"}), 500
 
 @app.route('/api/mis_reservas/<int:usuario_id>', methods=['GET'])
 def obtener_reservas(usuario_id):
@@ -125,12 +129,11 @@ def obtener_reservas(usuario_id):
         cursor.close()
         conexion.close()
         for r in reservas:
-            r['hora'] = str(r['hora']) # Evita error de JSON con objetos time
+            r['hora'] = str(r['hora'])
         return jsonify({"success": True, "reservas": reservas})
     except Exception as err:
         return jsonify({"success": False, "error": str(err)}), 500
 
 if __name__ == '__main__':
-    # Esto es vital para Render: host='0.0.0.0' y el puerto dinámico
     port = int(os.getenv('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
