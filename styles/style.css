@@ -731,3 +731,115 @@ footer {
     position: relative;
     z-index: 2; /* Pone el texto por encima de la capa oscura */
 }
+
+/* ==========================================================================
+   CSS PARA EL FORMULARIO DE RESERVA (CENTRALIZADO)
+   ========================================================================== */
+
+/* 1. Contenedor principal: Centra el formulario en la pantalla */
+.agenda {
+    display: flex;
+    justify-content: center; /* Centrado horizontal */
+    align-items: center;     /* Centrado vertical */
+    padding: 60px 20px;
+    width: 100%;
+    min-height: 400px;
+    background-color: #000;  /* Fondo oscuro para resaltar el formulario */
+    box-sizing: border-box;
+}
+
+/* 2. Caja del formulario */
+.form-agenda {
+    background: #232323;     /* Gris oscuro elegante */
+    border-radius: 1.2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    width: 100%;
+    max-width: 420px;        /* Evita que se vea muy ancho en PC */
+    margin: 0 auto;
+    animation: fadeIn 0.6s;
+    border: 1px solid rgba(224, 156, 166, 0.2);
+}
+
+.form-agenda h2 {
+    text-align: center;
+    color: #e09ca6;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* 3. Etiquetas y campos de entrada */
+.form-agenda label {
+    display: block;
+    margin-bottom: 5px;
+    color: #f3e6ef;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.form-agenda input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    background: #ffffff;    /* Fondo blanco para máxima legibilidad */
+    color: #333333;         /* Texto oscuro para contraste */
+    border: 1px solid #e09ca6;
+    border-radius: 0.6rem;
+    font-size: 1rem;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* 4. Botones alineados (Confirmar y Cancelar) */
+.form-buttons {
+    display: flex;
+    gap: 15px;              /* Espacio entre botones */
+    margin-top: 15px;
+}
+
+.btn-enviar, .btn-cerrar {
+    flex: 1;                /* Hace que ambos botones tengan el mismo ancho */
+    padding: 14px;
+    border-radius: 2rem;    /* Bordes redondeados estilo "pill" */
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+    border: none;
+    text-transform: uppercase;
+}
+
+/* Botón Confirmar (Rosa) */
+.btn-enviar {
+    background-color: #f1a7b1;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(241, 167, 177, 0.25);
+}
+
+.btn-enviar:hover {
+    background-color: #e096a0;
+    transform: translateY(-2px);
+}
+
+/* Botón Cancelar (Transparente/Gris) */
+.btn-cerrar {
+    background-color: transparent;
+    color: #999999;
+    border: 2px solid #444444;
+}
+
+.btn-cerrar:hover {
+    color: #ffffff;
+    border-color: #f1a7b1;
+    background-color: rgba(241, 167, 177, 0.05);
+}
+
+/* Animación de aparición */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
