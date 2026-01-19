@@ -1,155 +1,130 @@
-/* --- VARIABLES Y CONFIGURACIÓN --- */
+/* --- CONFIGURACIÓN BASE --- */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
 
 :root {
-    --rosa-viejo: #D4A5A5;
-    --rosa-hover: #b76e79;
+    --rosa-viejo: #e09ca6;
+    --rosa-fuerte: #b76e79;
     --dorado: #C5A059;
-    --blanco-roto: #F9F9F9;
-    --negro-suave: #181818;
-    --gris-oscuro: #232323;
-    --texto-claro: #f3e6ef;
+    --negro-fondo: #000000;
+    --gris-tarjeta: #181818;
+    --texto: #f3e6ef;
 }
 
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
 body {
     font-family: 'Montserrat', sans-serif;
-    background: #000;
-    color: var(--texto-claro);
-    margin: 0;
-    padding-top: 80px;
+    background: var(--negro-fondo);
+    color: var(--texto);
+    line-height: 1.6;
+    padding-top: 70px; /* Ajustado a la altura del header */
+}
+
+/* Evita que el contenido se salga por los lados */
+html, body {
+    max-width: 100%;
     overflow-x: hidden;
 }
 
-/* --- FORMULARIO DE RESERVA PREMIUM --- */
-.form-agenda {
-    background: var(--gris-oscuro);
-    border-radius: 1.5rem;
-    padding: 2.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    width: 95%;
-    max-width: 400px;
-    margin: 2rem auto;
-    border: 1px solid rgba(212, 165, 165, 0.2); /* Borde sutil rosa */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    animation: fadeIn 0.6s ease-out;
-}
-
-.form-agenda h2 {
-    color: var(--rosa-viejo);
-    text-align: center;
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-}
-
-.form-agenda input, 
-.form-agenda select {
-    padding: 12px 15px;
-    background: var(--negro-suave);
-    color: #fff;
-    border: 1px solid var(--dorado);
-    border-radius: 10px;
-    font-size: 16px; /* Evita zoom en iOS */
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.form-agenda input:focus {
-    outline: none;
-    border-color: var(--rosa-viejo);
-    box-shadow: 0 0 8px rgba(212, 165, 165, 0.3);
-}
-
-/* Contenedor de botones en formulario */
-.form-buttons {
-    display: flex;
-    gap: 10px;
-    margin-top: 1rem;
-}
-
-.btn-enviar, .btn-cerrar {
-    padding: 14px;
-    border-radius: 25px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    flex: 1;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-}
-
-.btn-enviar {
-    background: var(--rosa-viejo);
-    color: white;
-    border: none;
-}
-
-.btn-enviar:hover {
-    background: var(--rosa-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(212, 165, 165, 0.4);
-}
-
-.btn-cerrar {
-    background: transparent;
-    color: #999;
-    border: 1px solid #444;
-}
-
-.btn-cerrar:hover {
-    border-color: var(--rosa-viejo);
-    color: #fff;
-}
-
-/* --- HEADER Y NAVEGACIÓN --- */
+/* --- HEADER DINÁMICO --- */
 .main-header {
-    background: #000;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 5%;
+    padding: 0 5%;
+    height: 70px;
     position: fixed;
-    top: 0; width: 100%; z-index: 1000;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(224, 156, 166, 0.2);
 }
 
+.logo-img {
+    height: 50px;
+    width: auto;
+}
+
+/* Navegación Desktop */
 nav ul {
-    list-style: none;
     display: flex;
     gap: 1.5rem;
-    margin: 0; padding: 0;
+    list-style: none;
 }
 
 nav a {
     text-decoration: none;
-    color: var(--texto-claro);
+    color: var(--texto);
     font-weight: 600;
-    transition: color 0.3s;
+    font-size: 0.95rem;
+    transition: 0.3s;
 }
 
-nav a:hover { color: var(--rosa-viejo); }
+nav a:hover {
+    color: var(--rosa-viejo);
+}
 
-/* --- GRID DE SERVICIOS Y GALERÍA --- */
+/* --- HERO SECTION (Corregido para no desproporcionar) --- */
+.hero {
+    position: relative;
+    height: 400px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.hero img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.4); /* Oscurece la imagen para leer el texto */
+    z-index: 1;
+}
+
+.hero-text {
+    position: relative;
+    z-index: 2;
+    padding: 0 20px;
+}
+
+.hero-text h1 {
+    font-size: 2.5rem;
+    color: var(--rosa-viejo);
+    margin-bottom: 10px;
+}
+
+/* --- GRID DE SERVICIOS Y TRABAJOS --- */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 40px auto;
+}
+
 .servicios-grid, .trabajos-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    padding: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
 }
 
 .servicio-card, .trabajo-item {
-    background: var(--negro-suave);
-    border-radius: 1rem;
+    background: var(--gris-tarjeta);
+    border-radius: 15px;
     overflow: hidden;
-    transition: transform 0.3s ease;
-    border: 1px solid rgba(197, 160, 89, 0.1);
+    transition: 0.3s;
+    border: 1px solid rgba(224, 156, 166, 0.1);
 }
 
 .servicio-card:hover, .trabajo-item:hover {
-    transform: translateY(-10px);
+    transform: translateY(-5px);
     border-color: var(--rosa-viejo);
 }
 
@@ -159,46 +134,92 @@ nav a:hover { color: var(--rosa-viejo); }
     object-fit: cover;
 }
 
-/* --- ELEMENTOS DINÁMICOS --- */
-.message-box {
-    position: fixed;
-    top: 20px; right: 20px;
-    padding: 15px 25px;
-    border-radius: 10px;
+.servicio-info {
+    padding: 20px;
+    text-align: center;
+}
+
+/* --- FORMULARIO DE RESERVA (Premium) --- */
+.form-agenda {
+    background: var(--gris-tarjeta);
+    padding: 30px;
+    border-radius: 20px;
+    max-width: 450px;
+    margin: 40px auto;
+    border: 1px solid var(--rosa-viejo);
+}
+
+.form-agenda input, .form-agenda select {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    background: #000;
+    border: 1px solid #444;
     color: white;
-    z-index: 2000;
-    animation: slideInRight 0.5s forwards;
+    border-radius: 8px;
 }
 
-.success { background: #4CAF50; }
-.error { background: #F44336; }
+.form-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
 
-.oculto { display: none !important; }
+.btn-enviar {
+    background: var(--rosa-viejo);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    flex: 2;
+    font-weight: bold;
+    cursor: pointer;
+}
 
-/* --- RESPONSIVE --- */
+.btn-cerrar {
+    background: transparent;
+    border: 1px solid #444;
+    color: #999;
+    flex: 1;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+/* --- RESPONSIVE (CELULARES) --- */
 @media (max-width: 768px) {
-    .main-header { padding: 10px 20px; }
-    .menu-toggle { display: flex; }
-    
-    nav#main-nav {
-        position: absolute;
-        top: 70px; right: 0;
-        background: #000;
-        width: 200px;
-        transform: translateY(-150%);
-        transition: 0.4s;
-        border-radius: 0 0 0 1rem;
+    .main-header {
+        padding: 0 20px;
     }
-    nav#main-nav.open { transform: translateY(0); }
-    nav#main-nav ul { flex-direction: column; padding: 1.5rem; }
-}
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+    nav#main-nav {
+        position: fixed;
+        top: 70px;
+        right: -100%;
+        background: rgba(0,0,0,0.95);
+        width: 70%;
+        height: 100vh;
+        transition: 0.4s;
+        padding: 40px;
+    }
 
-@keyframes slideInRight {
-    from { transform: translateX(100%); }
-    to { transform: translateX(0); }
+    nav#main-nav.open {
+        right: 0;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+
+    .hero {
+        height: 300px;
+    }
+
+    .menu-toggle {
+        display: flex; /* Muestra las barritas en móvil */
+    }
 }
