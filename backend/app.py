@@ -131,5 +131,6 @@ def obtener_reservas(usuario_id):
         return jsonify({"success": False, "error": str(err)}), 500
 
 if __name__ == '__main__':
-    # En Render, la app se inicia con Gunicorn, pero esto sirve para pruebas locales
-    app.run(host='0.0.0.0', port=int(os.getenv('PORT', 5000)))
+    # Esto es vital para Render: host='0.0.0.0' y el puerto dinámico
+    port = int(os.getenv('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
