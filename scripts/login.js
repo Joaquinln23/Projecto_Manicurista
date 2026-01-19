@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // 1. CAMBIA ESTA URL por la que te dio Render (ej: https://proyecto-manicurista.onrender.com)
+    const API_URL = 'https://projecto-manicurista.onrender.com';
+
     // Definición de elementos del DOM
     const btnIngresar = document.getElementById('btn-ingresar');
     const modal = document.getElementById('login-modal');
@@ -12,10 +15,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const abrirRegistroBtn = document.getElementById('abrir-registro');
     const registerBtn = document.getElementById('register-btn');
 
-    // Función para mostrar mensajes personalizados en un modal
+    // Función para mostrar mensajes personalizados
     function showMessage(message, type = 'info') {
         const messageBox = document.createElement('div');
-        messageBox.classList.add('message-box');
+        messageBox.classList.add('message-box', type); // Agregamos el tipo para estilos CSS
         messageBox.textContent = message;
 
         const closeBtn = document.createElement('span');
@@ -25,65 +28,40 @@ document.addEventListener('DOMContentLoaded', function() {
         messageBox.appendChild(closeBtn);
 
         document.body.appendChild(messageBox);
-        
-        // Ocultar automáticamente después de 5 segundos
-        setTimeout(() => {
-            messageBox.remove();
-        }, 5000);
+        setTimeout(() => { if(messageBox) messageBox.remove(); }, 5000);
     }
 
-    // Comprobar el estado de autenticación al cargar la página
+    // Comprobar el estado de autenticación
     function checkLoginStatus() {
         const usuarioId = localStorage.getItem('usuario_id');
         const usuarioNombre = localStorage.getItem('usuario_nombre');
 
-        if (!usuarioId || usuarioId === 'null' || usuarioId === 'undefined' || usuarioId.trim() === '') {
-            // Usuario no logueado
+        if (!usuarioId || usuarioId === 'null' || usuarioId === 'undefined') {
             btnCerrarSesion.style.display = 'none';
             saludoUsuario.textContent = '';
             btnIngresar.style.display = 'inline-block';
-            if (misReservasDiv) {
-                misReservasDiv.classList.add('oculto');
-            }
+            if (misReservasDiv) misReservasDiv.classList.add('oculto');
         } else {
-            // Usuario logueado
             btnCerrarSesion.style.display = 'inline-block';
             saludoUsuario.textContent = `¡Hola! ${usuarioNombre}`;
             btnIngresar.style.display = 'none';
+            if (misReservasDiv) misReservasDiv.classList.remove('oculto');
 
-            if (misReservasDiv) {
-                misReservasDiv.classList.remove('oculto');
-            }
-
-            // Cargar reservas si la función está disponible
+            // Cargar reservas desde la API en la NUBE
             if (typeof cargarReservas === 'function') {
                 cargarReservas(usuarioId);
             }
         }
     }
 
-    // Lógica para el modal de inicio de sesión
-    btnIngresar.addEventListener('click', function(e) {
-        e.preventDefault();
-        modal.classList.remove('oculto');
-    });
-
-    closeBtn.addEventListener('click', function() {
-        modal.classList.add('oculto');
-    });
-
-    document.addEventListener('keyup', function(e) {
-        if (e.key === "Escape") {
-            modal.classList.add('oculto');
-            registerModal.classList.add('oculto');
-        }
-    });
-
+    // Lógica de Login
     loginBtn.addEventListener('click', function() {
         const usuario = document.getElementById('login-usuario').value;
         const password = document.getElementById('login-password').value;
 
-        fetch('http://localhost:5000/login', {
+        if(!usuario || !password) return showMessage('Rellena todos los campos', 'error');
+
+        fetch(`${API_URL}/login`, { // Conexión a Render
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ usuario, password })
@@ -94,80 +72,73 @@ document.addEventListener('DOMContentLoaded', function() {
                 showMessage('¡Bienvenido, ' + data.nombre + '!');
                 localStorage.setItem('usuario_id', data.id);
                 localStorage.setItem('usuario_nombre', data.nombre);
-                checkLoginStatus(); // Actualiza el estado de la UI
+                checkLoginStatus();
                 modal.classList.add('oculto');
             } else {
-                showMessage(data.error || 'Usuario o contraseña incorrectos', 'error');
+                showMessage(data.error || 'Credenciales inválidas', 'error');
             }
         })
-        .catch(() => {
-            showMessage('Error de conexión con el servidor 1', 'error');
+        .catch(err => {
+            console.error(err);
+            showMessage('No se pudo conectar con el servidor en la nube', 'error');
         });
     });
 
-    // Lógica para el modal de registro
-    abrirRegistroBtn.addEventListener('click', function() {
-        modal.classList.add('oculto');
-        registerModal.classList.remove('oculto');
-    });
-
-    closeRegisterBtn.addEventListener('click', function() {
-        registerModal.classList.add('oculto');
-    });
-
+    // Lógica de Registro
     registerBtn.addEventListener('click', function() {
-        const rut = document.getElementById('register-rut').value;
-        const nombreusuario = document.getElementById('register-nombreusuario').value;
-        const nombre = document.getElementById('register-nombre').value;
-        const apellido = document.getElementById('register-apellido').value;
-        const email = document.getElementById('register-email').value;
-        const password = document.getElementById('register-password').value;
+        const payload = {
+            rut: document.getElementById('register-rut').value,
+            nombreusuario: document.getElementById('register-nombreusuario').value,
+            nombre: document.getElementById('register-nombre').value,
+            apellido: document.getElementById('register-apellido').value,
+            email: document.getElementById('register-email').value,
+            password: document.getElementById('register-password').value
+        };
 
-        fetch('http://localhost:5000/register', {
+        fetch(`${API_URL}/register`, { // Conexión a Render
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ rut, nombreusuario, nombre, apellido, email, password })
+            body: JSON.stringify(payload)
         })
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                showMessage('¡Usuario registrado correctamente!', 'success');
+                showMessage('¡Registro exitoso! Ya puedes iniciar sesión.', 'success');
                 registerModal.classList.add('oculto');
             } else {
-                showMessage(data.error || 'Error al registrar usuario', 'error');
+                showMessage(data.error || 'Error en el registro', 'error');
             }
         })
-        .catch(() => {
-            showMessage('Error de conexión con el servidor 2', 'error');
+        .catch(() => showMessage('Error de conexión al registrar', 'error'));
+    });
+
+    // --- EVENTOS DE INTERFAZ (Modales y Teclas) ---
+    btnIngresar.addEventListener('click', (e) => { e.preventDefault(); modal.classList.remove('oculto'); });
+    closeBtn.addEventListener('click', () => modal.classList.add('oculto'));
+    abrirRegistroBtn.addEventListener('click', () => { modal.classList.add('oculto'); registerModal.classList.remove('oculto'); });
+    closeRegisterBtn.addEventListener('click', () => registerModal.classList.add('oculto'));
+    
+    document.addEventListener('keyup', (e) => {
+        if (e.key === "Escape") { [modal, registerModal].forEach(m => m.classList.add('oculto')); }
+    });
+
+    // Envío con Enter
+    [modal, registerModal].forEach(m => {
+        m.querySelectorAll('input').forEach(input => {
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    m.querySelector('button[id$="-btn"]').click();
+                }
+            });
         });
     });
 
-    // Envío con Enter (login y registro)
-    document.querySelectorAll('#login-modal input').forEach(input => {
-        input.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                document.getElementById('login-btn').click();
-            }
-        });
-    });
-
-    document.querySelectorAll('#register-modal input').forEach(input => {
-        input.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                document.getElementById('register-btn').click();
-            }
-        });
-    });
-
-    // Lógica para cerrar sesión
-    btnCerrarSesion.addEventListener('click', function() {
+    btnCerrarSesion.addEventListener('click', () => {
         localStorage.clear();
-        checkLoginStatus(); // Actualiza el estado de la UI
-        showMessage('Sesión cerrada correctamente.');
+        checkLoginStatus();
+        showMessage('Sesión cerrada.');
     });
 
-    // Llama a la función al inicio para verificar el estado de la sesión
     checkLoginStatus();
 });
