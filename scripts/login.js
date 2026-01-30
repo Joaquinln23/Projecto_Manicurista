@@ -21,17 +21,23 @@ document.addEventListener('DOMContentLoaded', function() {
         const usuarioId = localStorage.getItem('usuario_id');
         const usuarioNombre = localStorage.getItem('usuario_nombre');
 
+        // Seleccionamos el botón de logout (asegúrate de que el ID sea correcto)
+        const btnCerrarSesion = document.getElementById('btn-logout');
+
         if (!usuarioId || usuarioId === 'null' || usuarioId === 'undefined') {
-            btnCerrarSesion.style.display = 'none';
+            // USUARIO NO LOGUEADO
+            if (btnCerrarSesion) btnCerrarSesion.classList.add('oculto'); 
             saludoUsuario.textContent = '';
             btnIngresar.style.display = 'inline-block';
             if (misReservasDiv) misReservasDiv.classList.add('oculto');
         } else {
-            btnCerrarSesion.style.display = 'inline-block';
+            // USUARIO LOGUEADO
+            if (btnCerrarSesion) btnCerrarSesion.classList.remove('oculto'); // QUITAMOS LA CLASE OCULTO
             saludoUsuario.textContent = `¡Hola! ${usuarioNombre}`;
             btnIngresar.style.display = 'none';
             if (misReservasDiv) misReservasDiv.classList.remove('oculto');
 
+            // Cargar reservas desde la API
             if (typeof cargarReservas === 'function') {
                 cargarReservas(usuarioId);
             }
