@@ -25,9 +25,10 @@ def get_db_connection():
 def enviar_correo_a_manicurista(nombre, fecha, hora):
     remitente = 'zonajah@gmail.com'
     destinatario = 'zonajah@gmail.com'
-    contraseña = 'zrhr maml qwbe kjxz' 
+    contraseña = 'zrhrmamlqwbekjxz' 
+    
     asunto = f"Nueva Reserva: {nombre}"
-    cuerpo = f"El cliente {nombre} ha reservado para el {fecha} a las {hora}."
+    cuerpo = f"Cliente: {nombre}\nFecha: {fecha}\nHora: {hora}"
     
     mensaje = MIMEMultipart()
     mensaje['From'] = remitente
@@ -35,17 +36,27 @@ def enviar_correo_a_manicurista(nombre, fecha, hora):
     mensaje['Subject'] = asunto
     mensaje.attach(MIMEText(cuerpo, 'plain'))
     
+    servidor = None
     try:
-        # Agregamos un timeout de 8 segundos para que el servidor no se quede "pegado"
-        servidor = smtplib.SMTP('smtp.gmail.com', 587, timeout=8)
+        print(f"📧 Iniciando conexión SMTP con Gmail para: {nombre}...")
+        
+        # Usamos SMTP estándar con starttls (puerto 587) que es más compatible con Render
+        servidor = smtplib.SMTP('smtp.gmail.com', 587, timeout=15)
+        servidor.set_debuglevel(1)  # <--- ESTO MOSTRARÁ EL ERROR REAL EN LOS LOGS
         servidor.starttls()
+        
         servidor.login(remitente, contraseña)
         servidor.send_message(mensaje)
-        servidor.quit()
-        print(f"✅ Correo enviado con éxito para {nombre}")
+        print("✅ ¡Correo enviado exitosamente!")
+        
     except Exception as e:
-        # El error se imprime en los logs de Render, pero no detiene la respuesta al usuario
-        print(f"⚠️ Error enviando correo: {e}")
+        print(f"❌ FALLO EN EL ENVÍO: {str(e)}")
+    finally:
+        if servidor:
+            try:
+                servidor.quit()
+            except:
+                pass
 
 # --- RUTAS DE USUARIO ---
 
