@@ -6,10 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formAgenda = document.getElementById('form-agenda');
     const divReservas = document.getElementById('mis-reservas');
 
-    //mostrar mensajes personalizados
-    showMessage(data.mensaje || '¡Reserva confirmada!', 'success');
-    showMessage(data.mensaje || 'Error al crear la reserva', 'error');
-    showMessage('Por favor, completa todos los campos.', 'error');
+    /* --- SE ELIMINARON LAS LLAMADAS SUELTAS QUE DABAN ERROR --- */
 
     // Obtiene el ID del usuario desde localStorage (si existe)
     function getUsuarioId() {
@@ -29,18 +26,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (divReservas) divReservas.classList.add('oculto');
     }
 
-    // --- MANEJO DEL ENVÍO DEL FORMULARIO (Invitados + Logueados) ---
+    // --- MANEJO DEL ENVÍO DEL FORMULARIO ---
     formAgenda.addEventListener('submit', async function(e) {
         e.preventDefault();
 
-        const currentUsuarioId = getUsuarioId(); // Intentamos capturar el ID si existe
+        const currentUsuarioId = getUsuarioId(); 
         
-        // Captura de valores del formulario
         const nombre = document.getElementById('nombre').value;
         const fecha = document.getElementById('fecha').value;
         const hora = document.getElementById('hora').value;
 
-        // Validación básica de campos vacíos
+        // Validación de campos vacíos
         if(!nombre || !fecha || !hora) {
             return showMessage('Por favor, completa todos los campos.', 'error');
         }
@@ -53,30 +49,30 @@ document.addEventListener('DOMContentLoaded', () => {
                     nombre: nombre, 
                     fecha: fecha, 
                     hora: hora, 
-                    usuario_id: currentUsuarioId // Si es null, el Backend lo tratará como invitado
+                    usuario_id: currentUsuarioId 
                 })
             });
 
             const data = await response.json();
 
             if (data.success) {
-                showMessage(data.mensaje, 'success');
+                // Mensaje de éxito (Verde)
+                showMessage(data.mensaje || '¡Reserva confirmada!', 'success');
                 formAgenda.reset();
-                // Si el usuario está logueado, actualizamos su lista de reservas personal
                 if (currentUsuarioId) {
                     cargarReservas(currentUsuarioId);
                 }
             } else {
-                // Aquí se mostrará el mensaje de "cupos agotados" (máximo 5) que configuramos en Python
+                // Mensaje de error del servidor (Rojo)
                 showMessage(data.mensaje || 'Error al crear la reserva', 'error');
             }
         } catch (error) {
             console.error('Error:', error);
-            showMessage('Error de conexión con el servidor o límite diario alcanzado.', 'error');
+            showMessage('Error de conexión con el servidor.', 'error');
         }
     });
 
-    // Función para cargar las reservas personales (Solo para logueados)
+    // Función para cargar las reservas personales
     async function cargarReservas(id) {
         try {
             const response = await fetch(`${API_URL}/api/mis_reservas/${id}`);
@@ -94,7 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 data.reservas.forEach(reserva => {
                     const item = document.createElement('li');
                     
-                    // Formateo de fecha para evitar desfases
                     const fechaObj = new Date(reserva.fecha + 'T00:00:00');
                     const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
                     const diaNombre = diasSemana[fechaObj.getDay()];
