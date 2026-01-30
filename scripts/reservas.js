@@ -6,21 +6,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const formAgenda = document.getElementById('form-agenda');
     const divReservas = document.getElementById('mis-reservas');
 
-    // Función para mostrar mensajes personalizados
-    function showMessage(message, type = 'info') {
-        const messageBox = document.createElement('div');
-        messageBox.classList.add('message-box', type);
-        messageBox.textContent = message;
-
-        const closeBtn = document.createElement('span');
-        closeBtn.classList.add('close-btn');
-        closeBtn.innerHTML = '&times;';
-        closeBtn.onclick = () => messageBox.remove();
-        messageBox.appendChild(closeBtn);
-
-        document.body.appendChild(messageBox);
-        setTimeout(() => { if(messageBox) messageBox.remove(); }, 5000);
-    }
+    //mostrar mensajes personalizados
+    showMessage(data.mensaje || '¡Reserva confirmada!', 'success');
+    showMessage(data.mensaje || 'Error al crear la reserva', 'error');
+    showMessage('Por favor, completa todos los campos.', 'error');
 
     // Obtiene el ID del usuario desde localStorage (si existe)
     function getUsuarioId() {

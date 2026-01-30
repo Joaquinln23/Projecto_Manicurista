@@ -14,21 +14,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const abrirRegistroBtn = document.getElementById('abrir-registro');
     const registerBtn = document.getElementById('register-btn');
 
-    // Función para mostrar mensajes personalizados
-    function showMessage(message, type = 'info') {
-        const messageBox = document.createElement('div');
-        messageBox.classList.add('message-box', type); // Agregamos el tipo para estilos CSS
-        messageBox.textContent = message;
-
-        const closeBtn = document.createElement('span');
-        closeBtn.classList.add('close-btn');
-        closeBtn.innerHTML = '&times;';
-        closeBtn.onclick = () => messageBox.remove();
-        messageBox.appendChild(closeBtn);
-
-        document.body.appendChild(messageBox);
-        setTimeout(() => { if(messageBox) messageBox.remove(); }, 5000);
-    }
+    //mostrar mensajes personalizados
+    showMessage(data.error || 'Credenciales inválidas', 'error');
+    showMessage('¡Bienvenido, ' + data.nombre + '!', 'success');
+    showMessage('¡Registro exitoso! Ya puedes iniciar sesión.', 'success');
+    showMessage('Sesión cerrada.', 'success');
 
     // Comprobar el estado de autenticación
     function checkLoginStatus() {

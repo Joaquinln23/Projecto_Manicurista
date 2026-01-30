@@ -455,3 +455,62 @@ footer {
     }
 }
 
+/* ==========================================================================
+   9. ALERTAS DINÁMICAS (MENSAJES DE ÉXITO Y ERROR)
+   ========================================================================== */
+
+/* Contenedor base de la alerta */
+.alert-message {
+    position: fixed;
+    top: 100px; /* Debajo del header */
+    right: 20px;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    z-index: 3000; /* Por encima de modales y nav */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    min-width: 250px;
+    text-align: center;
+    animation: slideIn 0.5s ease-out forwards;
+}
+
+/* Color para Éxito (Verde) */
+.alert-success {
+    background-color: #28a745;
+    border-left: 6px solid #1e7e34;
+}
+
+/* Color para Error (Rojo) */
+.alert-error {
+    background-color: #dc3545;
+    border-left: 6px solid #a71d2a;
+}
+
+/* Animación de entrada (aparece desde la derecha) */
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Clase para desvanecer antes de eliminar */
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+/* Responsivo para móviles */
+@media (max-width: 600px) {
+    .alert-message {
+        right: 10px;
+        left: 10px;
+        top: 90px;
+        min-width: auto;
+    }
+}
