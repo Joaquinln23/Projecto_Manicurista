@@ -134,6 +134,10 @@ def obtener_reservas(usuario_id):
     except Exception as err:
         return jsonify({"success": False, "error": str(err)}), 500
 
+@app.route('/healthcheck')
+def health_check():
+    return "Servidor corriendo", 200
+
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
