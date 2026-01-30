@@ -86,7 +86,11 @@ def register():
 @app.route('/api/reserva_horas', methods=['POST'])
 def crear_reserva():
     data = request.json
-    usuario_id = data.get('usuario_id') # Puede venir como None/null
+    # Ajuste: Si viene "null" como texto o vacío, convertirlo a None real
+    usuario_id = data.get('usuario_id')
+    if usuario_id in [None, 'null', 'undefined', '']:
+        usuario_id = None
+    
     nombre = data.get('nombre')
     fecha = data.get('fecha')
     hora = data.get('hora')
@@ -104,19 +108,24 @@ def crear_reserva():
             conexion.close()
             return jsonify({"success": False, "mensaje": "Lo sentimos, ya no quedan cupos disponibles para este día (máximo 5)."}), 400
 
-        # INSERTAR RESERVA (usuario_id puede ser NULL)
+        # INSERTAR RESERVA (usuario_id ahora es None/NULL garantizado si no hay sesión)
         consulta = "INSERT INTO reserva_horas (usuario_id, nombre, fecha, hora) VALUES (%s, %s, %s, %s)"
         cursor.execute(consulta, (usuario_id, nombre, fecha, hora))
         conexion.commit()
         
-        # NOTIFICACIÓN
-        enviar_correo_a_manicurista(nombre, fecha, hora)
-        
         cursor.close()
         conexion.close()
+
+        # NOTIFICACIÓN (La ponemos en un try independiente para que no trabe la reserva)
+        try:
+            enviar_correo_a_manicurista(nombre, fecha, hora)
+        except Exception as e:
+            print(f"⚠️ El correo no se pudo enviar, pero la reserva se guardó: {e}")
+        
         return jsonify({"success": True, "mensaje": "Reserva creada exitosamente."})
     
     except Exception as err:
+        print(f"❌ Error crítico: {err}")
         return jsonify({"success": False, "mensaje": f"Error en el servidor: {str(err)}"}), 500
 
 @app.route('/api/mis_reservas/<int:usuario_id>', methods=['GET'])
