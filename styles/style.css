@@ -1,317 +1,124 @@
-/* Fuente elegante y colores suaves */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-
-body {
-    font-family: 'Montserrat', Arial, sans-serif;
-    background: #000000;
-    color: #f3e6ef;
-    margin: 0;
-    padding: 0%;
-    padding-top: 80px;
-}
-
-/* Estética para el formulario de reserva */
-#form-agenda input, 
-#form-agenda select {
-    width: 100%;
-    padding: 12px;
-    margin: 8px 0;
-    border: 1px solid #D4A5A5; /* Color rosa viejo */
-    border-radius: 8px;
-    font-size: 16px; /* Evita zoom automático en iPhone */
-    background-color: #fff;
-}
-
-#form-agenda button {
-    background-color: #D4A5A5;
-    color: white;
-    padding: 15px;
-    border: none;
-    border-radius: 25px;
-    width: 100%;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-#form-agenda button:hover {
-    background-color: #b38686;
-}
+/* ==========================================================================
+   1. CONFIGURACIÓN GLOBAL Y FUENTES
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Raleway:wght@300;400;500;600&display=swap');
 
 html, body {
     max-width: 100%;
     overflow-x: hidden;
+    scroll-behavior: smooth;
 }
 
-/* Estilos de la caja de mensaje */
-.message-box {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 15px 25px;
-    border-radius: 10px;
-    color: white;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
+body {
+    font-family: 'Montserrat', 'Raleway', Arial, sans-serif;
+    background: #000000;
+    color: #fff;
+    margin: 0;
+    padding-top: 80px; /* Evita que el header tape el contenido */
+}
+/* ==========================================================================
+   2. HEADER Y NAVEGACIÓN
+   ========================================================================== */
+.main-header {
+    background: #000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
-    gap: 10px;
-    animation: slideInRight 0.5s forwards;
+    justify-content: space-between;
+    padding: 10px 50px;
+    position: fixed;
+    left: 0; top: 0; width: 100%;
+    z-index: 1000;
+    box-sizing: border-box;
 }
 
-.message-box.info {
-    background-color: #2196F3;
+.logo-img {
+    height: 60px;
+    width: auto;
+    display: block;
 }
 
-.message-box.success {
-    background-color: #4CAF50;
-}
-
-.message-box.error {
-    background-color: #F44336;
-}
-
-.close-btn {
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    color: white;
-    line-height: 1;
-}
-
-@keyframes slideInRight {
-    from {
-        transform: translateX(120%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-header {
-    background: #ff6f61;
-    color: white;
-    padding: 10px 0;
-    text-align: center;
-}
-
-h1 {
-    margin: 0;
-}
-
-nav {
-    margin: 20px 0;
-}
-
-nav ul {
+#main-nav ul {
     list-style: none;
     display: flex;
-    gap: 2.5rem;
+    gap: 1.5rem;
     margin: 0;
     padding: 0;
+    align-items: center;
 }
 
-nav a {
+#main-nav a {
     text-decoration: none;
     color: #f3e6ef;
     font-weight: 600;
-    font-size: 1.1rem;
-    letter-spacing: 0.5px;
-    transition: color 0.2s;
-    padding: 0.3rem 0.7rem;
-    border-radius: 1.2rem;
+    transition: color 0.3s;
 }
 
-nav a:hover {
-    background: #2d2d2d;
+#main-nav a:hover {
     color: #e09ca6;
 }
 
-.container {
-    width: 80%;
-    margin: auto;
-    overflow: hidden;
-}
-
-.service {
-    background: white;
-    padding: 20px;
-    margin: 20px 0;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-footer {
-    text-align: center;
-    padding: 1.5rem 0;
-    background: #181818;
-    color: #e09ca6;
-    font-size: 1rem;
-    margin-top: 2rem;
-    border-top: 1px solid #2d2d2d;
-    position: relative;
-    bottom: 0;
-    width: 100%;
-}
-
-/* Botón de reservar */
-.btn-reservar {
-    background: #e09ca6;
-    color: #fff;
-    border: none;
-    padding: 1rem 2rem;
-    border-radius: 2rem;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    margin-bottom: 1.5rem;
-    transition: background 0.3s, transform 0.2s;
-    box-shadow: 0 2px 8px rgba(224,156,166,0.12);
-}
-.btn-reservar:hover {
-    background: #b76e79;
-    transform: scale(1.05);
-}
-
-/* Botón de ingresar */
+/* Botones especiales en el nav */
 .btn-ingresar {
     background: #e09ca6;
     color: #fff !important;
-    border: none;
-    padding: 0.5rem 1.3rem;
+    padding: 0.5rem 1.2rem;
     border-radius: 2rem;
-    font-size: 1.1rem;
-    font-weight: 600;
+    border: none;
     cursor: pointer;
-    margin-left: 1rem;
-    transition: background 0.3s, color 0.2s;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    font-weight: bold;
     text-transform: uppercase;
-    display: inline-block;
+    font-size: 0.9rem;
 }
 
-.btn-ingresar:hover {
-    background: #e09ca6;
-    color: #fff !important;
-}
-
-/* Botón de registro */
-.btn-registro {
-    background: #e09ca6;
-    color: #fff;
-    border: none;
-    padding: 0.7rem 2rem;
-    border-radius: 1.5rem;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-    margin-top: 1rem;
-}
-.btn-registro:hover {
-    background: #b76e79;
-}
-
-/* Formulario de agenda */
-.form-agenda {
-    background: #232323;
-    border-radius: 1rem;
-    box-shadow: 0 2px 8px rgba(224,156,166,0.10);
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    width: 90%;
-    max-width: 350px;
-    margin: 0 auto;
-    animation: fadeIn 0.6s;
-}
-
-.form-agenda input {
-    padding: 0.7rem;
-    background: #181818;
-    color: #f3e6ef;
-    border: 1px solid #e09ca6;
-    border-radius: 0.5rem;
-    font-size: 1rem;
-}
-
-.btn-enviar, .btn-cerrar {
-    background: #e09ca6;
-    color: #fff;
-    border: none;
-    padding: 0.7rem 1.5rem;
-    border-radius: 1.5rem;
-    font-size: 1rem;
-    margin-top: 0.5rem;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-.btn-enviar:hover, .btn-cerrar:hover {
-    background: #b76e79;
-}
-
-.oculto {
+/* Menú Hamburguesa */
+.menu-toggle {
     display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 
-.mensaje-confirmacion {
+.menu-toggle span {
+    width: 30px;
+    height: 3px;
     background: #e09ca6;
-    color: #fff;
-    padding: 1rem;
-    border-radius: 1rem;
-    text-align: center;
-    margin-top: 1rem;
-    animation: fadeIn 0.6s;
+    border-radius: 2px;
 }
 
-/* Animación de aparición */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(30px);}
-    to { opacity: 1; transform: translateY(0);}
-}
-
-/* Hero Section */
+/* ==========================================================================
+   3. HERO SECTION
+   ========================================================================== */
 .hero {
     position: relative;
-    width: 100%;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
     height: 350px;
-    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #181818;
+    overflow: hidden;
 }
 
 .hero img {
-    width: 100vw;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
     position: absolute;
-    top: 0;
-    left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
     z-index: 1;
 }
 
 .hero-text {
     position: relative;
-    z-index: 2;
+    z-index: 3;
     text-align: center;
-    color: #fff;
+    padding: 2rem;
     background: rgba(224, 156, 166, 0.18);
-    padding: 2rem 3rem;
     border-radius: 1rem;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
 }
 
-/* Servicios estilo tarjetas */
+/* ==========================================================================
+   4. SERVICIOS Y GALERÍA
+   ========================================================================== */
 .servicios {
     background: #232323;
     color: #f3e6ef;
@@ -324,57 +131,24 @@ footer {
 
 .servicios h2 {
     color: #e09ca6;
-    margin-bottom: 2rem;
-    font-size: 2.2rem;
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+}
+
+.servicios h3 {
+    margin: 0.5rem 0 0.7rem 0;
+    color: #e09ca6;
+    font-size: 1.2rem;
     font-weight: 700;
-    letter-spacing: 1px;
 }
 
 .servicios-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); 
+    grid-template-columns: repeat(4, 1fr);
     gap: 20px;
     padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
-}
-/* Centrar las tarjetas 5 y 6 en pantallas grandes */
-@media (min-width: 1025px) {
-    .servicio-card:nth-child(5) {
-        grid-column: 2; /* Inicia en la columna 2 */
-    }
-    .servicio-card:nth-child(6) {
-        grid-column: 3; /* Inicia en la columna 3 */
-    }
-}
-
-
-.servicio-card img {
-    width: 100%;
-    height: 200px; /* Un poco más bajas para que quepan 4 en línea */
-    object-fit: cover;
-    border-radius: 10px 10px 0 0;
-}
-
-/* --- RESPONSIVE --- */
-
-/* En tablets: 2 columnas (3 filas de 2) */
-@media (max-width: 1024px) {
-    .servicios-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    /* Quitamos el centrado especial en tablets */
-    .servicio-card:nth-child(5),
-    .servicio-card:nth-child(6) {
-        grid-column: auto;
-    }
-}
-
-/* En celulares: 1 columna */
-@media (max-width: 600px) {
-    .servicios-grid {
-        grid-template-columns: 1fr;
-    }
 }
 
 .servicio-card {
@@ -390,120 +164,153 @@ footer {
 }
 
 .servicio-card:hover {
-    transform: translateY(-8px) scale(1.03);
-    box-shadow: 0 8px 24px rgba(224,156,166,0.18);
+    transform: translateY(-10px);
+    border-color: #e09ca6;
 }
 
 .servicio-card img {
     width: 100%;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
     max-width: 300px;
     height: auto;
     aspect-ratio: 350 / 400;
-    margin-bottom: 1rem;
     object-fit: cover;
-    border-radius: 0.75rem;
     display: block;
 }
 
-.servicio-card h3 {
-    margin: 0.5rem 0 0.7rem 0;
+/* Galería de trabajos */
+.trabajos-gallery-container {
+    padding: 3rem 1rem;
+    text-align: center;
+    background: #232323;
+    border-radius: 1rem;
+    margin-bottom: 2rem;
+}
+
+.trabajos-gallery-container h3 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
     color: #e09ca6;
-    font-size: 1.2rem;
     font-weight: 700;
 }
 
-.servicio-card p {
-    color: #f3e6ef;
-    font-size: 1rem;
-    margin: 0;
+.trabajos-grid {
+    display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 2rem;
+  max-width: 9000px;
+  margin: 0 auto;
 }
 
-/* Logo */
-.logo-img {
-    height: 60px;
-    width: auto;
+.trabajo-item {
+    overflow: hidden;
+    border-radius: 0.75rem;
+    box-shadow: 0 8px 24px rgba(224,156,166,0.18);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.trabajo-item:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 8px 24px rgba(224,156,166,0.18);
+}
+
+.trabajo-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     display: block;
-    object-fit: contain;
-    border: none;
-    background: none;
-    box-shadow: none;
-    padding: 0;
 }
 
-/* Header principal */
-.main-header {
+/* ==========================================================================
+   5. FORMULARIO DE RESERVA (ESTILO ROSA)
+   ========================================================================== */
+.agenda {
     background: #000;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    padding: 5rem 1rem;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 50px;
-    box-sizing: border-box;
-    position: fixed;
-    left: 0;
-    width: 100%;
-    top: 0;
-    z-index: 1000;
-    background-color: #000;
-    gap: 1.5rem; /* Espacio entre logo y menú hamburguesa */
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-}
-
-/* Botón hamburguesa */
-.menu-toggle {
-    display: none;
-    flex-direction: column;
     justify-content: center;
-    width: 36px;
-    height: 36px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    z-index: 200;
-    margin-left: auto;
-    margin-right: 0.5rem;
 }
 
-.menu-toggle span {
+.form-agenda {
+    background: #1d1d1d;
+    padding: 2.5rem;
+    border-radius: 1.5rem;
+    width: 100%;
+    max-width: 450px;
+    border: 1px solid rgba(224, 156, 166, 0.3);
+}
+
+.form-agenda label {
     display: block;
-    height: 4px;
+    margin-top: 1rem;
+    color: #e09ca6;
+    font-weight: bold;
+}
+
+.form-agenda input {
     width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border-radius: 0.5rem;
+    border: 1px solid #444;
+    background: #fff; /* Fondo blanco para facilitar lectura */
+    color: #000;
+    box-sizing: border-box;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn-enviar {
+    flex: 2;
     background: #e09ca6;
-    border-radius: 2px;
-    margin: 5px 0;
-    transition: 0.3s;
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 2rem;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-/* Iconos de redes sociales */
+.btn-cerrar {
+    flex: 1;
+    background: transparent;
+    color: #999;
+    border: 1px solid #444;
+    border-radius: 2rem;
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   6. CONTACTO Y MODALES
+   ========================================================================== */
+.contacto {
+    text-align: center;
+    padding: 4rem 1rem;
+    background: #111;
+}
+
 .icono-red {
-    width: 100px;
-    height: 100px;
+    width: 30px;
     vertical-align: middle;
-    margin-right: 0.5rem;
-    margin-right: 0.5rem;
+    margin-right: 10px;
 }
 
-/* Modal Login */
+/* Estilos para Modales */
 .modal-login {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
     display: flex;
     justify-content: center;
     align-items: center;
-    position: fixed;
-    left: 0; top: 0; width: 100vw; height: 100vh;
-    background: rgba(0,0,0,0.6);
-    z-index: 999;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s;
+    z-index: 2000;
 }
-.modal-login:not(.oculto) {
-    opacity: 1;
-    pointer-events: auto;
-}
+
 .modal-content-login {
     background: #232323;
     padding: 2rem 2.5rem;
@@ -515,48 +322,79 @@ footer {
     animation: fadeIn 0.5s;
     min-width: 280px;
 }
-.modal-content-login h2 {
-    color: #e09ca6;
-    margin-bottom: 1.5rem;
-}
+
 .modal-content-login input {
     width: 100%;
+    padding: 12px;
     margin-bottom: 1rem;
-    padding: 0.7rem;
     border-radius: 0.5rem;
     border: 1px solid #e09ca6;
-    background: #181818;
-    color: #f3e6ef;
-    font-size: 1rem;
-}
-.modal-content-login button {
-    background: #e09ca6;
-    color: #fff;
-    border: none;
-    padding: 0.7rem 2rem;
-    border-radius: 1.5rem;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-.modal-content-login button:hover {
-    background: #b76e79;
-}
-.close-login {
-    position: absolute;
-    top: 1.5rem;
-    right: 2rem;
-    font-size: 2rem;
-    color: #e09ca6;
-    cursor: pointer;
-    transition: color 0.2s;
-}
-.close-login:hover {
+    background: #000;
     color: #fff;
 }
 
-/* Responsive */
+.modal-content-login button {
+  background: #e09ca6;
+  color: #fff;
+  border: none;
+  padding: 0.7rem 2rem;
+  border-radius: 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.modal-content-login h2 {
+  color: #e09ca6;
+  margin-bottom: 1.5rem;
+}
+
+.close-login {
+    position: absolute;
+    top: 10px; right: 20px;
+    font-size: 2rem;
+    color: #e09ca6;
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   7. FOOTER Y UTILIDADES
+   ========================================================================== */
+footer {
+    padding: 2rem;
+    text-align: center;
+    background: #000;
+    border-top: 1px solid #1d1d1d;
+    color: #777;
+}
+
+.oculto { display: none !important; }
+
+/* ==========================================================================
+   8. RESPONSIVE
+   ========================================================================== */
+@media (min-width: 1025px) {
+
+    .servicio-card:nth-child(5) {
+        grid-column: 2;
+    }
+    .servicio-card:nth-child(6) {
+        grid-column: 3;
+    }
+}
+
+@media (max-width: 1024px) {
+    .servicios-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    /* Quitamos el centrado especial en tablets */
+    .servicio-card:nth-child(5),
+    .servicio-card:nth-child(6) {
+        grid-column: auto;
+    }
+}
+
 @media (max-width: 900px) {
     .main-header {
         padding: 0.7rem 1rem;
@@ -617,229 +455,3 @@ footer {
     }
 }
 
-/* Estilos para la galería de trabajos */
-.trabajos-gallery-container {
-    padding: 3rem 1rem;
-    text-align: center;
-    background: #232323; 
-    border-radius: 1rem;
-    margin-bottom: 2rem;
-}
-
-.trabajos-gallery-container h3 {
-    font-size: 2rem;
-    margin-bottom: 2rem;
-    color: #e09ca6;
-    font-weight: 700;
-}
-
-.trabajos-grid {
-    display: grid;
-    /* Ajusta el número de columnas automáticamente según el ancho de la pantalla */
-    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-    gap: 2rem;
-    max-width: 9000px;
-    margin: 0 auto;
-}
-
-.trabajo-item {
-    overflow: hidden;
-    border-radius: 0.75rem;
-    box-shadow: 0 8px 24px rgba(224,156,166,0.18);
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-}
-
-.trabajo-item:hover {
-    transform: translateY(-8px) scale(1.03);
-    box-shadow: 0 8px 24px rgba(224,156,166,0.18);
-}
-
-.trabajo-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-
-/* de aqui en adelante es codigo nuevo */
-
-/* Contenedor para alinear botones uno al lado del otro */
-.form-buttons {
-    display: flex;
-    gap: 15px;
-    margin-top: 25px;
-}
-
-/* Estilo base para los botones del formulario */
-.btn-enviar, .btn-cerrar {
-    padding: 14px 20px;
-    border-radius: 10px; /* Bordes suaves para coincidir con tus inputs */
-    font-weight: 600;
-    font-family: 'Raleway', sans-serif;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 1rem;
-    flex: 1; /* Hace que ambos midan lo mismo */
-}
-
-/* BOTÓN CONFIRMAR: Color rosa vibrante de Caterina Artist */
-.btn-enviar {
-    background-color: #f1a7b1; /* El rosa de tu logo */
-    color: #ffffff;
-    border: none;
-    box-shadow: 0 4px 12px rgba(241, 167, 177, 0.3);
-}
-
-.btn-enviar:hover {
-    background-color: #e096a0;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(241, 167, 177, 0.5);
-}
-
-/* BOTÓN CANCELAR: Estilo "Ghost" o contorno */
-.btn-cerrar {
-    background-color: transparent;
-    color: #999999;
-    border: 2px solid #444444;
-}
-
-.btn-cerrar:hover {
-    color: #ffffff;
-    border-color: #f1a7b1; /* Se ilumina en rosa al pasar el mouse */
-    background-color: rgba(241, 167, 177, 0.05);
-}
-
-/* nuevo codigo 26-12-2025 */
-
-.hero {
-    position: relative;
-}
-
-/* Crea una capa oscura sobre la imagen para resaltar el texto */
-.hero::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4); /* Ajusta el 0.4 para más o menos oscuridad */
-}
-
-.hero-text {
-    position: relative;
-    z-index: 2; /* Pone el texto por encima de la capa oscura */
-}
-
-/* ==========================================================================
-   CSS PARA EL FORMULARIO DE RESERVA (CENTRALIZADO)
-   ========================================================================== */
-
-/* 1. Contenedor principal: Centra el formulario en la pantalla */
-.agenda {
-    display: flex;
-    justify-content: center; /* Centrado horizontal */
-    align-items: center;     /* Centrado vertical */
-    padding: 60px 20px;
-    width: 100%;
-    min-height: 400px;
-    background-color: #000;  /* Fondo oscuro para resaltar el formulario */
-    box-sizing: border-box;
-}
-
-/* 2. Caja del formulario */
-.form-agenda {
-    background: #232323;     /* Gris oscuro elegante */
-    border-radius: 1.2rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
-    padding: 2.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-    width: 100%;
-    max-width: 420px;        /* Evita que se vea muy ancho en PC */
-    margin: 0 auto;
-    animation: fadeIn 0.6s;
-    border: 1px solid rgba(224, 156, 166, 0.2);
-}
-
-.form-agenda h2 {
-    text-align: center;
-    color: #e09ca6;
-    margin-bottom: 1.5rem;
-    font-size: 1.8rem;
-    font-family: 'Montserrat', sans-serif;
-}
-
-/* 3. Etiquetas y campos de entrada */
-.form-agenda label {
-    display: block;
-    margin-bottom: 5px;
-    color: #f3e6ef;
-    font-weight: 600;
-    font-size: 0.95rem;
-}
-
-.form-agenda input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    background: #ffffff;    /* Fondo blanco para máxima legibilidad */
-    color: #333333;         /* Texto oscuro para contraste */
-    border: 1px solid #e09ca6;
-    border-radius: 0.6rem;
-    font-size: 1rem;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
-
-/* 4. Botones alineados (Confirmar y Cancelar) */
-.form-buttons {
-    display: flex;
-    gap: 15px;              /* Espacio entre botones */
-    margin-top: 15px;
-}
-
-.btn-enviar, .btn-cerrar {
-    flex: 1;                /* Hace que ambos botones tengan el mismo ancho */
-    padding: 14px;
-    border-radius: 2rem;    /* Bordes redondeados estilo "pill" */
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 0.95rem;
-    border: none;
-    text-transform: uppercase;
-}
-
-/* Botón Confirmar (Rosa) */
-.btn-enviar {
-    background-color: #f1a7b1;
-    color: #ffffff;
-    box-shadow: 0 4px 12px rgba(241, 167, 177, 0.25);
-}
-
-.btn-enviar:hover {
-    background-color: #e096a0;
-    transform: translateY(-2px);
-}
-
-/* Botón Cancelar (Transparente/Gris) */
-.btn-cerrar {
-    background-color: transparent;
-    color: #999999;
-    border: 2px solid #444444;
-}
-
-.btn-cerrar:hover {
-    color: #ffffff;
-    border-color: #f1a7b1;
-    background-color: rgba(241, 167, 177, 0.05);
-}
-
-/* Animación de aparición */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}

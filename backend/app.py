@@ -95,7 +95,7 @@ def crear_reserva():
         conexion = get_db_connection()
         cursor = conexion.cursor()
 
-        # 1. VALIDACIÓN: Máximo 5 reservas totales por día
+        # VALIDACIÓN: Máximo 5 reservas totales por día
         cursor.execute("SELECT COUNT(*) FROM reserva_horas WHERE fecha = %s", (fecha,))
         total_dia = cursor.fetchone()[0]
         
@@ -104,12 +104,12 @@ def crear_reserva():
             conexion.close()
             return jsonify({"success": False, "mensaje": "Lo sentimos, ya no quedan cupos disponibles para este día (máximo 5)."}), 400
 
-        # 2. INSERTAR RESERVA (usuario_id puede ser NULL)
+        # INSERTAR RESERVA (usuario_id puede ser NULL)
         consulta = "INSERT INTO reserva_horas (usuario_id, nombre, fecha, hora) VALUES (%s, %s, %s, %s)"
         cursor.execute(consulta, (usuario_id, nombre, fecha, hora))
         conexion.commit()
         
-        # 3. NOTIFICACIÓN
+        # NOTIFICACIÓN
         enviar_correo_a_manicurista(nombre, fecha, hora)
         
         cursor.close()

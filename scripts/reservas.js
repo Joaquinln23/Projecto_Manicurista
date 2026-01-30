@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. URL DE TU BACKEND EN RENDER (Asegúrate de que sea la correcta)
+    // URL BACKEND EN RENDER
     const API_URL = 'https://projecto-manicurista.onrender.com';
 
     // Referencias a elementos del DOM
