@@ -415,69 +415,62 @@ footer {
 }
 
 @media (max-width: 700px) {
+    /* 1. Hacemos que el header sea fijo y no ocupe tanto espacio */
     .main-header {
-        display: flex; /* Asegura el comportamiento flex */
-        justify-content: space-between; /* Empuja el logo a la izquierda y la hamburguesa a la derecha */
-        flex-direction: row;
+        position: fixed; /* Siempre visible al bajar */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 70px; /* Altura fija controlada */
+        display: flex;
+        justify-content: space-between;
         align-items: center;
-        padding: 0.8rem 1.5rem; /* Un poco más de aire a los lados */
-        position: relative; /* Para que el nav se posicione respecto a la cabecera */
+        padding: 0 1.5rem;
+        background: #000;
+        z-index: 1000; /* Por encima de todo */
     }
 
-    /* Ajuste del Logo en móviles */
+    /* Ajuste del logo para que no empuje el header hacia abajo */
     .logo img {
-        height: 50px; /* Reducimos un poco el alto para que no choque */
+        height: 45px; 
         width: auto;
     }
 
-    .menu-toggle {
-        display: flex;
-        z-index: 200; /* Asegura que el botón esté por encima de todo */
-    }
-
+    /* 2. El Menú de navegación también fijo */
     nav#main-nav {
-        position: absolute;
-        top: 100%; /* Se despliega justo debajo del header */
+        position: fixed; 
+        top: 70px; /* Exactamente donde termina el header */
         right: 0;
-        background: #000; /* Fondo negro sólido para que no se trasluzca la imagen */
-        box-shadow: -2px 5px 10px rgba(0,0,0,0.5);
+        background: rgba(0, 0, 0, 0.95); /* Negro con mínima transparencia */
+        width: 200px;
+        height: auto;
         border-radius: 0 0 0 1rem;
-        width: 220px; /* Un poco más ancho para que los textos no se corten */
-        transform: translateX(110%); /* Lo escondemos hacia la derecha en lugar de arriba */
-        transition: transform 0.4s ease-in-out;
-        z-index: 150;
+        transform: translateX(110%);
+        transition: transform 0.3s ease;
+        z-index: 999;
+        box-shadow: -5px 5px 15px rgba(0,0,0,0.5);
     }
 
     nav#main-nav.open {
-        transform: translateX(0); 
+        transform: translateX(0);
     }
 
     nav#main-nav ul {
         flex-direction: column;
+        padding: 10px 0;
         gap: 0;
-        padding: 1rem 0;
-        align-items: stretch;
-    }
-
-    nav#main-nav li {
-        width: 100%;
-        list-style: none;
     }
 
     nav#main-nav a {
-        color: #e09ca6 !important; /* Letras rosadas */
-        background: none !important;
+        padding: 15px 20px;
         display: block;
-        padding: 12px 20px;
-        text-align: left;
-        width: 100%;
-        font-size: 1.1rem;
-        border-bottom: 1px solid rgba(224, 156, 166, 0.1); /* Línea divisoria sutil */
+        font-size: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    nav#main-nav a:hover {
-        color: #fff !important;
-        background: #e09ca6 !important;
+    /* 3. IMPORTANTE: El contenido de la página debe bajar para no quedar tapado por el header fijo */
+    body {
+        padding-top: 70px; 
     }
 }
 
