@@ -21,7 +21,7 @@ def get_db_connection():
         database=os.getenv('DB_NAME', 'defaultdb')
     )
 
-# --- FUNCIÓN PARA ENVIAR CORREO ---
+# --- FUNCIÓN PARA ENVIAR CORREO (CON TIMEOUT PARA EVITAR BLOQUEOS) ---
 def enviar_correo_a_manicurista(nombre, fecha, hora):
     remitente = 'zonajah@gmail.com'
     destinatario = 'zonajah@gmail.com'
@@ -36,13 +36,16 @@ def enviar_correo_a_manicurista(nombre, fecha, hora):
     mensaje.attach(MIMEText(cuerpo, 'plain'))
     
     try:
-        servidor = smtplib.SMTP('smtp.gmail.com', 587)
+        # Agregamos un timeout de 8 segundos para que el servidor no se quede "pegado"
+        servidor = smtplib.SMTP('smtp.gmail.com', 587, timeout=8)
         servidor.starttls()
         servidor.login(remitente, contraseña)
         servidor.send_message(mensaje)
         servidor.quit()
+        print(f"✅ Correo enviado con éxito para {nombre}")
     except Exception as e:
-        print("❌ Error enviando correo:", e)
+        # El error se imprime en los logs de Render, pero no detiene la respuesta al usuario
+        print(f"⚠️ Error enviando correo: {e}")
 
 # --- RUTAS DE USUARIO ---
 
@@ -81,14 +84,15 @@ def register():
     except Exception as err:
         return jsonify({"success": False, "error": str(err)}), 500
 
-# --- RUTA DE RESERVAS (MODIFICADA) ---
+# --- RUTA DE RESERVAS (SOPORTA INVITADOS Y LOGUEADOS) ---
 
 @app.route('/api/reserva_horas', methods=['POST'])
 def crear_reserva():
     data = request.json
-    # Ajuste: Si viene "null" como texto o vacío, convertirlo a None real
+    
+    # Manejo de ID: Si es invitado, el frontend manda "null" o vacío. Lo convertimos a None real.
     usuario_id = data.get('usuario_id')
-    if usuario_id in [None, 'null', 'undefined', '']:
+    if usuario_id in [None, 'null', 'undefined', '', 'None']:
         usuario_id = None
     
     nombre = data.get('nombre')
@@ -99,33 +103,34 @@ def crear_reserva():
         conexion = get_db_connection()
         cursor = conexion.cursor()
 
-        # VALIDACIÓN: Máximo 5 reservas totales por día
+        # 1. VALIDACIÓN: Máximo 5 reservas totales por día
         cursor.execute("SELECT COUNT(*) FROM reserva_horas WHERE fecha = %s", (fecha,))
         total_dia = cursor.fetchone()[0]
         
         if total_dia >= 5:
             cursor.close()
             conexion.close()
-            return jsonify({"success": False, "mensaje": "Lo sentimos, ya no quedan cupos disponibles para este día (máximo 5)."}), 400
+            return jsonify({"success": False, "mensaje": "Lo sentimos, ya no quedan cupos para este día."}), 400
 
-        # INSERTAR RESERVA (usuario_id ahora es None/NULL garantizado si no hay sesión)
+        # 2. INSERTAR RESERVA (MySQL acepta None como NULL)
         consulta = "INSERT INTO reserva_horas (usuario_id, nombre, fecha, hora) VALUES (%s, %s, %s, %s)"
         cursor.execute(consulta, (usuario_id, nombre, fecha, hora))
         conexion.commit()
         
+        # Cerramos conexión antes de pasar al correo para liberar recursos
         cursor.close()
         conexion.close()
 
-        # NOTIFICACIÓN (La ponemos en un try independiente para que no trabe la reserva)
+        # 3. NOTIFICACIÓN (Independiente: si el correo falla, la reserva ya está guardada)
         try:
             enviar_correo_a_manicurista(nombre, fecha, hora)
-        except Exception as e:
-            print(f"⚠️ El correo no se pudo enviar, pero la reserva se guardó: {e}")
+        except:
+            pass 
         
         return jsonify({"success": True, "mensaje": "Reserva creada exitosamente."})
     
     except Exception as err:
-        print(f"❌ Error crítico: {err}")
+        print(f"❌ Error crítico en reserva: {err}")
         return jsonify({"success": False, "mensaje": f"Error en el servidor: {str(err)}"}), 500
 
 @app.route('/api/mis_reservas/<int:usuario_id>', methods=['GET'])
