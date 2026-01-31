@@ -312,6 +312,7 @@ body {
 }
 
 .modal-content-login {
+    position: relative;
     background: #232323;
     padding: 2rem 2.5rem;
     border-radius: 1rem;
@@ -326,7 +327,7 @@ body {
 .modal-content-login input {
     width: 100%;
     padding: 12px;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     border-radius: 0.5rem;
     border: 1px solid #e09ca6;
     background: #000;
@@ -343,6 +344,7 @@ body {
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s;
+  margin-top: 15px;
 }
 
 .modal-content-login h2 {
@@ -414,63 +416,71 @@ footer {
     }
 }
 
-@media (max-width: 700px) {
-    /* 1. Hacemos que el header sea fijo y no ocupe tanto espacio */
+@media (max-width: 750px) {
+    /* 1. Header fijo y ordenado */
     .main-header {
-        position: fixed; /* Siempre visible al bajar */
+        position: fixed;
         top: 0;
         left: 0;
         width: 100%;
-        height: 70px; /* Altura fija controlada */
+        height: 70px; 
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 0 1.5rem;
         background: #000;
-        z-index: 1000; /* Por encima de todo */
+        z-index: 1100; /* Aseguramos que esté sobre el nav */
     }
 
-    /* Ajuste del logo para que no empuje el header hacia abajo */
-    .logo img {
-        height: 45px; 
+    /* Ajuste del logo para que no sea muy grande */
+    .logo-img {
+        height: 45px !important; 
         width: auto;
     }
 
-    /* 2. El Menú de navegación también fijo */
+    /* ACTIVAR EL BOTÓN DE HAMBURGUESA */
+    .menu-toggle {
+        display: flex !important; /* Esto hará que aparezcan las 3 líneas */
+        z-index: 1200;
+    }
+
+    /* 2. El Menú de navegación (se despliega bajo el header) */
     nav#main-nav {
         position: fixed; 
-        top: 70px; /* Exactamente donde termina el header */
+        top: 70px; 
         right: 0;
-        background: rgba(0, 0, 0, 0.95); /* Negro con mínima transparencia */
-        width: 200px;
+        background: rgba(0, 0, 0, 0.98); 
+        width: 220px;
         height: auto;
         border-radius: 0 0 0 1rem;
         transform: translateX(110%);
-        transition: transform 0.3s ease;
-        z-index: 999;
-        box-shadow: -5px 5px 15px rgba(0,0,0,0.5);
+        transition: transform 0.3s ease-in-out;
+        z-index: 1000;
+        box-shadow: -5px 5px 15px rgba(0,0,0,0.8);
     }
 
     nav#main-nav.open {
-        transform: translateX(0);
+        transform: translateX(0); /* Entra desde la derecha */
     }
 
     nav#main-nav ul {
         flex-direction: column;
-        padding: 10px 0;
+        padding: 15px 0;
         gap: 0;
+        align-items: stretch; /* Ocupa todo el ancho del menú */
     }
 
     nav#main-nav a {
-        padding: 15px 20px;
+        padding: 18px 25px;
         display: block;
-        font-size: 1rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 1.1rem;
+        border-bottom: 1px solid rgba(224, 156, 166, 0.2);
+        text-align: left;
     }
 
-    /* 3. IMPORTANTE: El contenido de la página debe bajar para no quedar tapado por el header fijo */
+    /* 3. Evitar que el header tape el inicio de la página */
     body {
-        padding-top: 70px; 
+        padding-top: 70px !important; 
     }
 }
 

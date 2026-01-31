@@ -2,25 +2,28 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0 maximum-scale=1.0, user-scalable=no">
-    <title>Servicios de Manicura</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Caterina Artist - Nails & Beauty</title>
     <link rel="stylesheet" href="styles/style.css">
     <link href='https://fonts.googleapis.com/css?family=Raleway:400,500,300' rel='stylesheet' type='text/css'>
 </head>
 <body>
     <header class="main-header">
-
         <div class="logo">
             <img src="images/logo terminado.png" alt="Caterina Artist Nails" class="logo-img">
         </div>
 
-        <span id="saludo-usuario" style="margin-left: 1rem; font-weight: bold;"></span>
-        <button id="btn-logout" class="btn-ingresar oculto">Cerrar sesión</button>
+        <div class="user-controls">
+            <span id="saludo-usuario"></span>
+            <button id="btn-logout" class="btn-ingresar oculto">Cerrar sesión</button>
+        </div>
+
         <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menú">
             <span></span>
             <span></span>
             <span></span>
         </button>
+
         <nav id="main-nav">
             <ul>
                 <li><a href="#servicios">Servicios</a></li>
@@ -31,7 +34,6 @@
         </nav>
     </header>
 
-    <!-- Sección principal/hero -->
     <section class="hero">
         <img src="images/Manicurista.jpg" alt="Manicura elegante">
         <div class="hero-text">
@@ -41,7 +43,6 @@
     </section>
 
     <main>
-        <!-- Servicios actualizados -->
         <section id="servicios" class="servicios">
             <h2>Nuestros Servicios</h2>
             <div class="servicios-grid">
@@ -50,31 +51,26 @@
                     <h3>Esmaltado semipermanente</h3>
                     <p>Color duradero y brillo impecable para tus uñas naturales.</p>
                 </div>
-                
                 <div class="servicio-card">
                     <img src="images/Servicios/servicio2.webp" alt="Uñas en polygel">
                     <h3>Uñas en polygel</h3>
                     <p>La combinación perfecta entre fuerza y ligereza.</p>
                 </div>
-                
                 <div class="servicio-card">
                     <img src="images/Servicios/servicio3.webp" alt="Uñas softgel">
                     <h3>Uñas softgel</h3>
                     <p>Extensiones flexibles y de aspecto natural con tips de gel.</p>
                 </div>
-
                 <div class="servicio-card">
                     <img src="images/Servicios/servicio4.webp" alt="Esmaltado con nivelación">
                     <h3>Esmaltado con nivelación</h3>
                     <p>Corrige imperfecciones y fortalece la uña natural.</p>
                 </div>
-
                 <div class="servicio-card">
-                    <img src="images/Servicios/servicio5.webp" alt="Esmaltado pies semipermanente">
+                    <img src="images/Servicios/servicio5.webp" alt="Esmaltado pies">
                     <h3>Esmaltado pies semipermanente</h3>
                     <p>Luce tus pies perfectos por mucho más tiempo.</p>
                 </div>
-
                 <div class="servicio-card">
                     <img src="images/Servicios/servicio6.webp" alt="Kapping polygel">
                     <h3>Kapping polygel</h3>
@@ -82,55 +78,23 @@
                 </div>
             </div>
             
-            <!-- Espacio para fotos de trabajos -->
             <div class="trabajos-gallery-container">
                 <h3>Nuestros Trabajos</h3>
                 <div class="trabajos-grid">
-                    <!-- Foto 1 -->
-                    <div class="trabajo-item">
-                        <img src="./Images/Trabajos/1.png" loading="lazy">
-                    </div>
-                    <!-- Foto 2 -->
-                    <div class="trabajo-item">
-                        <img src="./Images/Trabajos/2.png" loading="lazy">
-                    </div>
-                    <!-- Foto 3 -->
-                    <div class="trabajo-item">
-                        <img src="./Images/Trabajos/3.png" loading="lazy">
-                    </div>
-                    <!-- Foto 4 -->
-                    <div class="trabajo-item">
-                        <img src="./Images/Trabajos/4.png" loading="lazy">
-                    </div>
-                    <!-- Foto 5 -->
-                    <div class="trabajo-item">
-                        <img src="./Images/Trabajos/5.png" loading="lazy">
-                    </div>
-                    <!-- Foto 6 -->
-                    <div class="trabajo-item">
-                        <img src="./Images/Trabajos/6.png" loading="lazy">
-                    </div>
-                    <!-- Foto 7 -->
-                    <div class="trabajo-item">
-                        <img src="./Images/Trabajos/7.png" loading="lazy">
-                    </div>
-                    <!-- Foto 8 -->
-                    <div class="trabajo-item">
-                        <img src="./Images/Trabajos/8.png" loading="lazy">
-                    </div>
-                    <!-- Foto 9 -->
-                    <div class="trabajo-item">
-                        <img src="./Images/Trabajos/9.png" loading="lazy">
-                    </div>
-                    <!-- Foto 10 -->
-                    <div class="trabajo-item">
-                        <img src="./Images/Trabajos/10.png" loading="lazy">
-                    </div>
+                    <div class="trabajo-item"><img src="./Images/Trabajos/1.png" loading="lazy"></div>
+                    <div class="trabajo-item"><img src="./Images/Trabajos/2.png" loading="lazy"></div>
+                    <div class="trabajo-item"><img src="./Images/Trabajos/3.png" loading="lazy"></div>
+                    <div class="trabajo-item"><img src="./Images/Trabajos/4.png" loading="lazy"></div>
+                    <div class="trabajo-item"><img src="./Images/Trabajos/5.png" loading="lazy"></div>
+                    <div class="trabajo-item"><img src="./Images/Trabajos/6.png" loading="lazy"></div>
+                    <div class="trabajo-item"><img src="./Images/Trabajos/7.png" loading="lazy"></div>
+                    <div class="trabajo-item"><img src="./Images/Trabajos/8.png" loading="lazy"></div>
+                    <div class="trabajo-item"><img src="./Images/Trabajos/9.png" loading="lazy"></div>
+                    <div class="trabajo-item"><img src="./Images/Trabajos/10.png" loading="lazy"></div>
                 </div>
             </div>
         </section>
 
-        <!-- Botón de Reserva y Formulario de Agenda -->
         <section id="agenda" class="agenda">
             <form id="form-agenda" class="form-agenda">
                 <h2>Reserva tu hora</h2>
@@ -148,24 +112,19 @@
                     <button type="button" id="btn-cerrar" class="btn-cerrar">Cancelar</button>
                 </div>
             </form>
-            <!-- Los elementos para mensajes y reservas se muestran dinámicamente -->
             <div id="mensaje-confirmacion" class="mensaje-confirmacion oculto"></div>
             <div id="mis-reservas" class="mis-reservas oculto"></div>
         </section>
 
-        <!-- Contacto -->
         <section id="contacto" class="contacto">
             <h2>Contacto</h2>
-            <p>Para más información, contáctanos a través de nuestras redes sociales:</p>
             <div class="contacto-links">
                 <a href="https://www.instagram.com/caterinaartist/" target="_blank">
                     <img src="images/Logos redes sociales/logo_instagram.png" alt="Instagram" class="icono-red"> @caterinaartist
                 </a>
-                <!-- Otros enlaces, como WhatsApp -->
             </div>
         </section>
 
-        <!-- Modal de Login -->
         <div id="login-modal" class="modal-login oculto">
             <div class="modal-content-login">
                 <span class="close-login" id="close-login">&times;</span>
@@ -173,11 +132,10 @@
                 <input type="text" id="login-usuario" placeholder="Usuario o Correo">
                 <input type="password" id="login-password" placeholder="Contraseña">
                 <button id="login-btn">Ingresar</button>
-                <button id="abrir-registro" class="btn-registro" style="margin-top:1rem; background:#e09ca6; color:#fff;">¿No tienes cuenta? Regístrate</button>
+                <button id="abrir-registro" class="btn-registro">¿No tienes cuenta? Regístrate</button>
             </div>
         </div>
 
-        <!-- Modal de Registro -->
         <div id="register-modal" class="modal-login oculto">
             <div class="modal-content-login">
                 <span class="close-login" id="close-register">&times;</span>
@@ -193,17 +151,12 @@
         </div>
     </main>
     
-    <!-- Pie de página -->
     <footer>
         <p>&copy; 2025 Caterina Artist - Nails & Beauty</p>
     </footer>
 
-    <!-- Los scripts deben cargarse en un orden específico para evitar errores de dependencias -->
-    <!-- main.js debe ir primero para gestionar el menú hamburguesa -->
     <script src="scripts/main.js"></script>
-    <!-- login.js maneja la lógica de inicio de sesión y registro, es necesario antes de reservas.js -->
     <script src="scripts/login.js"></script>
-    <!-- reservas.js depende de las funciones de login.js para obtener el ID de usuario -->
     <script src="scripts/reservas.js"></script>
 </body>
 </html>

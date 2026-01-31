@@ -129,3 +129,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     checkLoginStatus();
 });
+
+// Cerrar modales al hacer clic fuera de ellos
+window.onclick = function(event) {
+    const loginModal = document.getElementById('login-modal');
+    const registerModal = document.getElementById('register-modal');
+
+    // Si el usuario hace clic justo en el fondo oscuro (el modal)
+    if (event.target == loginModal) {
+        loginModal.classList.add('oculto');
+    }
+    
+    if (event.target == registerModal) {
+        registerModal.classList.add('oculto');
+    }
+}

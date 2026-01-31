@@ -1,20 +1,14 @@
-// Este archivo manejará solo lo relacionado al menú y otras funciones generales (sin reservas)
+// Función para mostrar alertas dinámicas (Éxito/Error)
 function showMessage(message, type = 'success') {
-    // Eliminar alerta previa si existe
     const alertaPrevia = document.querySelector('.alert-message');
     if (alertaPrevia) alertaPrevia.remove();
 
-    // Crear el contenedor de la alerta
     const messageBox = document.createElement('div');
-    
-    // Asignamos las clases dinámicas para el color (verde o rojo)
-    // El tipo debe ser 'success' (verde) o 'error' (rojo)
     messageBox.className = `alert-message alert-${type}`;
     messageBox.textContent = message;
 
     document.body.appendChild(messageBox);
 
-    // Desvanecer y eliminar después de 4 segundos
     setTimeout(() => {
         messageBox.classList.add('fade-out');
         setTimeout(() => {
@@ -26,20 +20,30 @@ function showMessage(message, type = 'success') {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Interfaz cargada correctamente');
 
-    // Menú hamburguesa
-    const menuToggle = document.getElementById('menu-toggle');
-    const mainNav = document.getElementById('main-nav');
+    // Cambiamos getElementById por querySelector para usar la clase del CSS
+    const menuToggle = document.querySelector('.menu-toggle'); 
+    const mainNav = document.querySelector('#main-nav');
 
     if (menuToggle && mainNav) {
-        menuToggle.addEventListener('click', function() {
+        // Abrir/Cerrar menú al hacer clic en la hamburguesa
+        menuToggle.addEventListener('click', function(e) {
+            e.stopPropagation(); // Evita que el clic se propague
             mainNav.classList.toggle('open');
         });
 
-        // Cerrar menú al hacer clic en un enlace
-        document.querySelectorAll('#main-nav a').forEach(link => {
+        // Cerrar menú al hacer clic en cualquier enlace
+        const navLinks = document.querySelectorAll('#main-nav a');
+        navLinks.forEach(link => {
             link.addEventListener('click', () => {
                 mainNav.classList.remove('open');
             });
+        });
+
+        // Opcional: Cerrar el menú si haces clic fuera de él (Mejora la experiencia)
+        document.addEventListener('click', (e) => {
+            if (!mainNav.contains(e.target) && !menuToggle.contains(e.target)) {
+                mainNav.classList.remove('open');
+            }
         });
     }
 });
