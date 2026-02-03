@@ -23,9 +23,9 @@ def get_db_connection():
 
 # --- FUNCIÓN PARA ENVIAR CORREO (CON TIMEOUT PARA EVITAR BLOQUEOS) ---
 def enviar_correo_a_manicurista(nombre, fecha, hora):
-    remitente = 'zonajah@gmail.com'
-    destinatario = 'zonajah@gmail.com'
-    contraseña = 'qvjfptclsdedwbxe' 
+    remitente = os.getenv('EMAIL_USER')
+    contraseña = os.getenv('EMAIL_PASSWORD')
+    destinatario = os.getenv('EMAIL_RECEIVER')
     
     asunto = f"Nueva Reserva: {nombre}"
     cuerpo = f"Cliente: {nombre}\nFecha: {fecha}\nHora: {hora}"
