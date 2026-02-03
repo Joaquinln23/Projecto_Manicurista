@@ -39,9 +39,7 @@ def enviar_correo_a_manicurista(nombre, fecha, hora):
     servidor = None
     try:
         print(f"📧 Iniciando conexión SMTP con Gmail para: {nombre}...")
-        
-        # Usamos SMTP estándar con starttls (puerto 587) que es más compatible con Render
-        servidor = smtplib.SMTP('smtp.gmail.com', 587, timeout=15)
+        servidor = smtplib.SMTP('smtp.gmail.com', 465, timeout=15)
         servidor.set_debuglevel(1)
         servidor.starttls()
         
@@ -50,7 +48,8 @@ def enviar_correo_a_manicurista(nombre, fecha, hora):
         print("✅ ¡Correo enviado exitosamente!")
         
     except Exception as e:
-        print(f"❌ FALLO EN EL ENVÍO: {str(e)}")
+        # Esto imprimirá el error exacto en los logs de Render (ej. "Invalid Credentials")
+        print(f"❌ ERROR DETALLADO DE GMAIL: {type(e).__name__} - {str(e)}")
     finally:
         if servidor:
             try:
