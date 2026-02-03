@@ -25,7 +25,7 @@ def get_db_connection():
 def enviar_correo_a_manicurista(nombre, fecha, hora):
     remitente = 'zonajah@gmail.com'
     destinatario = 'zonajah@gmail.com'
-    contraseña = 'qvjfptclsdedwbxe ' 
+    contraseña = 'qvjfptclsdedwbxe' 
     
     asunto = f"Nueva Reserva: {nombre}"
     cuerpo = f"Cliente: {nombre}\nFecha: {fecha}\nHora: {hora}"
