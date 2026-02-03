@@ -95,8 +95,6 @@ def register():
 @app.route('/api/reserva_horas', methods=['POST'])
 def crear_reserva():
     data = request.json
-    
-    # Manejo de ID: Si es invitado, el frontend manda "null" o vacío. Lo convertimos a None real.
     usuario_id = data.get('usuario_id')
     if usuario_id in [None, 'null', 'undefined', '', 'None']:
         usuario_id = None
@@ -109,7 +107,7 @@ def crear_reserva():
         conexion = get_db_connection()
         cursor = conexion.cursor()
 
-        # 1. VALIDACIÓN: Máximo 5 reservas totales por día
+        # 1. VALIDACIÓN
         cursor.execute("SELECT COUNT(*) FROM reserva_horas WHERE fecha = %s", (fecha,))
         total_dia = cursor.fetchone()[0]
         
@@ -118,20 +116,19 @@ def crear_reserva():
             conexion.close()
             return jsonify({"success": False, "mensaje": "Lo sentimos, ya no quedan cupos para este día."}), 400
 
-        # 2. INSERTAR RESERVA (MySQL acepta None como NULL)
+        # 2. INSERTAR RESERVA
         consulta = "INSERT INTO reserva_horas (usuario_id, nombre, fecha, hora) VALUES (%s, %s, %s, %s)"
         cursor.execute(consulta, (usuario_id, nombre, fecha, hora))
         conexion.commit()
-        
-        # Cerramos conexión antes de pasar al correo para liberar recursos
         cursor.close()
         conexion.close()
 
-        # 3. NOTIFICACIÓN (Independiente: si el correo falla, la reserva ya está guardada)
+        # 3. RESPUESTA INMEDIATA (Para que el botón no se quede pegado)
+        # Intentamos enviar el correo, pero si falla o tarda, el usuario ya recibió su confirmación
         try:
             enviar_correo_a_manicurista(nombre, fecha, hora)
-        except:
-            pass 
+        except Exception as e:
+            print(f"⚠️ El correo falló pero la reserva se guardó: {e}")
         
         return jsonify({"success": True, "mensaje": "Reserva creada exitosamente."})
     
