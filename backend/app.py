@@ -42,7 +42,7 @@ def enviar_correo_a_manicurista(nombre, fecha, hora):
         
         # Usamos SMTP estándar con starttls (puerto 587) que es más compatible con Render
         servidor = smtplib.SMTP('smtp.gmail.com', 587, timeout=15)
-        servidor.set_debuglevel(1)  # <--- ESTO MOSTRARÁ EL ERROR REAL EN LOS LOGS
+        servidor.set_debuglevel(1)
         servidor.starttls()
         
         servidor.login(remitente, contraseña)
@@ -161,7 +161,7 @@ def obtener_reservas(usuario_id):
 
 @app.route('/healthcheck')
 def health_check():
-    return "Servidor corriendo", 200
+    return "OK", 200
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
