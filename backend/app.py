@@ -38,22 +38,20 @@ def enviar_correo_a_manicurista(nombre, fecha, hora):
     
     servidor = None
     try:
-        print(f"📧 Iniciando conexión SMTP con Gmail para: {nombre}...")
-        servidor = smtplib.SMTP_SSL('smtp.gmail.com', 465, timeout=15)
-        servidor.set_debuglevel(1)        
+        print(f"📧 Iniciando conexión SMTP_SSL (Puerto 465) para: {nombre}...")
+        
+        # USAREMOS SMTP_SSL: Es directo y rápido para el puerto 465
+        servidor = smtplib.SMTP_SSL('smtp.gmail.com', 465, timeout=10)
         servidor.login(remitente, contraseña)
         servidor.send_message(mensaje)
+        
         print("✅ ¡Correo enviado exitosamente!")
         
     except Exception as e:
-        # Esto imprimirá el error exacto en los logs de Render (ej. "Invalid Credentials")
         print(f"❌ ERROR DETALLADO DE GMAIL: {type(e).__name__} - {str(e)}")
     finally:
         if servidor:
-            try:
-                servidor.quit()
-            except:
-                pass
+            servidor.quit()
 
 # --- RUTAS DE USUARIO ---
 
