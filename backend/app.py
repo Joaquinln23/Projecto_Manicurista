@@ -40,9 +40,7 @@ def enviar_correo_a_manicurista(nombre, fecha, hora):
     try:
         print(f"📧 Iniciando conexión SMTP con Gmail para: {nombre}...")
         servidor = smtplib.SMTP_SSL('smtp.gmail.com', 465, timeout=15)
-        servidor.set_debuglevel(1)
-        servidor.starttls()
-        
+        servidor.set_debuglevel(1)        
         servidor.login(remitente, contraseña)
         servidor.send_message(mensaje)
         print("✅ ¡Correo enviado exitosamente!")
