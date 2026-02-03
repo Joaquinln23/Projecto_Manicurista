@@ -161,7 +161,20 @@ def obtener_reservas(usuario_id):
 
 @app.route('/healthcheck')
 def health_check():
-    return "OK", 200
+    try:
+        # 1. Intentamos conectar y hacer una consulta rápida
+        conexion = get_db_connection()
+        cursor = conexion.cursor()
+        cursor.execute("SELECT 1")  # Esto es un 'latido' para despertar a Aiven
+        cursor.fetchone()
+        cursor.close()
+        conexion.close()
+        return "Conectado", 200
+    except Exception as e:
+        print(f"⚠️ Alerta: El Backend despertó pero la BD no responde: {e}")
+        # Respondemos 200 igual para que Render no se detenga, 
+        # pero dejamos el log del error
+        return "Backend OK, BD Error", 200
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
