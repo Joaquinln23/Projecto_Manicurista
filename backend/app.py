@@ -1,4 +1,5 @@
 import os
+import threading
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import mysql.connector
@@ -21,8 +22,8 @@ def get_db_connection():
         database=os.getenv('DB_NAME', 'defaultdb')
     )
 
-# --- FUNCIÓN PARA ENVIAR CORREO (CON TIMEOUT PARA EVITAR BLOQUEOS) ---
-def enviar_correo_a_manicurista(nombre, fecha, hora):
+# --- FUNCIÓN ASÍNCRONA PARA ENVIAR CORREO ---
+def enviar_correo_async(nombre, fecha, hora):
     remitente = os.getenv('EMAIL_USER')
     contraseña = os.getenv('EMAIL_PASSWORD')
     destinatario = os.getenv('EMAIL_RECEIVER')
@@ -36,22 +37,14 @@ def enviar_correo_a_manicurista(nombre, fecha, hora):
     mensaje['Subject'] = asunto
     mensaje.attach(MIMEText(cuerpo, 'plain'))
     
-    servidor = None
     try:
-        print(f"📧 Iniciando conexión SMTP_SSL (Puerto 465) para: {nombre}...")
-        
-        # USAREMOS SMTP_SSL: Es directo y rápido para el puerto 465
-        servidor = smtplib.SMTP_SSL('smtp.gmail.com', 465, timeout=10)
-        servidor.login(remitente, contraseña)
-        servidor.send_message(mensaje)
-        
-        print("✅ ¡Correo enviado exitosamente!")
-        
+        # SMTP_SSL es más seguro y rápido para el puerto 465 de Gmail
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465, timeout=10) as servidor:
+            servidor.login(remitente, contraseña)
+            servidor.send_message(mensaje)
+            print(f"✅ Correo enviado exitosamente para la reserva de: {nombre}")
     except Exception as e:
-        print(f"❌ ERROR DETALLADO DE GMAIL: {type(e).__name__} - {str(e)}")
-    finally:
-        if servidor:
-            servidor.quit()
+        print(f"❌ Error enviando correo en segundo plano: {e}")
 
 # --- RUTAS DE USUARIO ---
 
@@ -90,12 +83,14 @@ def register():
     except Exception as err:
         return jsonify({"success": False, "error": str(err)}), 500
 
-# --- RUTA DE RESERVAS (SOPORTA INVITADOS Y LOGUEADOS) ---
+# --- RUTA DE RESERVAS ---
 
 @app.route('/api/reserva_horas', methods=['POST'])
 def crear_reserva():
     data = request.json
     usuario_id = data.get('usuario_id')
+    
+    # Limpieza de IDs nulos o indefinidos provenientes de JS
     if usuario_id in [None, 'null', 'undefined', '', 'None']:
         usuario_id = None
     
@@ -107,7 +102,7 @@ def crear_reserva():
         conexion = get_db_connection()
         cursor = conexion.cursor()
 
-        # 1. VALIDACIÓN
+        # 1. VALIDACIÓN DE CUPOS (Máximo 5 por día)
         cursor.execute("SELECT COUNT(*) FROM reserva_horas WHERE fecha = %s", (fecha,))
         total_dia = cursor.fetchone()[0]
         
@@ -116,19 +111,17 @@ def crear_reserva():
             conexion.close()
             return jsonify({"success": False, "mensaje": "Lo sentimos, ya no quedan cupos para este día."}), 400
 
-        # 2. INSERTAR RESERVA
+        # 2. INSERTAR RESERVA EN BD
         consulta = "INSERT INTO reserva_horas (usuario_id, nombre, fecha, hora) VALUES (%s, %s, %s, %s)"
         cursor.execute(consulta, (usuario_id, nombre, fecha, hora))
         conexion.commit()
         cursor.close()
         conexion.close()
 
-        # 3. RESPUESTA INMEDIATA (Para que el botón no se quede pegado)
-        # Intentamos enviar el correo, pero si falla o tarda, el usuario ya recibió su confirmación
-        try:
-            enviar_correo_a_manicurista(nombre, fecha, hora)
-        except Exception as e:
-            print(f"⚠️ El correo falló pero la reserva se guardó: {e}")
+        # 3. DISPARAR ENVÍO DE CORREO ASÍNCRONO
+        # El hilo (thread) se encarga del correo mientras el servidor responde al cliente
+        thread = threading.Thread(target=enviar_correo_async, args=(nombre, fecha, hora))
+        thread.start()
         
         return jsonify({"success": True, "mensaje": "Reserva creada exitosamente."})
     
@@ -141,12 +134,17 @@ def obtener_reservas(usuario_id):
     try:
         conexion = get_db_connection()
         cursor = conexion.cursor(dictionary=True)
-        cursor.execute("SELECT id, nombre, fecha, hora FROM reserva_horas WHERE usuario_id = %s ORDER BY fecha, hora", (usuario_id,))
+        cursor.execute("SELECT id, nombre, fecha, hora FROM reserva_horas WHERE usuario_id = %s ORDER BY fecha DESC, hora DESC", (usuario_id,))
         reservas = cursor.fetchall()
         cursor.close()
         conexion.close()
+        
+        # Formatear objetos de fecha y hora para JSON
         for r in reservas:
-            r['hora'] = str(r['hora'])
+            if r['fecha']:
+                r['fecha'] = r['fecha'].strftime('%Y-%m-%d')
+            r['hora'] = str(r['hora'])[:5] # Deja formato HH:MM
+            
         return jsonify({"success": True, "reservas": reservas})
     except Exception as err:
         return jsonify({"success": False, "error": str(err)}), 500
@@ -154,18 +152,15 @@ def obtener_reservas(usuario_id):
 @app.route('/healthcheck')
 def health_check():
     try:
-        # 1. Intentamos conectar y hacer una consulta rápida
         conexion = get_db_connection()
         cursor = conexion.cursor()
-        cursor.execute("SELECT 1")  # Esto es un 'latido' para despertar a Aiven
+        cursor.execute("SELECT 1")
         cursor.fetchone()
         cursor.close()
         conexion.close()
         return "Conectado", 200
     except Exception as e:
-        print(f"⚠️ Alerta: El Backend despertó pero la BD no responde: {e}")
-        # Respondemos 200 igual para que Render no se detenga, 
-        # pero dejamos el log del error
+        print(f"⚠️ Alerta: Error de BD en Healthcheck: {e}")
         return "Backend OK, BD Error", 200
 
 if __name__ == '__main__':

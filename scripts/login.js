@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const API_URL = 'https://projecto-manicurista.onrender.com';
 
-    // Definición de elementos del DOM
+    // 1. DEFINICIÓN DE ELEMENTOS DEL DOM
     const btnIngresar = document.getElementById('btn-ingresar');
     const modal = document.getElementById('login-modal');
     const closeBtn = document.getElementById('close-login');
@@ -14,37 +14,38 @@ document.addEventListener('DOMContentLoaded', function() {
     const abrirRegistroBtn = document.getElementById('abrir-registro');
     const registerBtn = document.getElementById('register-btn');
 
-    /* --- NOTA: SE ELIMINARON LAS LÍNEAS SUELTAS QUE CAUSABAN EL ERROR --- */
-
-    // Comprobar el estado de autenticación
+    // 2. COMPROBAR EL ESTADO DE AUTENTICACIÓN
     function checkLoginStatus() {
         const usuarioId = localStorage.getItem('usuario_id');
         const usuarioNombre = localStorage.getItem('usuario_nombre');
 
-        // Seleccionamos el botón de logout (asegúrate de que el ID sea correcto)
-        const btnCerrarSesion = document.getElementById('btn-logout');
+        // Normalización de valores nulos o indefinidos de localStorage
+        const isLoggedIn = usuarioId && usuarioId !== 'null' && usuarioId !== 'undefined';
 
-        if (!usuarioId || usuarioId === 'null' || usuarioId === 'undefined') {
-            // USUARIO NO LOGUEADO
+        if (!isLoggedIn) {
+            // ESTADO: USUARIO NO LOGUEADO
             if (btnCerrarSesion) btnCerrarSesion.classList.add('oculto'); 
-            saludoUsuario.textContent = '';
-            btnIngresar.style.display = 'inline-block';
-            if (misReservasDiv) misReservasDiv.classList.add('oculto');
+            if (saludoUsuario) saludoUsuario.textContent = '';
+            if (btnIngresar) btnIngresar.style.display = 'inline-block';
+            if (misReservasDiv) {
+                misReservasDiv.classList.add('oculto');
+                misReservasDiv.innerHTML = ''; // Limpieza de seguridad
+            }
         } else {
-            // USUARIO LOGUEADO
-            if (btnCerrarSesion) btnCerrarSesion.classList.remove('oculto'); // QUITAMOS LA CLASE OCULTO
-            saludoUsuario.textContent = `¡Hola! ${usuarioNombre}`;
-            btnIngresar.style.display = 'none';
+            // ESTADO: USUARIO LOGUEADO
+            if (btnCerrarSesion) btnCerrarSesion.classList.remove('oculto');
+            if (saludoUsuario) saludoUsuario.textContent = `¡Hola! ${usuarioNombre}`;
+            if (btnIngresar) btnIngresar.style.display = 'none';
             if (misReservasDiv) misReservasDiv.classList.remove('oculto');
 
-            // Cargar reservas desde la API
-            if (typeof cargarReservas === 'function') {
-                cargarReservas(usuarioId);
+            // Cargar reservas desde la API (Función definida en reservas.js)
+            if (typeof window.cargarReservas === 'function') {
+                window.cargarReservas(usuarioId);
             }
         }
     }
 
-    // Lógica de Login
+    // 3. LÓGICA DE LOGIN
     loginBtn.addEventListener('click', function() {
         const usuario = document.getElementById('login-usuario').value;
         const password = document.getElementById('login-password').value;
@@ -59,22 +60,22 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                showMessage('¡Bienvenido, ' + data.nombre + '!', 'success');
                 localStorage.setItem('usuario_id', data.id);
                 localStorage.setItem('usuario_nombre', data.nombre);
                 checkLoginStatus();
                 modal.classList.add('oculto');
+                showMessage(`¡Bienvenido, ${data.nombre}!`, 'success');
             } else {
                 showMessage(data.error || 'Credenciales inválidas', 'error');
             }
         })
         .catch(err => {
-            console.error(err);
+            console.error('Error en Login:', err);
             showMessage('No se pudo conectar con el servidor', 'error');
         });
     });
 
-    // Lógica de Registro
+    // 4. LÓGICA DE REGISTRO
     registerBtn.addEventListener('click', function() {
         const payload = {
             rut: document.getElementById('register-rut').value,
@@ -102,45 +103,43 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(() => showMessage('Error de conexión al registrar', 'error'));
     });
 
-    // --- EVENTOS DE INTERFAZ ---
-    btnIngresar.addEventListener('click', (e) => { 
+    // 5. EVENTOS DE INTERFAZ Y CIERRE DE SESIÓN
+    btnIngresar?.addEventListener('click', (e) => { 
         e.preventDefault(); 
         modal.classList.remove('oculto'); 
     });
     
-    closeBtn.addEventListener('click', () => modal.classList.add('oculto'));
+    closeBtn?.addEventListener('click', () => modal.classList.add('oculto'));
     
-    abrirRegistroBtn.addEventListener('click', () => { 
+    abrirRegistroBtn?.addEventListener('click', () => { 
         modal.classList.add('oculto'); 
         registerModal.classList.remove('oculto'); 
     });
     
-    closeRegisterBtn.addEventListener('click', () => registerModal.classList.add('oculto'));
+    closeRegisterBtn?.addEventListener('click', () => registerModal.classList.add('oculto'));
     
-    document.addEventListener('keyup', (e) => {
-        if (e.key === "Escape") { [modal, registerModal].forEach(m => m.classList.add('oculto')); }
-    });
-
-    btnCerrarSesion.addEventListener('click', () => {
+    btnCerrarSesion?.addEventListener('click', () => {
         localStorage.clear();
         checkLoginStatus();
-        showMessage('Sesión cerrada.', 'success');
+        showMessage('Sesión cerrada correctamente.', 'success');
+    });
+
+    // Cierre con tecla Escape
+    document.addEventListener('keyup', (e) => {
+        if (e.key === "Escape") {
+            modal.classList.add('oculto');
+            registerModal.classList.add('oculto');
+        }
     });
 
     checkLoginStatus();
 });
 
-// Cerrar modales al hacer clic fuera de ellos
-window.onclick = function(event) {
+// 6. CERRAR MODALES AL HACER CLIC FUERA (GLOBAL)
+window.addEventListener('click', function(event) {
     const loginModal = document.getElementById('login-modal');
     const registerModal = document.getElementById('register-modal');
 
-    // Si el usuario hace clic justo en el fondo oscuro (el modal)
-    if (event.target == loginModal) {
-        loginModal.classList.add('oculto');
-    }
-    
-    if (event.target == registerModal) {
-        registerModal.classList.add('oculto');
-    }
-}
+    if (event.target === loginModal) loginModal.classList.add('oculto');
+    if (event.target === registerModal) registerModal.classList.add('oculto');
+});
