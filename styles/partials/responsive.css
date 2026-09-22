@@ -58,9 +58,9 @@
         width: auto;
     }
 
-    /* Hero: foto centrada en móvil (el recorte 62% desktop no aplica acá) */
+    /* Hero: recorte corrido a la derecha en móvil (50% → 38%) */
     .hero img {
-        object-position: 50% 50%;
+        object-position: 38% 50%;
     }
 
     /* ACTIVAR EL BOTÓN DE HAMBURGUESA */

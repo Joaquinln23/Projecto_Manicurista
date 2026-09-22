@@ -100,15 +100,33 @@
     transform: translateY(-2px);
 }
 
-/* Primario: píldora rosa sólida */
+/* Primario: píldora rosa sólida con halo pulsante constante */
 .hero-btn-primary {
     background: var(--brand);
     color: #ffffff;
     border: 1px solid transparent;
+    animation: hero-btn-pulse 2.2s ease-in-out infinite;
 }
 
 .hero-btn-primary:hover {
     background: var(--brand-strong);
+}
+
+/* Halo que late alrededor del CTA — llama la atención sin gritar */
+@keyframes hero-btn-pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(224, 156, 166, .65);
+    }
+    50% {
+        box-shadow: 0 0 0 14px rgba(224, 156, 166, 0);
+    }
+}
+
+/* Respeta la preferencia del usuario de reducir movimiento */
+@media (prefers-reduced-motion: reduce) {
+    .hero-btn-primary {
+        animation: none;
+    }
 }
 
 /* Secundario: contorno blanco — fondo un poco más sólido porque la derecha
