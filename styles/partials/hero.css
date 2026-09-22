@@ -7,10 +7,11 @@
     margin-top: var(--header-h);
     min-height: clamp(360px, 62vh, 640px);
     display: flex;
-    align-items: center;
-    /* Layout partido: texto a la izquierda, CTAs a la derecha */
-    justify-content: space-between;
-    gap: 2rem;
+    /* Columna a la izquierda: texto arriba, CTAs debajo */
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1.5rem;
     padding: 2rem clamp(1.5rem, 7vw, 6rem);
     overflow: hidden;
 }
@@ -68,15 +69,17 @@
     letter-spacing: 0.02em;
 }
 
-/* CTAs del hero: fila horizontal alineada al borde derecho */
+/* CTAs del hero: fila horizontal bajo el texto, alineada a la izquierda */
 .hero-ctas {
     position: relative;
     z-index: 3;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
+    justify-content: flex-start;
     gap: 1rem;
-    flex-shrink: 0;
+    margin-left: 1.5rem;
 }
 
 .hero-btn {
