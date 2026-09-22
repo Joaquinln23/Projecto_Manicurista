@@ -51,7 +51,7 @@
     font-family: var(--font-script);
     font-weight: 400;
     /* El x-height de los scripts es chico: se compensa con más cuerpo */
-    font-size: clamp(3.2rem, 8vw, 5.4rem);
+    font-size: clamp(3.8rem, 9.5vw, 6.4rem);
     line-height: 1.15;
     letter-spacing: 0.01em;
     margin: 0 0 0.75rem;

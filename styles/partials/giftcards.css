@@ -58,7 +58,7 @@
     margin: 0 0 0.5rem;
     color: var(--brand-strong);
     font-family: var(--font-script);
-    font-size: 1.6rem;
+    font-size: clamp(2.2rem, 3.5vw, 2.75rem);
     font-weight: 400;
     letter-spacing: 0.02em;
 }
