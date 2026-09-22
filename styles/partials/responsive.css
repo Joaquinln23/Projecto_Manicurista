@@ -93,6 +93,37 @@
     nav#main-nav li:last-child a {
         border-bottom: none;
     }
+
+    /* Botón Ingresar dentro del drawer: píldora centrada con letras blancas
+       (el estilo base de enlace del nav lo estiraba y usaba tinta oscura) */
+    nav#main-nav a.btn-ingresar,
+    nav#main-nav li:last-child a.btn-ingresar {
+        display: block;
+        margin: 14px 18px;
+        width: calc(100% - 36px);
+        box-sizing: border-box;
+        padding: 12px 1rem;
+        text-align: center;
+        background: var(--brand);
+        color: #ffffff !important;
+        border: 1px solid rgba(255, 255, 255, .45);
+        border-radius: var(--r-pill);
+        font-family: var(--font-heading);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        font-weight: 600;
+    }
+
+    nav#main-nav a.btn-ingresar:hover,
+    nav#main-nav li:last-child a.btn-ingresar:hover {
+        background: var(--brand-strong);
+        color: #ffffff !important;
+    }
+
+    /* Cinta de trabajos en móvil: tarjetas más grandes para ver el detalle */
+    .trabajo-item {
+        flex-basis: clamp(300px, 80vw, 400px);
+    }
 }
 
 @media (max-width: 600px) {
