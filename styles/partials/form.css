@@ -1,0 +1,116 @@
+/* ==========================================================================
+   5. FORMULARIO DE RESERVA
+   Rol: sección #agenda con el formulario de cita, botones y panel de
+   "mis reservas".
+   ========================================================================== */
+.agenda {
+    background: var(--surface-soft);
+    padding: var(--section-y) 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.form-agenda {
+    background: var(--surface);
+    padding: 2.5rem;
+    border-radius: var(--r-card);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
+    width: 100%;
+    max-width: 480px;
+}
+
+.form-agenda h2 {
+    margin-top: 0;
+    text-align: center;
+}
+
+.form-agenda label {
+    display: block;
+    margin-top: 1rem;
+    color: var(--text);
+    font-weight: 600;
+}
+
+.form-agenda input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border-radius: var(--r-input);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-agenda input:focus {
+    outline: none;
+    border-color: var(--brand-strong);
+    box-shadow: 0 0 0 3px rgba(201, 107, 124, .25);
+}
+
+.form-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn-enviar {
+    flex: 2;
+    background: var(--brand);
+    color: var(--brand-ink);
+    border: none;
+    padding: 1rem;
+    border-radius: var(--r-pill);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s, filter 0.2s;
+}
+
+.btn-enviar:hover {
+    background: var(--brand-strong);
+    color: var(--brand-ink);
+    filter: brightness(0.96);
+}
+
+.btn-cerrar {
+    flex: 1;
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    border-radius: var(--r-pill);
+    padding: 1rem;
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+}
+
+.btn-cerrar:hover {
+    color: var(--brand-strong);
+    border-color: var(--brand-strong);
+}
+
+.mensaje-confirmacion {
+    max-width: 480px;
+    width: 100%;
+    padding: 1rem 1.25rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-input);
+    color: var(--text);
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+}
+
+.mis-reservas {
+    max-width: 480px;
+    width: 100%;
+}
+

@@ -1,0 +1,202 @@
+/* ==========================================================================
+   4. SERVICIOS Y GALERÍA
+   Rol: grilla de tarjetas de servicio y galería de trabajos realizados.
+   ========================================================================== */
+.servicios {
+    background: var(--bg);
+    color: var(--text);
+    /* Ancho moderado centrado: intermedio entre el tope de 1140px y el
+       casi a todo ancho; la galería hereda este ancho vía el contenedor */
+    max-width: 1280px;
+    margin-inline: auto;
+    padding: var(--section-y) clamp(16px, 4vw, 40px);
+    text-align: center;
+}
+
+.servicios h2 {
+    color: var(--brand-strong);
+    font-size: 2.2rem;
+    margin: 0 auto 2.5rem;
+    max-width: var(--container);
+}
+
+.servicios-grid {
+    display: grid;
+    /* Estricto 3+3 en desktop: 3 columnas → 2 filas de tarjetas grandes */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    max-width: 1200px;
+    margin-inline: auto;
+}
+
+.servicio-card {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--r-card);
+    box-shadow: var(--shadow-sm);
+    /* Compactas: el contenido es solo título + descripción */
+    padding: 1.5rem 1.35rem;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.servicio-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.servicio-card h3 {
+    margin: 0 0 0.5rem;
+    color: var(--text);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.servicio-card p {
+    color: var(--text-muted);
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.45;
+}
+
+/* Galería de trabajos */
+.trabajos-gallery-container {
+    padding: var(--section-y) 1rem 2.5rem;
+    text-align: center;
+    background: var(--surface-soft);
+    border-radius: var(--r-card);
+    border: 1px solid var(--border);
+    margin-top: var(--section-y);
+    /* Ocupa todo el ancho útil de la sección (ya centrada con su max-width) */
+    width: 100%;
+    max-width: none;
+    margin-inline: 0;
+}
+
+.trabajos-gallery-container h3 {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--brand-strong);
+    margin: 0 0 2rem;
+}
+
+/* Cinta de trabajos: pista horizontal con ~3 tarjetas por vista en desktop */
+.trabajos-carousel {
+    position: relative;
+    width: 100%;
+}
+
+.carousel-viewport {
+    overflow: hidden;
+    cursor: grab;
+    touch-action: pan-y; /* el scroll vertical sigue libre; el horizontal es del carrusel */
+    -webkit-tap-highlight-color: transparent;
+}
+
+.carousel-viewport:active {
+    cursor: grabbing;
+}
+
+/* Sin transición CSS: el JS pinta el offset en cada frame (rAF) */
+.carousel-track {
+    display: flex;
+    gap: 1.5rem;
+    will-change: transform;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.trabajo-item {
+    /* 3 tarjetas exactas + 2 huecos caben en el viewport de la sección
+       (1280px); el min del clamp deja ~1.2–1.4 tarjetas visibles en móvil */
+    flex: 0 0 clamp(240px, calc((100% - 2 * 1.5rem) / 3), 480px);
+    overflow: hidden;
+    border-radius: var(--r-card);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.trabajo-item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.trabajo-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    /* Retrato 3/4: ~512 px de alto en desktop (ancho ~384 px); el min-height
+       con clamp fija suelo ~300 px en pantallas chicas */
+    aspect-ratio: 3 / 4;
+    min-height: clamp(300px, 34vw, 460px);
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* Botones manuales prev/next (accesibilidad) */
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 2.75rem;
+    height: 2.75rem;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    color: var(--brand-strong);
+    font-size: 1.6rem;
+    line-height: 1;
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+.carousel-btn:hover {
+    background: var(--surface-soft);
+    box-shadow: var(--shadow-md);
+}
+
+.carousel-btn-prev {
+    left: 0.5rem;
+}
+
+.carousel-btn-next {
+    right: 0.5rem;
+}
+
+/* Lista dinámica de reservas (la genera reservas.js) */
+.lista-reservas {
+    list-style: none;
+    margin: 1.5rem auto 0;
+    padding: 0;
+    max-width: 480px;
+    text-align: left;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-card);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.lista-reservas li {
+    padding: 0.9rem 1.25rem;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+}
+
+.lista-reservas li:last-child {
+    border-bottom: none;
+}
+

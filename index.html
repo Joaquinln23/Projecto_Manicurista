@@ -2,15 +2,68 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Caterina Artist - Nails & Beauty. Manicura a domicilio en Santiago y la Región Metropolitana: esmaltado semipermanente, polygel, softgel, nivelación y spa de manos. Reserva tu hora.">
+    <meta name="keywords" content="manicura a domicilio santiago, manicura a domicilio región metropolitana, uñas a domicilio santiago, nail artist a domicilio, manicura, uñas acrílicas, esmaltado semipermanente, polygel, softgel, spa de manos, tarjetas de regalo">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#120c0f">
     <title>Caterina Artist - Nails & Beauty</title>
+    <link rel="canonical" href="https://caterinaartist.netlify.app/">
+    <link rel="icon" type="image/png" href="/favicon.png" sizes="64x64">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+
+    <!-- Open Graph: preview en redes y compartir -->
+    <meta property="og:title" content="Caterina Artist - Nails & Beauty">
+    <meta property="og:description" content="Manicura a domicilio en Santiago y la Región Metropolitana. Esmaltado semipermanente, polygel, softgel y spa de manos. Reserva tu hora online.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://caterinaartist.netlify.app/">
+    <meta property="og:site_name" content="Caterina Artist - Nails & Beauty">
+    <meta property="og:locale" content="es_CL">
+    <meta property="og:image" content="https://caterinaartist.netlify.app/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Manicura elegante — Caterina Artist Nails & Beauty">
+
+    <!-- Twitter / X Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Caterina Artist - Nails & Beauty">
+    <meta name="twitter:description" content="Manicura a domicilio en Santiago y la Región Metropolitana. Esmaltado semipermanente, polygel, softgel y spa de manos. Reserva tu hora online.">
+    <meta name="twitter:image" content="https://caterinaartist.netlify.app/og-image.jpg">
+    <meta name="twitter:image:alt" content="Manicura elegante — Caterina Artist Nails & Beauty">
+
+    <!-- Datos estructurados: salón de belleza para Google -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BeautySalon",
+        "name": "Caterina Artist - Nails & Beauty",
+        "url": "https://caterinaartist.netlify.app/",
+        "image": "https://caterinaartist.netlify.app/og-image.jpg",
+        "description": "Manicura a domicilio en Santiago y la Región Metropolitana: esmaltado semipermanente, polygel, softgel, nivelación y spa de manos. Reserva tu hora online.",
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "CL"
+        },
+        "areaServed": {
+            "@type": "AdministrativeArea",
+            "name": "Región Metropolitana de Santiago, Chile"
+        },
+        "sameAs": [
+            "https://www.instagram.com/caterinaartist/"
+        ]
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prata&family=Playfair+Display:wght@600;700&family=Lato:wght@400;700&family=Parisienne&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles/style.css">
-    <link href='https://fonts.googleapis.com/css?family=Raleway:400,500,300' rel='stylesheet' type='text/css'>
 </head>
 <body>
+    <!-- Cabecera fija: logo, controles de sesión y navegación -->
     <header class="main-header">
         <div class="logo">
-            <img src="images/logo terminado.png" alt="Caterina Artist Nails" class="logo-img">
+            <img src="/Images/logo%20terminado.png" alt="Caterina Artist Nails" class="logo-img">
         </div>
 
         <div class="user-controls">
@@ -27,86 +80,97 @@
         <nav id="main-nav">
             <ul>
                 <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#trabajos">Nuestros Trabajos</a></li>
                 <li><a href="#agenda">Reserva de Hora</a></li>
+                <li><a href="#giftcards">Gift Cards</a></li>
                 <li><a href="#contacto">Contacto</a></li>
                 <li><a href="#" id="btn-ingresar" class="btn-ingresar">Ingresar</a></li>
             </ul>
         </nav>
     </header>
 
+    <!-- Hero: imagen de bienvenida fuera del flujo de main -->
     <section class="hero">
-        <img src="images/Manicurista.jpg" alt="Manicura elegante">
+        <img src="/Images/Manicurista.jpg" alt="Manicura elegante">
         <div class="hero-text">
             <h1>Bienvenida a tu espacio de belleza</h1>
-            <p>Especialistas en manicura, uñas acrílicas y spa de manos</p>
+            <p>Manicura, uñas acrílicas y spa de manos a domicilio en Santiago y la Región Metropolitana</p>
+        </div>
+        <div class="hero-ctas">
+            <a href="#agenda" class="hero-btn hero-btn-primary">Reservar hora</a>
+            <a href="https://www.instagram.com/caterinaartist/" target="_blank" rel="noopener noreferrer" class="hero-btn hero-btn-ghost">Instagram</a>
         </div>
     </section>
 
     <main>
+        <!-- Servicios: tarjetas de catálogo y galería de trabajos -->
         <section id="servicios" class="servicios">
             <h2>Nuestros Servicios</h2>
             <div class="servicios-grid">
                 <div class="servicio-card">
-                    <img src="images/Servicios/servicio1.webp" alt="Esmaltado semipermanente">
                     <h3>Esmaltado semipermanente</h3>
                     <p>Color duradero y brillo impecable para tus uñas naturales.</p>
                 </div>
                 <div class="servicio-card">
-                    <img src="images/Servicios/servicio2.webp" alt="Uñas en polygel">
                     <h3>Uñas en polygel</h3>
                     <p>La combinación perfecta entre fuerza y ligereza.</p>
                 </div>
                 <div class="servicio-card">
-                    <img src="images/Servicios/servicio3.webp" alt="Uñas softgel">
                     <h3>Uñas softgel</h3>
                     <p>Extensiones flexibles y de aspecto natural con tips de gel.</p>
                 </div>
                 <div class="servicio-card">
-                    <img src="images/Servicios/servicio4.webp" alt="Esmaltado con nivelación">
                     <h3>Esmaltado con nivelación</h3>
                     <p>Corrige imperfecciones y fortalece la uña natural.</p>
                 </div>
                 <div class="servicio-card">
-                    <img src="images/Servicios/servicio5.webp" alt="Esmaltado pies">
                     <h3>Esmaltado pies semipermanente</h3>
                     <p>Luce tus pies perfectos por mucho más tiempo.</p>
                 </div>
                 <div class="servicio-card">
-                    <img src="images/Servicios/servicio6.webp" alt="Kapping polygel">
                     <h3>Kapping polygel</h3>
                     <p>Capa protectora de alta resistencia para evitar quiebres.</p>
                 </div>
             </div>
-            
-            <div class="trabajos-gallery-container">
+
+            <div class="trabajos-gallery-container" id="trabajos">
                 <h3>Nuestros Trabajos</h3>
-                <div class="trabajos-grid">
-                    <div class="trabajo-item"><img src="./Images/Trabajos/1.png" loading="lazy"></div>
-                    <div class="trabajo-item"><img src="./Images/Trabajos/2.png" loading="lazy"></div>
-                    <div class="trabajo-item"><img src="./Images/Trabajos/3.png" loading="lazy"></div>
-                    <div class="trabajo-item"><img src="./Images/Trabajos/4.png" loading="lazy"></div>
-                    <div class="trabajo-item"><img src="./Images/Trabajos/5.png" loading="lazy"></div>
-                    <div class="trabajo-item"><img src="./Images/Trabajos/6.png" loading="lazy"></div>
-                    <div class="trabajo-item"><img src="./Images/Trabajos/7.png" loading="lazy"></div>
-                    <div class="trabajo-item"><img src="./Images/Trabajos/8.png" loading="lazy"></div>
-                    <div class="trabajo-item"><img src="./Images/Trabajos/9.png" loading="lazy"></div>
-                    <div class="trabajo-item"><img src="./Images/Trabajos/10.png" loading="lazy"></div>
+                <!-- Cinta continua arrastrable: los clones laterales habilitan el loop infinito -->
+                <div class="trabajos-carousel" id="trabajos-carousel" role="region" aria-label="Nuestros trabajos">
+                    <button type="button" class="carousel-btn carousel-btn-prev" aria-label="Trabajo anterior">&#8249;</button>
+                    <div class="carousel-viewport">
+                        <div class="carousel-track">
+                            <div class="trabajo-item"><img src="/Images/Trabajos/3.png" alt="Trabajo de manicura 3" loading="lazy"></div>
+                            <div class="trabajo-item"><img src="/Images/Trabajos/4.png" alt="Trabajo de manicura 4" loading="lazy"></div>
+                            <div class="trabajo-item"><img src="/Images/Trabajos/5.png" alt="Trabajo de manicura 5" loading="lazy"></div>
+                            <div class="trabajo-item"><img src="/Images/Trabajos/6.png" alt="Trabajo de manicura 6" loading="lazy"></div>
+                            <div class="trabajo-item"><img src="/Images/Clientas/1.png" alt="Diseño de uñas de clienta 1" loading="lazy"></div>
+                            <div class="trabajo-item"><img src="/Images/Clientas/2.png" alt="Diseño de uñas de clienta 2" loading="lazy"></div>
+                            <div class="trabajo-item"><img src="/Images/Clientas/3.png" alt="Diseño de uñas de clienta 3" loading="lazy"></div>
+                            <div class="trabajo-item"><img src="/Images/Clientas/4.png" alt="Diseño de uñas de clienta 4" loading="lazy"></div>
+                            <div class="trabajo-item"><img src="/Images/Clientas/5.png" alt="Diseño de uñas de clienta 5" loading="lazy"></div>
+                            <div class="trabajo-item"><img src="/Images/Clientas/6.png" alt="Diseño de uñas de clienta 6" loading="lazy"></div>
+                            <div class="trabajo-item"><img src="/Images/Clientas/7.png" alt="Diseño de uñas de clienta 7" loading="lazy"></div>
+                        </div>
+                    </div>
+                    <button type="button" class="carousel-btn carousel-btn-next" aria-label="Trabajo siguiente">&#8250;</button>
                 </div>
             </div>
         </section>
 
+        <!-- Agenda: formulario de reserva y panel de mis reservas -->
         <section id="agenda" class="agenda">
             <form id="form-agenda" class="form-agenda">
                 <h2>Reserva tu hora</h2>
                 <label for="nombre">Nombre:</label>
                 <input type="text" id="nombre" name="nombre" required>
-                
+
                 <label for="fecha">Fecha:</label>
                 <input type="date" id="fecha" name="fecha" required>
-                
+
                 <label for="hora">Hora:</label>
                 <input type="time" id="hora" name="hora" required>
-                
+
                 <div class="form-buttons">
                     <button type="submit" class="btn-enviar">Confirmar Reserva</button>
                     <button type="button" id="btn-cerrar" class="btn-cerrar">Cancelar</button>
@@ -116,47 +180,92 @@
             <div id="mis-reservas" class="mis-reservas oculto"></div>
         </section>
 
+        <!-- Gift Cards: tarjetas de regalo para ocasiones especiales -->
+        <section id="giftcards" class="giftcards">
+            <div class="giftcards-inner">
+                <!-- Pieza central: la tarjeta gráfica del usuario -->
+                <div class="giftcards-visual">
+                    <img
+                        src="/Images/gift-card.png"
+                        alt="Gift Card Caterina Artist Nails — Belleza en tus manos"
+                        loading="lazy"
+                        class="giftcards-img">
+                </div>
+
+                <div class="giftcards-copy-block">
+                    <p class="giftcards-eyebrow">Gift Cards</p>
+                    <h2>Regala un momento de belleza</h2>
+                    <p class="giftcards-copy">
+                        Una tarjeta de regalo para cumpleaños, aniversarios o cualquier
+                        ocasión que merezca un detalle. La puedes pedir digital o personalizada,
+                        y también para obsequiar a tu equipo o a tus clientas.
+                    </p>
+
+                    <!-- Caja destacada: cómo conseguir la gift card (vía Instagram) -->
+                    <div class="giftcards-box">
+                        <span class="giftcards-box-icon" aria-hidden="true">🎁</span>
+                        <div>
+                            <strong>¿Cómo la consigo?</strong>
+                            <p>Escríbenos por Instagram y la coordinamos contigo.</p>
+                        </div>
+                    </div>
+
+                    <div class="giftcards-ctas">
+                        <a href="https://www.instagram.com/caterinaartist/" target="_blank" rel="noopener noreferrer" class="btn-cta-primary">💬 Consultar por Instagram</a>
+                        <a href="#contacto" class="btn-cta-secondary">Ver contacto</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contacto: enlaces a redes sociales -->
         <section id="contacto" class="contacto">
             <h2>Contacto</h2>
-            <div class="contacto-links">
-                <a href="https://www.instagram.com/caterinaartist/" target="_blank">
-                    <img src="images/Logos redes sociales/logo_instagram.png" alt="Instagram" class="icono-red"> @caterinaartist
+            <div id="contacto-links" class="contacto-links">
+                <a href="https://www.instagram.com/caterinaartist/" target="_blank" class="link-instagram">
+                    <img src="/Images/Logos%20redes%20sociales/logo_instagram.png" alt="Instagram" class="icono-red"> @caterinaartist
                 </a>
             </div>
         </section>
 
-        <div id="login-modal" class="modal-login oculto">
+        <!-- Modal de login (lo controla login.js) -->
+        <div id="login-modal" class="modal-login oculto" role="dialog" aria-modal="true" aria-labelledby="login-title">
             <div class="modal-content-login">
                 <span class="close-login" id="close-login">&times;</span>
-                <h2>Iniciar Sesión</h2>
-                <input type="text" id="login-usuario" placeholder="Usuario o Correo">
-                <input type="password" id="login-password" placeholder="Contraseña">
+                <h2 id="login-title">Iniciar Sesión</h2>
+                <input type="text" id="login-usuario" placeholder="Usuario o Correo" autocomplete="username" required>
+                <input type="password" id="login-password" placeholder="Contraseña" autocomplete="current-password" required>
                 <button id="login-btn">Ingresar</button>
                 <button id="abrir-registro" class="btn-registro">¿No tienes cuenta? Regístrate</button>
             </div>
         </div>
 
-        <div id="register-modal" class="modal-login oculto">
+        <!-- Modal de registro (lo controla login.js) -->
+        <div id="register-modal" class="modal-login oculto" role="dialog" aria-modal="true" aria-labelledby="register-title">
             <div class="modal-content-login">
                 <span class="close-login" id="close-register">&times;</span>
-                <h2>Registrar Usuario</h2>
-                <input type="text" id="register-rut" placeholder="RUT">
-                <input type="text" id="register-nombre" placeholder="Nombre">
-                <input type="text" id="register-apellido" placeholder="Apellido">
-                <input type="email" id="register-email" placeholder="Correo">
-                <input type="password" id="register-password" placeholder="Contraseña">
-                <input type="text" id="register-nombreusuario" placeholder="Nombre de usuario">
+                <h2 id="register-title">Registrar Usuario</h2>
+                <input type="text" id="register-rut" placeholder="RUT" autocomplete="off" required>
+                <input type="text" id="register-nombre" placeholder="Nombre" autocomplete="given-name" required>
+                <input type="text" id="register-apellido" placeholder="Apellido" autocomplete="family-name" required>
+                <input type="email" id="register-email" placeholder="Correo" autocomplete="email" required>
+                <input type="password" id="register-password" placeholder="Contraseña" autocomplete="new-password" required>
+                <input type="text" id="register-nombreusuario" placeholder="Nombre de usuario" autocomplete="username" required>
                 <button id="register-btn">Registrar</button>
             </div>
         </div>
     </main>
-    
+
+    <!-- Pie: copyright -->
     <footer>
-        <p>&copy; 2025 Caterina Artist - Nails & Beauty</p>
+        <p>&copy; 2026 Caterina Artist - Nails & Beauty</p>
     </footer>
 
-    <script src="scripts/main.js"></script>
-    <script src="scripts/login.js"></script>
-    <script src="scripts/reservas.js"></script>
+    <!-- Módulos ES en orden: fuente única → utilidades → consumidores -->
+    <script type="module" src="scripts/config.js"></script>
+    <script type="module" src="scripts/main.js"></script>
+    <script type="module" src="scripts/login.js"></script>
+    <script type="module" src="scripts/reservas.js"></script>
+    <script type="module" src="scripts/carousel.js"></script>
 </body>
 </html>

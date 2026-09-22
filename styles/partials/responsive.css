@@ -1,0 +1,201 @@
+/* ==========================================================================
+   10. RESPONSIVE
+   Rol: media queries de adaptación a tablet/móvil.
+   Nota: DEBE importarse la última en style.css para ganar la cascada.
+   ========================================================================== */
+@media (max-width: 1024px) {
+    .servicios {
+        padding-inline: 1.5rem;
+    }
+}
+
+@media (max-width: 900px) {
+    .main-header {
+        padding: 0 1.25rem;
+    }
+    .hero-text {
+        padding: 1.25rem 1.5rem;
+        max-width: 100%;
+    }
+    /* Hero: el layout partido se apila — texto arriba, CTAs debajo */
+    .hero {
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 1.25rem;
+    }
+    .hero-ctas {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        margin-left: 1.5rem;
+    }
+    .agenda,
+    .contacto {
+        padding-inline: 1rem;
+    }
+    .form-agenda {
+        padding: 1.75rem;
+    }
+    /* Servicios: 2 columnas en tablet */
+    .servicios-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 750px) {
+    /* Ajuste del header y del área segura para el contenido */
+    :root {
+        --header-h: 64px;
+    }
+
+    .main-header {
+        padding: 0 1rem;
+    }
+
+    .logo-img {
+        height: 44px;
+        width: auto;
+    }
+
+    /* Hero: recorte de vuelta un poco a la izquierda en móvil (38% → 46%) */
+    .hero img {
+        object-position: 46% 50%;
+    }
+
+    /* ACTIVAR EL BOTÓN DE HAMBURGUESA */
+    .menu-toggle {
+        display: flex;
+        z-index: 1200;
+    }
+
+    .user-controls {
+        margin-left: auto;
+        margin-right: 0.5rem;
+    }
+
+    /* El Menú de navegación (se despliega bajo el header) */
+    nav#main-nav {
+        position: fixed;
+        top: var(--header-h);
+        right: 0;
+        background: rgba(18, 12, 15, .92);
+        border-left: 1px solid rgba(255, 255, 255, .15);
+        width: 240px;
+        height: auto;
+        transform: translateX(110%);
+        transition: transform 0.3s ease-in-out;
+        z-index: 1000;
+        box-shadow: var(--shadow-md);
+    }
+
+    nav#main-nav.open {
+        transform: translateX(0); /* Entra desde la derecha */
+    }
+
+    nav#main-nav ul {
+        flex-direction: column;
+        padding: 0;
+        gap: 0;
+        align-items: stretch; /* Ocupa todo el ancho del menú */
+    }
+
+    nav#main-nav a {
+        padding: 16px 22px;
+        display: block;
+        font-size: 1.15rem;
+        color: rgba(255, 255, 255, .92);
+        border-bottom: 1px solid rgba(255, 255, 255, .12);
+        text-align: left;
+    }
+
+    nav#main-nav li:last-child a {
+        border-bottom: none;
+    }
+
+    /* Botón Ingresar dentro del drawer: píldora centrada con letras blancas
+       (el estilo base de enlace del nav lo estiraba y usaba tinta oscura) */
+    nav#main-nav a.btn-ingresar,
+    nav#main-nav li:last-child a.btn-ingresar {
+        display: block;
+        margin: 14px 18px;
+        width: calc(100% - 36px);
+        box-sizing: border-box;
+        padding: 12px 1rem;
+        text-align: center;
+        background: var(--brand);
+        color: #ffffff !important;
+        border: 1px solid rgba(255, 255, 255, .45);
+        border-radius: var(--r-pill);
+        font-family: var(--font-heading);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        font-weight: 600;
+    }
+
+    nav#main-nav a.btn-ingresar:hover,
+    nav#main-nav li:last-child a.btn-ingresar:hover {
+        background: var(--brand-strong);
+        color: #ffffff !important;
+    }
+
+    /* Cinta de trabajos en móvil: tarjetas más grandes para ver el detalle */
+    .trabajo-item {
+        flex-basis: clamp(300px, 80vw, 400px);
+    }
+}
+
+@media (max-width: 600px) {
+    h2 {
+        font-size: 1.8rem;
+    }
+
+    /* Servicios: columna única en móvil */
+    .servicios-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .trabajos-gallery-container h3 {
+        font-size: 1.6rem;
+    }
+
+    /* Gift Cards: caja y CTAs apilan en una columna */
+    .giftcards-inner {
+        padding: 1.75rem 1.25rem;
+    }
+    .giftcards-box {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .giftcards-ctas {
+        flex-direction: column;
+    }
+
+    .giftcards-ctas a {
+        width: 100%;
+    }
+
+    /* Carrusel de trabajos: hueco más angosto y controles táctiles */
+    .carousel-track {
+        gap: 1rem;
+    }
+
+    .carousel-btn {
+        width: 2.25rem;
+        height: 2.25rem;
+        font-size: 1.3rem;
+    }
+
+    .form-buttons {
+        flex-direction: column;
+    }
+
+    .alert-message {
+        right: 10px;
+        left: 10px;
+        top: calc(var(--header-h) + 16px);
+        min-width: auto;
+    }
+}

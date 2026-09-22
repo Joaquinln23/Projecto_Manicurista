@@ -1,0 +1,8 @@
+# Configuración de despliegue en Netlify — fuente de verdad del build en el repo.
+# El dashboard de Netlify debe coincidir con estos valores al momento del merge;
+# no se re-apunta el sitio antes de que el tracker llegue a main.
+[build]
+  # Construye el sitio con Vite: index.html + scripts + styles → dist/
+  command = "npm run build"
+  # Directorio publicado: salida de Vite (incluye dist/Images/ con espacios intactos)
+  publish = "dist"

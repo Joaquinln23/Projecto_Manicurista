@@ -1,3 +1,5 @@
+"""API Flask de Caterina Artist: login, registro, reservas y healthcheck."""
+
 import os
 import threading
 from flask import Flask, request, jsonify
@@ -14,6 +16,7 @@ CORS(app)
 
 # --- FUNCIÓN DE CONEXIÓN SEGURA ---
 def get_db_connection():
+    """Abre una conexión MySQL a partir de las variables de entorno."""
     return mysql.connector.connect(
         host=os.getenv('DB_HOST'),
         user=os.getenv('DB_USER'),
@@ -24,6 +27,7 @@ def get_db_connection():
 
 # --- FUNCIÓN ASÍNCRONA PARA ENVIAR CORREO ---
 def enviar_correo_async(nombre, fecha, hora):
+    """Envía el aviso de nueva reserva por SMTP en un hilo aparte."""
     remitente = os.getenv('EMAIL_USER')
     contraseña = os.getenv('EMAIL_PASSWORD')
     destinatario = os.getenv('EMAIL_RECEIVER')
@@ -50,6 +54,7 @@ def enviar_correo_async(nombre, fecha, hora):
 
 @app.route('/login', methods=['POST'])
 def login():
+    """Autentica por usuario o correo y devuelve datos básicos del usuario."""
     data = request.json
     usuario = data.get('usuario')
     password = data.get('password')
@@ -69,6 +74,7 @@ def login():
 
 @app.route('/register', methods=['POST'])
 def register():
+    """Crea un usuario con contraseña hasheada."""
     data = request.json
     hashed_password = generate_password_hash(data.get('password'))
     try:
@@ -87,6 +93,7 @@ def register():
 
 @app.route('/api/reserva_horas', methods=['POST'])
 def crear_reserva():
+    """Registra una reserva (máx. 5 por día) y dispara el correo asíncrono."""
     data = request.json
     usuario_id = data.get('usuario_id')
     
@@ -131,6 +138,7 @@ def crear_reserva():
 
 @app.route('/api/mis_reservas/<int:usuario_id>', methods=['GET'])
 def obtener_reservas(usuario_id):
+    """Lista las reservas de un usuario con fecha/hora listas para JSON."""
     try:
         conexion = get_db_connection()
         cursor = conexion.cursor(dictionary=True)
@@ -151,6 +159,7 @@ def obtener_reservas(usuario_id):
 
 @app.route('/healthcheck')
 def health_check():
+    """Comprueba la BD; devuelve 200 aunque la BD falle (healthcheck de Render)."""
     try:
         conexion = get_db_connection()
         cursor = conexion.cursor()

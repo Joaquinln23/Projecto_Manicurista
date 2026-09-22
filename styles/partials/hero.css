@@ -1,0 +1,144 @@
+/* ==========================================================================
+   3. HERO SECTION
+   Rol: banner a pantalla completa con imagen de fondo y texto de bienvenida.
+   ========================================================================== */
+.hero {
+    position: relative;
+    margin-top: var(--header-h);
+    min-height: clamp(360px, 62vh, 640px);
+    display: flex;
+    /* Columna a la izquierda: texto arriba, CTAs debajo */
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 2rem clamp(1.5rem, 7vw, 6rem);
+    overflow: hidden;
+}
+
+/* Velo doble: gradiente lateral fuerte + tinte global — el texto manda */
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background:
+        linear-gradient(90deg, rgba(8, 5, 7, .88) 0%, rgba(8, 5, 7, .55) 50%, rgba(8, 5, 7, .28) 80%),
+        rgba(8, 5, 7, .22);
+    pointer-events: none;
+}
+
+.hero img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Recorte corrido a la derecha: el sujeto (manos/herramienta) se corre
+       hacia la derecha del viewport (62% → 52%) */
+    object-position: 44% 50%;
+    z-index: 1;
+}
+
+.hero-text {
+    position: relative;
+    z-index: 3;
+    text-align: left;
+    max-width: min(52%, 38rem);
+    padding: 0;
+    margin: 0;
+    text-shadow: 0 4px 28px rgba(0, 0, 0, .95), 0 2px 10px rgba(0, 0, 0, .85), 0 1px 3px rgba(0, 0, 0, .9);
+}
+
+.hero-text h1 {
+    color: #ffffff;
+    /* Prata: didone de moda — lujo editorial para beauty */
+    font-family: "Prata", Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(2.4rem, 4.8vw, 4rem);
+    line-height: 1.15;
+    letter-spacing: 0.01em;
+    margin: 0 0 0.75rem;
+    text-shadow: 0 4px 28px rgba(0, 0, 0, 1), 0 2px 10px rgba(0, 0, 0, .95), 0 1px 3px rgba(0, 0, 0, 1);
+}
+
+.hero-text p {
+    color: rgba(255, 255, 255, .95);
+    margin: 0;
+    font-size: 1.15rem;
+    letter-spacing: 0.02em;
+}
+
+/* CTAs del hero: fila horizontal bajo el texto, alineada a la izquierda */
+.hero-ctas {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+}
+
+.hero-btn {
+    display: inline-block;
+    padding: 0.75rem 1.8rem;
+    border-radius: var(--r-pill);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    /* Los botones tienen fondo propio: la sombra del bloque no les sirve */
+    text-shadow: none;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.hero-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Primario: píldora rosa sólida con halo pulsante constante */
+.hero-btn-primary {
+    background: var(--brand);
+    color: #ffffff;
+    border: 1px solid transparent;
+    animation: hero-btn-pulse 2.2s ease-in-out infinite;
+}
+
+.hero-btn-primary:hover {
+    background: var(--brand-strong);
+}
+
+/* Halo que late alrededor del CTA — llama la atención sin gritar */
+@keyframes hero-btn-pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(224, 156, 166, .65);
+    }
+    50% {
+        box-shadow: 0 0 0 14px rgba(224, 156, 166, 0);
+    }
+}
+
+/* Respeta la preferencia del usuario de reducir movimiento */
+@media (prefers-reduced-motion: reduce) {
+    .hero-btn-primary {
+        animation: none;
+    }
+}
+
+/* Secundario: contorno blanco — fondo un poco más sólido porque la derecha
+   de la foto es más clara */
+.hero-btn-ghost {
+    background: rgba(8, 5, 7, .55);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, .75);
+}
+
+.hero-btn-ghost:hover {
+    background: rgba(255, 255, 255, .14);
+    border-color: #ffffff;
+}
+

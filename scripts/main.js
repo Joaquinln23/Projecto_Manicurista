@@ -1,3 +1,10 @@
+/**
+ * main.js — Núcleo de la interfaz.
+ * Define showMessage (alertas dinámicas), lo expone en window y como
+ * export de módulo, y gestiona el menú hamburguesa y el estado
+ * scrolled del header.
+ */
+
 // Función para mostrar alertas dinámicas (Éxito/Error)
 function showMessage(message, type = 'success') {
     const alertaPrevia = document.querySelector('.alert-message');
@@ -16,6 +23,12 @@ function showMessage(message, type = 'success') {
         }, 500);
     }, 4000);
 }
+
+// Exponer showMessage en window (contrato de ventana congelado)
+window.showMessage = showMessage;
+
+// Exportar showMessage para consumidores ES-module (reservas.js, login.js)
+export { showMessage };
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Interfaz cargada correctamente');
@@ -45,5 +58,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 mainNav.classList.remove('open');
             }
         });
+    }
+    // Header: barra negra al inicio, transparente al hacer scroll
+    const header = document.querySelector('.main-header');
+    if (header) {
+        const updateHeader = () => header.classList.toggle('scrolled', window.scrollY > 40);
+        window.addEventListener('scroll', updateHeader, { passive: true });
+        updateHeader();
     }
 });

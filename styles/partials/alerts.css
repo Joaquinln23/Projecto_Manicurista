@@ -1,0 +1,34 @@
+/* ==========================================================================
+   9. ALERTAS DINÁMICAS (MENSAJES DE ÉXITO Y ERROR)
+   Rol: estilos de las alertas creadas por showMessage (main.js).
+   Nota: clases .alert-success/.alert-error/.fade-out las inyecta el JS.
+   ========================================================================== */
+
+/* Contenedor base de la alerta */
+.alert-message {
+    position: fixed;
+    top: calc(var(--header-h) + 20px); /* Debajo del header */
+    right: 20px;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    z-index: 3000; /* Por encima de modales y nav */
+    box-shadow: var(--shadow-md);
+    min-width: 250px;
+    text-align: center;
+    animation: slideIn 0.5s ease-out forwards;
+}
+
+/* Color para Éxito (Verde) */
+.alert-success {
+    background-color: #28a745;
+    border-left: 6px solid #1e7e34;
+}
+
+/* Color para Error (Rojo) */
+.alert-error {
+    background-color: #dc3545;
+    border-left: 6px solid #a71d2a;
+}
+
