@@ -1,0 +1,111 @@
+/* ==========================================================================
+   9. RESPONSIVE
+   ========================================================================== */
+@media (max-width: 1024px) {
+    .servicios {
+        padding-inline: 1.5rem;
+    }
+}
+
+@media (max-width: 900px) {
+    .main-header {
+        padding: 0 1.25rem;
+    }
+    .hero-text {
+        padding: 1.25rem 1.5rem;
+    }
+    .agenda,
+    .contacto {
+        padding-inline: 1rem;
+    }
+    .form-agenda {
+        padding: 1.75rem;
+    }
+}
+
+@media (max-width: 750px) {
+    /* Ajuste del header y del área segura para el contenido */
+    :root {
+        --header-h: 64px;
+    }
+
+    .main-header {
+        padding: 0 1rem;
+    }
+
+    .logo-img {
+        height: 44px;
+        width: auto;
+    }
+
+    /* ACTIVAR EL BOTÓN DE HAMBURGUESA */
+    .menu-toggle {
+        display: flex;
+        z-index: 1200;
+    }
+
+    .user-controls {
+        margin-left: auto;
+        margin-right: 0.5rem;
+    }
+
+    /* El Menú de navegación (se despliega bajo el header) */
+    nav#main-nav {
+        position: fixed;
+        top: var(--header-h);
+        right: 0;
+        background: rgba(18, 12, 15, .92);
+        border-left: 1px solid rgba(255, 255, 255, .15);
+        width: 240px;
+        height: auto;
+        transform: translateX(110%);
+        transition: transform 0.3s ease-in-out;
+        z-index: 1000;
+        box-shadow: var(--shadow-md);
+    }
+
+    nav#main-nav.open {
+        transform: translateX(0); /* Entra desde la derecha */
+    }
+
+    nav#main-nav ul {
+        flex-direction: column;
+        padding: 0;
+        gap: 0;
+        align-items: stretch; /* Ocupa todo el ancho del menú */
+    }
+
+    nav#main-nav a {
+        padding: 16px 22px;
+        display: block;
+        font-size: 1.05rem;
+        color: rgba(255, 255, 255, .92);
+        border-bottom: 1px solid rgba(255, 255, 255, .12);
+        text-align: left;
+    }
+
+    nav#main-nav li:last-child a {
+        border-bottom: none;
+    }
+}
+
+@media (max-width: 600px) {
+    h2 {
+        font-size: 1.8rem;
+    }
+
+    .trabajos-gallery-container h3 {
+        font-size: 1.6rem;
+    }
+
+    .form-buttons {
+        flex-direction: column;
+    }
+
+    .alert-message {
+        right: 10px;
+        left: 10px;
+        top: calc(var(--header-h) + 16px);
+        min-width: auto;
+    }
+}
