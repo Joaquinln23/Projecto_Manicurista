@@ -24,7 +24,7 @@
     display: grid;
     /* Estricto 3+3 en desktop: 3 columnas → 2 filas de tarjetas grandes */
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.75rem;
+    gap: 1.25rem;
     max-width: 1200px;
     margin-inline: auto;
 }
@@ -35,12 +35,13 @@
     border: 1px solid var(--border);
     border-radius: var(--r-card);
     box-shadow: var(--shadow-sm);
-    padding: 2.5rem 2rem;
-    min-height: 240px; /* altura mínima para que la tarjeta se sienta sustancial */
+    /* Compactas: el contenido es solo título + descripción */
+    padding: 1.5rem 1.35rem;
+    min-height: 150px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; /* solo texto: el contenido queda centrado sin huecos de imagen */
+    justify-content: center;
     text-align: center;
     transition: transform 0.2s, box-shadow 0.2s;
 }
@@ -51,16 +52,17 @@
 }
 
 .servicio-card h3 {
-    margin: 0 0 0.85rem;
+    margin: 0 0 0.5rem;
     color: var(--text);
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: 600;
 }
 
 .servicio-card p {
     color: var(--text-muted);
     margin: 0;
-    font-size: 1.08rem;
+    font-size: 1rem;
+    line-height: 1.45;
 }
 
 /* Galería de trabajos */
