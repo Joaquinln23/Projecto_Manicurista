@@ -1,3 +1,10 @@
+/**
+ * main.js — Núcleo de la interfaz.
+ * Define showMessage (alertas dinámicas), lo expone en window y como
+ * export de módulo, y gestiona el menú hamburguesa y el estado
+ * scrolled del header.
+ */
+
 // Función para mostrar alertas dinámicas (Éxito/Error)
 function showMessage(message, type = 'success') {
     const alertaPrevia = document.querySelector('.alert-message');

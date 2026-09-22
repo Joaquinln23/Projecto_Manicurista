@@ -1,5 +1,7 @@
 /* ==========================================================================
    8. ALERTAS DINÁMICAS (MENSAJES DE ÉXITO Y ERROR)
+   Rol: estilos de las alertas creadas por showMessage (main.js).
+   Nota: clases .alert-success/.alert-error/.fade-out las inyecta el JS.
    ========================================================================== */
 
 /* Contenedor base de la alerta */

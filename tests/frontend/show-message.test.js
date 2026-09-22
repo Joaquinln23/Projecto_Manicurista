@@ -1,3 +1,7 @@
+/**
+ * Suite showMessage: demuestra que la alerta se crea con el texto y tipo
+ * dados y que no quedan duplicadas al encadenar mensajes (helper DOM).
+ */
 import { loadScript } from './helpers.js';
 
 await loadScript('scripts/main.js');

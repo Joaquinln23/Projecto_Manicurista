@@ -1,5 +1,7 @@
 /* ==========================================================================
    1. TOKENS Y CONFIGURACIÓN GLOBAL
+   Rol: variables en :root (tipografías, colores, espaciados) y base global
+   que consumen el resto de parciales vía var().
    ========================================================================== */
 :root {
     --font-heading: 'Jost', sans-serif;

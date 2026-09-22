@@ -1,5 +1,8 @@
 /* ==========================================================================
    2. HEADER Y NAVEGACIÓN
+   Rol: cabecera fija con logo, controles de sesión y menú (hamburguesa).
+   Nota: z-index alto para cubrir el hero; los estados .open/.scrolled los
+   alterna main.js.
    ========================================================================== */
 .main-header {
     position: fixed;

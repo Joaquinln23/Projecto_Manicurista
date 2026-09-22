@@ -1,3 +1,9 @@
+/**
+ * reservas.js — Agenda de reservas.
+ * Fecha mínima en el formulario, carga de citas (window.cargarReservas)
+ * y envío de nuevas reservas a la API. Consumidor de config.js/main.js.
+ */
+
 // Importa la fuente única de API_URL y la función global de showMessage
 import API_URL from './config.js';
 import { showMessage } from './main.js';

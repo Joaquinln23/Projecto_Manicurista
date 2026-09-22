@@ -1,3 +1,7 @@
+/**
+ * Suite guard de login: login.js tolera la ausencia de window.cargarReservas
+ * al registrarse sus listeners y la invoca con el id del usuario cuando existe.
+ */
 import { loadScript } from './helpers.js';
 
 // Elementos que login.js exige sin guarda al registrar sus listeners

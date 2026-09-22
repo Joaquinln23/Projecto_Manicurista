@@ -1,5 +1,7 @@
 /* ==========================================================================
    6. CONTACTO Y MODALES
+   Rol: enlaces de contacto y estilos de los modales de login/registro.
+   Nota: los modales dependen de la clase .oculto que alteran login.js.
    ========================================================================== */
 .contacto {
     text-align: center;

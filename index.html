@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
+    <!-- Cabecera fija: logo, controles de sesión y navegación -->
     <header class="main-header">
         <div class="logo">
             <img src="Images/logo%20terminado.png" alt="Caterina Artist Nails" class="logo-img">
@@ -42,6 +43,7 @@
         </nav>
     </header>
 
+    <!-- Hero: imagen de bienvenida fuera del flujo de main -->
     <section class="hero">
         <img src="Images/Manicurista.jpg" alt="Manicura elegante">
         <div class="hero-text">
@@ -51,6 +53,7 @@
     </section>
 
     <main>
+        <!-- Servicios: tarjetas de catálogo y galería de trabajos -->
         <section id="servicios" class="servicios">
             <h2>Nuestros Servicios</h2>
             <div class="servicios-grid">
@@ -103,6 +106,7 @@
             </div>
         </section>
 
+        <!-- Agenda: formulario de reserva y panel de mis reservas -->
         <section id="agenda" class="agenda">
             <form id="form-agenda" class="form-agenda">
                 <h2>Reserva tu hora</h2>
@@ -124,6 +128,7 @@
             <div id="mis-reservas" class="mis-reservas oculto"></div>
         </section>
 
+        <!-- Contacto: enlaces a redes sociales -->
         <section id="contacto" class="contacto">
             <h2>Contacto</h2>
             <div id="contacto-links" class="contacto-links">
@@ -133,6 +138,7 @@
             </div>
         </section>
 
+        <!-- Modal de login (lo controla login.js) -->
         <div id="login-modal" class="modal-login oculto" role="dialog" aria-modal="true" aria-labelledby="login-title">
             <div class="modal-content-login">
                 <span class="close-login" id="close-login">&times;</span>
@@ -144,6 +150,7 @@
             </div>
         </div>
 
+        <!-- Modal de registro (lo controla login.js) -->
         <div id="register-modal" class="modal-login oculto" role="dialog" aria-modal="true" aria-labelledby="register-title">
             <div class="modal-content-login">
                 <span class="close-login" id="close-register">&times;</span>
@@ -159,10 +166,12 @@
         </div>
     </main>
 
+    <!-- Pie: copyright -->
     <footer>
         <p>&copy; 2026 Caterina Artist - Nails & Beauty</p>
     </footer>
 
+    <!-- Módulos ES en orden: fuente única → utilidades → consumidores -->
     <script type="module" src="scripts/config.js"></script>
     <script type="module" src="scripts/main.js"></script>
     <script type="module" src="scripts/login.js"></script>

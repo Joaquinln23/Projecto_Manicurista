@@ -1,3 +1,9 @@
+/**
+ * login.js — Autenticación de la interfaz.
+ * Login/registro vía API, estado de sesión en localStorage, guard de
+ * window.cargarReservas y cierre de modales/sesión.
+ */
+
 // Importa la fuente única de API_URL y la función global de showMessage
 import API_URL from './config.js';
 import { showMessage } from './main.js';

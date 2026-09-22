@@ -1,5 +1,7 @@
 /* ==========================================================================
    5. FORMULARIO DE RESERVA
+   Rol: sección #agenda con el formulario de cita, botones y panel de
+   "mis reservas".
    ========================================================================== */
 .agenda {
     background: var(--surface-soft);

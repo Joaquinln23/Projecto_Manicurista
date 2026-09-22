@@ -1,3 +1,7 @@
+/**
+ * Utilidades compartidas de las suites frontend: resuelve la raíz del repo
+ * y carga scripts/ como módulos ES en el contexto jsdom de Vitest.
+ */
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 

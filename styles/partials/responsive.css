@@ -1,5 +1,7 @@
 /* ==========================================================================
    9. RESPONSIVE
+   Rol: media queries de adaptación a tablet/móvil.
+   Nota: DEBE importarse la última en style.css para ganar la cascada.
    ========================================================================== */
 @media (max-width: 1024px) {
     .servicios {

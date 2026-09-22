@@ -1,3 +1,8 @@
+/**
+ * Suite contrato de ventana: window.API_URL como única fuente, aliases de
+ * showMessage/cargarReservas tras DOMContentLoaded y exactamente una
+ * asignación de API_URL en scripts/.
+ */
 import { readFileSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 
