@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const API_URL = 'https://projecto-manicurista.onrender.com';
 
     // 1. DEFINICIÓN DE ELEMENTOS DEL DOM
     const btnIngresar = document.getElementById('btn-ingresar');

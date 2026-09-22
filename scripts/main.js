@@ -17,6 +17,9 @@ function showMessage(message, type = 'success') {
     }, 4000);
 }
 
+// Exponer showMessage en window (contrato de ventana congelado)
+window.showMessage = showMessage;
+
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Interfaz cargada correctamente');
 

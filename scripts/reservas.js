@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // URL BACKEND EN RENDER
-    const API_URL = 'https://projecto-manicurista.onrender.com';
 
     // Referencias a elementos del DOM
     const formAgenda = document.getElementById('form-agenda');
