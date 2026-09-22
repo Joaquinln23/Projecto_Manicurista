@@ -1,35 +1,30 @@
 /**
- * carousel.js — Carrusel "Nuestros Trabajos".
+ * carousel.js — Cinta continua (marquee) "Nuestros Trabajos".
  *
- * Autoplay cada 4,5 s con looping continuo (un juego de clones antes y otro
- * después de las tarjetas originales), pausas por hover del puntero, arrastre
- * activo y foco por teclado, y arrastre manual con Pointer Events que al
- * soltar toma la tarjeta más cercana. Con prefers-reduced-motion nunca hace
- * autoplay (el arrastre y los botones siguen habilitados).
+ * Deriva constante de derecha a izquierda (~75 px/s ≈ 60 s por ciclo en
+ * desktop), loop infinito por clones con offset en px envuelto módulo el
+ * ancho del contenido, pausa por hover del puntero, arrastre activo y foco
+ * por teclado, y arrastre manual con Pointer Events que al soltar retoma
+ * la deriva desde el offset liberado (sin snap). Con prefers-reduced-motion
+ * nunca deriva solo (el arrastre y los botones siguen habilitados).
  */
 
 /**
- * Redondea una posición fraccionaria (en unidades de tarjeta) al entero
- * más cercano. El wrapping al rango válido lo resuelve wrapIndex.
+ * Envuelve un offset en px al rango [0, cycle) para el loop infinito.
+ * Acepta negativos (arrastre hacia atrás) y valores mayores al ciclo.
  */
-export function snapToNearest(position) {
-  return Math.round(position);
+export function wrapOffset(offset, cycle) {
+  if (!cycle) return 0;
+  return ((offset % cycle) + cycle) % cycle;
 }
 
-/**
- * Envuelve un índice al rango [0, itemCount) para el looping infinito.
- * Acepta negativos (arrastre hacia atrás) y valores mayores al total.
- */
-export function wrapIndex(index, itemCount) {
-  if (!itemCount) return 0;
-  return ((index % itemCount) + itemCount) % itemCount;
-}
+/** Velocidad de la cinta en px/s (ciclo desktop ~4480 px ≈ 60 s). */
+export const MARQUEE_SPEED_PX_PER_SEC = 75;
 
-// Configuración del carrusel
-const AUTOPLAY_MS = 4500;
-const SETTLE_MS = 680; // transición CSS (600 ms) + margen para el wrap
+/** Duración del empujón de los botones prev/next (ms). */
+const NUDGE_MS = 400;
 
-/** Indica si el usuario prefiere movimiento reducido (bloquea el autoplay). */
+/** Indica si el usuario prefiere movimiento reducido (bloquea la deriva). */
 function prefersReducedMotion() {
   return typeof window.matchMedia === 'function'
     && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -45,19 +40,12 @@ function isKeyboardFocus(element) {
   }
 }
 
-/** Extrae el desplazamiento X en px de la matriz de transform computada. */
-function readTranslateX(element) {
-  const computed = window.getComputedStyle(element).transform;
-  if (!computed || computed === 'none') return null;
-  const values = computed.match(/-?\d*\.?\d+(?:e[-+]?\d+)?/gi);
-  if (!values) return null;
-  const parsed = values.map(Number);
-  if (parsed.length === 6) return parsed[4]; // matrix(a,b,c,d,tx,ty)
-  if (parsed.length === 16) return parsed[12]; // matrix3d → tx en [12]
-  return null;
+/** ease-out cúbico para que el empujón de los botones se sienta suave. */
+function easeOutCubic(t) {
+  return 1 - Math.pow(1 - t, 3);
 }
 
-/** Inicializa el carrusel si su markup existe en el DOM (guardas defensivas). */
+/** Inicializa la cinta si su markup existe en el DOM (guardas defensivas). */
 function initCarousel() {
   const carousel = document.querySelector('.trabajos-carousel');
   const viewport = carousel && carousel.querySelector('.carousel-viewport');
@@ -76,7 +64,7 @@ function initCarousel() {
   });
   track.addEventListener('dragstart', (event) => event.preventDefault());
 
-  // Clones de un juego antes y otro después: hacen invisible el wrap del looping
+  // Clones de un juego antes y otro después: hacen invisible el wrap del loop
   const buildCloneFragment = () => {
     const fragment = document.createDocumentFragment();
     originals.forEach((node) => {
@@ -89,131 +77,105 @@ function initCarousel() {
   track.insertBefore(buildCloneFragment(), track.firstChild);
   track.appendChild(buildCloneFragment());
 
-  // Estado: index en unidades de tarjeta (fraccionario durante el arrastre)
-  let index = 0;
+  // Estado: offset libre en px (positivo = deriva hacia la izquierda)
   let stride = 0; // px entre el inicio de una tarjeta y la siguiente
+  let cycle = 0; // ancho de un juego completo de tarjetas (stride * itemCount)
+  let offset = 0;
   let hovering = false;
   let focused = false;
   let dragging = false;
   let activePointerId = null;
   let dragStartX = 0;
-  let dragStartIndex = 0;
-  let settleTimer = 0;
-  let autoplayTimer = 0;
-  let instantMode = false; // true cuando el track está sin transición
+  let dragStartOffset = 0;
+  let nudge = null; // { from, to, startedAt } mientras animan los botones
+  let lastFrameAt = 0;
 
-  /** Mide el paso horizontal entre tarjetas (ancho + hueco). */
+  /** Mide el paso horizontal entre tarjetas y recalcula el ciclo. */
   function measure() {
     const first = track.children[0];
     const second = track.children[1];
     if (!first || !second) return;
     stride = second.getBoundingClientRect().left - first.getBoundingClientRect().left;
+    cycle = stride * itemCount;
+    if (cycle > 0) offset = wrapOffset(offset, cycle);
   }
 
-  /** Aplica translateX al track; withTransition=false para saltos invisibles. */
-  function render(withTransition) {
-    if (instantMode === withTransition) {
-      track.classList.toggle('no-transition', !withTransition);
-      instantMode = !withTransition;
-      void track.offsetWidth; // fuerza reflow antes de retomar la transición
+  /** Aplica translateX al track desde el offset libre (sin transiciones). */
+  function render() {
+    track.style.transform = `translate3d(${-offset}px, 0, 0)`;
+  }
+
+  /** Empuja exactamente una tarjeta (±1) sin romper el estado del loop. */
+  function nudgeBy(cards) {
+    if (!cycle) return;
+    nudge = { from: offset, to: offset + cards * stride, startedAt: performance.now() };
+  }
+
+  /** Bucle único: anima el empujón o la deriva y pinta en cada frame. */
+  function tick(now) {
+    // clamp del dt: evita un salto si la pestaña estuvo dormida
+    const dt = lastFrameAt ? Math.min(now - lastFrameAt, 100) : 0;
+    lastFrameAt = now;
+    if (nudge) {
+      const progress = Math.min((now - nudge.startedAt) / NUDGE_MS, 1);
+      offset = nudge.from + (nudge.to - nudge.from) * easeOutCubic(progress);
+      if (progress >= 1) {
+        offset = wrapOffset(nudge.to, cycle);
+        nudge = null;
+      }
+    } else if (
+      dt > 0
+      && cycle > 0
+      && !prefersReducedMotion()
+      && !hovering
+      && !dragging
+      && !focused
+    ) {
+      offset = wrapOffset(offset + MARQUEE_SPEED_PX_PER_SEC * (dt / 1000), cycle);
     }
-    track.style.transform = `translate3d(${-index * stride}px, 0, 0)`;
+    render();
+    window.requestAnimationFrame(tick);
   }
 
-  /** Anima hacia la tarjeta objetivo y normaliza el índice al terminar. */
-  function animateTo(target) {
-    index = target;
-    render(true);
-    window.clearTimeout(settleTimer);
-    settleTimer = window.setTimeout(() => {
-      index = wrapIndex(index, itemCount);
-      render(false); // salto invisible: mismo contenido gracias a los clones
-    }, SETTLE_MS);
-  }
-
-  /** Congela la posición visual actual (por si hay una transición en curso). */
-  function freezePosition() {
-    window.clearTimeout(settleTimer);
-    if (stride > 0) {
-      const translateX = readTranslateX(track);
-      if (translateX !== null) index = -translateX / stride;
-    }
-    render(false);
-  }
-
-  /** Condiciones de autoplay: sin reduce-motion, hover, arrastre ni foco. */
-  function canAutoplay() {
-    return !prefersReducedMotion() && !hovering && !dragging && !focused;
-  }
-
-  /** (Re)programa el avance automático; se cancela si no debe correr. */
-  function scheduleAutoplay() {
-    window.clearTimeout(autoplayTimer);
-    if (!canAutoplay()) return;
-    autoplayTimer = window.setTimeout(() => {
-      if (canAutoplay() && stride > 0) animateTo(index + 1);
-      scheduleAutoplay();
-    }, AUTOPLAY_MS);
-  }
-
-  /** Mueve una tarjeta en la dirección dada (±1) con animación. */
-  function moveBy(direction) {
-    if (!stride) return;
-    freezePosition(); // posición visual real si hay una animación en curso
-    index = wrapIndex(index, itemCount); // salto invisible: mismo contenido
-    render(false);
-    animateTo(index + direction);
-    scheduleAutoplay(); // reinicia el temporizador si sigue permitido
-  }
-
-  /** pointerdown: congela la posición y arranca el arrastre. */
+  /** pointerdown: congela la deriva y arranca el arrastre libre. */
   function handlePointerDown(event) {
     if (event.pointerType === 'mouse' && event.button !== 0) return;
-    if (!stride) return;
+    if (!cycle) return;
     dragging = true;
+    nudge = null; // el gesto manual cancela un empujón en curso
     activePointerId = event.pointerId;
     dragStartX = event.clientX;
-    freezePosition();
-    dragStartIndex = index;
-    scheduleAutoplay(); // dragging → cancela el autoplay de inmediato
+    dragStartOffset = offset;
   }
 
-  /** pointermove: traslada la pista siguiendo al puntero (scrub). */
+  /** pointermove: traslada la pista siguiendo al puntero (scrub libre). */
   function handlePointerMove(event) {
     if (!dragging || event.pointerId !== activePointerId) return;
-    const offsetCards = (event.clientX - dragStartX) / stride;
-    index = wrapIndex(dragStartIndex - offsetCards, itemCount);
-    render(false);
+    offset = wrapOffset(dragStartOffset - (event.clientX - dragStartX), cycle);
   }
 
-  /** pointerup/cancel: suelta, alinea a la tarjeta más cercana y reprograma. */
+  /** pointerup/cancel: suelta sin snap; la deriva retoma desde el offset. */
   function handlePointerUp(event) {
     if (!dragging || event.pointerId !== activePointerId) return;
     dragging = false;
     activePointerId = null;
-    animateTo(snapToNearest(index));
-    scheduleAutoplay();
   }
 
-  // Pausa por hover sobre el carrusel (incluye los botones)
+  // Pausa por hover sobre la cinta (incluye los botones)
   carousel.addEventListener('pointerenter', () => {
     hovering = true;
-    scheduleAutoplay();
   });
   carousel.addEventListener('pointerleave', () => {
     hovering = false;
-    scheduleAutoplay();
   });
 
   // Pausa mientras el foco de teclado esté dentro del carrusel
   carousel.addEventListener('focusin', (event) => {
     focused = isKeyboardFocus(event.target);
-    scheduleAutoplay();
   });
   carousel.addEventListener('focusout', (event) => {
     if (!carousel.contains(event.relatedTarget)) {
       focused = false;
-      scheduleAutoplay();
     }
   });
 
@@ -224,20 +186,19 @@ function initCarousel() {
   window.addEventListener('pointercancel', handlePointerUp);
 
   // Botones manuales (opcionales) para accesibilidad
-  if (prevButton) prevButton.addEventListener('click', () => moveBy(-1));
-  if (nextButton) nextButton.addEventListener('click', () => moveBy(1));
+  if (prevButton) prevButton.addEventListener('click', () => nudgeBy(-1));
+  if (nextButton) nextButton.addEventListener('click', () => nudgeBy(1));
 
-  // Resize: re-mide el paso y reposiciona sin animación residual
+  // Resize: re-mide el paso y reenvuelve el offset sin saltos visibles
   window.addEventListener('resize', () => {
     measure();
-    index = wrapIndex(index, itemCount);
-    render(true);
+    render();
   }, { passive: true });
 
   measure();
-  if (!stride) return;
-  render(true);
-  scheduleAutoplay();
+  if (!cycle) return;
+  render();
+  window.requestAnimationFrame(tick);
 }
 
 // Arranque defensivo: solo si el DOM de la sección ya está disponible
