@@ -31,8 +31,9 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* Empuja el foco (manos/herramienta) hacia la derecha, fuera del texto */
-    object-position: 62% 50%;
+    /* Recorte corrido a la derecha: el sujeto (manos/herramienta) se corre
+       hacia la derecha del viewport (62% → 52%) */
+    object-position: 52% 50%;
     z-index: 1;
 }
 
