@@ -58,9 +58,9 @@
         width: auto;
     }
 
-    /* Hero: recorte corrido a la derecha en móvil (50% → 38%) */
+    /* Hero: recorte de vuelta un poco a la izquierda en móvil (38% → 46%) */
     .hero img {
-        object-position: 38% 50%;
+        object-position: 46% 50%;
     }
 
     /* ACTIVAR EL BOTÓN DE HAMBURGUESA */
