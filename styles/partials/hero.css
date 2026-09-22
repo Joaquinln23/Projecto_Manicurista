@@ -13,13 +13,15 @@
     overflow: hidden;
 }
 
-/* Velo lateral reforzado: la foto es clara a la izquierda — el texto manda */
+/* Velo doble: gradiente lateral fuerte + tinte global — el texto manda */
 .hero::before {
     content: "";
     position: absolute;
     inset: 0;
     z-index: 2;
-    background: linear-gradient(90deg, rgba(8, 5, 7, .72) 0%, rgba(8, 5, 7, .38) 48%, rgba(8, 5, 7, .08) 75%);
+    background:
+        linear-gradient(90deg, rgba(8, 5, 7, .88) 0%, rgba(8, 5, 7, .55) 50%, rgba(8, 5, 7, .28) 80%),
+        rgba(8, 5, 7, .22);
     pointer-events: none;
 }
 
@@ -46,13 +48,13 @@
 
 .hero-text h1 {
     color: #ffffff;
-    /* Script femenino estilo salón (Parisienne) — el peso 400 evita
-       síntesis de bold en una fuente de peso único */
-    font-family: var(--font-script);
+    /* Great Vibes: script femenino con más contraste que Parisienne */
+    font-family: "Great Vibes", cursive;
     font-weight: 400;
-    /* El x-height de los scripts es chico: se compensa con más cuerpo */
+    /* El x-height de los scripts es chico: se compensa con más cuerpo;
+       line-height generoso para que los astos no recorten en .hero */
     font-size: clamp(3.8rem, 9.5vw, 6.4rem);
-    line-height: 1.15;
+    line-height: 1.25;
     letter-spacing: 0.01em;
     margin: 0 0 0.75rem;
     /* Sombra propia extra: el script fino necesita más contraste */
