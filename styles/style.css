@@ -1,41 +1,189 @@
 /* ==========================================================================
-   1. CONFIGURACIÓN GLOBAL Y FUENTES
+   1. TOKENS Y CONFIGURACIÓN GLOBAL
    ========================================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Raleway:wght@300;400;500;600&display=swap');
+:root {
+    --font-heading: 'Jost', sans-serif;
+    --font-body: 'Questrial', sans-serif;
+    --bg: #fdf7f9;            /* blanco rosado */
+    --surface: #ffffff;
+    --surface-soft: #fceef2;  /* banda alternativa */
+    --text: #241d20;
+    --text-muted: #7a6b70;
+    --brand: #e09ca6;         /* identidad actual de la marca */
+    --brand-strong: #c96b7c;  /* hover, títulos, acentos con contraste */
+    --brand-ink: #2b1f24;     /* texto sobre botones rosa */
+    --border: #efd9de;
+    --shadow-sm: 0 2px 10px rgba(43, 31, 36, .06);
+    --shadow-md: 0 10px 30px rgba(43, 31, 36, .10);
+    --r-card: 20px;
+    --r-input: 14px;
+    --r-pill: 999px;
+    --container: 1140px;
+    --header-h: 72px;
+    --section-y: 4.5rem;
+}
 
-html, body {
-    max-width: 100%;
-    overflow-x: hidden;
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 100%;
     scroll-behavior: smooth;
+    max-width: 100%;
 }
 
 body {
-    font-family: 'Montserrat', 'Raleway', Arial, sans-serif;
-    background: #000000;
-    color: #fff;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text);
+    background: var(--bg);
     margin: 0;
-    padding-top: 80px; /* Evita que el header tape el contenido */
+    max-width: 100%;
+    overflow-x: hidden;
 }
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    line-height: 1.25;
+}
+
+/* Títulos de sección: texto grande, contraste AA sobre fondo claro */
+h2 {
+    color: var(--brand-strong);
+    font-size: 2.2rem;
+    font-weight: 600;
+}
+
+a {
+    color: var(--brand-strong);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+    outline: 2px solid var(--brand-strong);
+    outline-offset: 2px;
+}
+
+img {
+    max-width: 100%;
+}
+
+/* Accesibilidad: respetar preferencia de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Utilidades compartidas */
+/* Las anclas no quedan ocultas bajo el header fijo */
+section[id] {
+    scroll-margin-top: calc(var(--header-h) + 1rem);
+}
+
+.oculto { display: none !important; }
+
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* ==========================================================================
    2. HEADER Y NAVEGACIÓN
    ========================================================================== */
 .main-header {
-    background: #000;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: var(--header-h);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 50px;
-    position: fixed;
-    left: 0; top: 0; width: 100%;
+    gap: 1rem;
+    padding: 0 2rem;
+    background: #000000;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255, 255, 255, .15);
+    transition: background .35s ease, border-bottom-color .35s ease;
     z-index: 1000;
-    box-sizing: border-box;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
 }
 
 .logo-img {
-    height: 60px;
+    height: 52px;
     width: auto;
     display: block;
+}
+
+.user-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-left: auto;
+}
+
+#saludo-usuario {
+    color: #ffffff;
+    font-weight: 500;
+}
+
+/* Header al hacer scroll: la barra negra se suaviza a un velo humo */
+.main-header.scrolled {
+    background: rgba(10, 7, 9, .6);
+    border-bottom-color: rgba(255, 255, 255, .1);
+}
+
+/* Sombra de respaldo: logo y letras siguen legibles sobre secciones claras */
+.main-header.scrolled .logo-img {
+    filter: drop-shadow(0 1px 4px rgba(0, 0, 0, .8));
+}
+
+.main-header.scrolled #main-nav a,
+.main-header.scrolled #saludo-usuario {
+    text-shadow: 0 1px 4px rgba(0, 0, 0, .75);
+}
+
+.main-header.scrolled .menu-toggle span {
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .6));
 }
 
 #main-nav ul {
@@ -49,26 +197,36 @@ body {
 
 #main-nav a {
     text-decoration: none;
-    color: #f3e6ef;
-    font-weight: 600;
+    color: rgba(255, 255, 255, .92);
+    font-weight: 500;
     transition: color 0.3s;
 }
 
 #main-nav a:hover {
-    color: #e09ca6;
+    color: var(--brand);
+    text-shadow: none;
 }
 
 /* Botones especiales en el nav */
 .btn-ingresar {
-    background: #e09ca6;
-    color: #fff !important;
+    background: var(--brand);
+    color: var(--brand-ink) !important;
     padding: 0.5rem 1.2rem;
-    border-radius: 2rem;
     border: none;
+    border-radius: var(--r-pill);
     cursor: pointer;
-    font-weight: bold;
+    font-family: var(--font-heading);
+    font-weight: 600;
     text-transform: uppercase;
     font-size: 0.9rem;
+    letter-spacing: 0.02em;
+    transition: background 0.2s, filter 0.2s;
+}
+
+.btn-ingresar:hover {
+    background: var(--brand-strong);
+    color: var(--brand-ink) !important;
+    filter: brightness(0.96);
 }
 
 /* Menú Hamburguesa */
@@ -79,13 +237,15 @@ body {
     background: none;
     border: none;
     cursor: pointer;
+    padding: 6px;
 }
 
 .menu-toggle span {
     width: 30px;
     height: 3px;
-    background: #e09ca6;
+    background: #ffffff;
     border-radius: 2px;
+    transition: background 0.2s;
 }
 
 /* ==========================================================================
@@ -93,16 +253,30 @@ body {
    ========================================================================== */
 .hero {
     position: relative;
-    height: 350px;
+    margin-top: var(--header-h);
+    min-height: clamp(360px, 62vh, 640px);
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+    padding: 2rem clamp(1.5rem, 7vw, 6rem);
     overflow: hidden;
+}
+
+/* Velo lateral: la foto de la izquierda es clara — refuerza la sombra del texto */
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: linear-gradient(90deg, rgba(8, 5, 7, .55) 0%, rgba(8, 5, 7, .18) 45%, transparent 70%);
+    pointer-events: none;
 }
 
 .hero img {
     position: absolute;
-    width: 100%; height: 100%;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     z-index: 1;
 }
@@ -110,109 +284,134 @@ body {
 .hero-text {
     position: relative;
     z-index: 3;
-    text-align: center;
-    padding: 2rem;
-    background: rgba(224, 156, 166, 0.18);
-    border-radius: 1rem;
+    text-align: left;
+    max-width: min(90%, 40rem);
+    padding: 0;
+    margin: 0;
+    text-shadow: 0 3px 24px rgba(0, 0, 0, .85), 0 2px 6px rgba(0, 0, 0, .6);
+}
+
+.hero-text h1 {
+    color: #ffffff;
+    font-size: clamp(2.1rem, 5.2vw, 3.4rem);
+    font-weight: 600;
+    margin: 0 0 0.6rem;
+}
+
+.hero-text p {
+    color: rgba(255, 255, 255, .92);
+    margin: 0;
+    font-size: 1.1rem;
 }
 
 /* ==========================================================================
    4. SERVICIOS Y GALERÍA
    ========================================================================== */
 .servicios {
-    background: #232323;
-    color: #f3e6ef;
-    border-radius: 1rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    padding: 2rem 1rem;
-    margin-bottom: 2rem;
+    background: var(--bg);
+    color: var(--text);
+    padding: var(--section-y) 1.25rem;
     text-align: center;
+    max-width: var(--container);
+    margin-inline: auto;
 }
 
 .servicios h2 {
-    color: #e09ca6;
-    font-size: 2.5rem;
-    margin-bottom: 3rem;
-}
-
-.servicios h3 {
-    margin: 0.5rem 0 0.7rem 0;
-    color: #e09ca6;
-    font-size: 1.2rem;
-    font-weight: 700;
+    color: var(--brand-strong);
+    font-size: 2.2rem;
+    margin: 0 0 2.5rem;
 }
 
 .servicios-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    max-width: var(--container);
+    margin-inline: auto;
 }
 
 .servicio-card {
-    background: #181818;
-    color: #f3e6ef;
-    border-radius: 1rem;
-    box-shadow: 0 2px 8px rgba(224,156,166,0.10);
-    padding: 2rem 1.5rem;
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--r-card);
+    box-shadow: var(--shadow-sm);
+    padding: 1.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .servicio-card:hover {
-    transform: translateY(-10px);
-    border-color: #e09ca6;
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.servicio-card h3 {
+    margin: 0.5rem 0 0.7rem;
+    color: var(--text);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.servicio-card p {
+    color: var(--text-muted);
+    margin: 0;
 }
 
 .servicio-card img {
     width: 100%;
-    border-radius: 0.5rem;
-    margin-bottom: 1rem;
     max-width: 300px;
     height: auto;
     aspect-ratio: 350 / 400;
     object-fit: cover;
     display: block;
+    border-radius: calc(var(--r-card) - 8px);
+    margin-bottom: 1rem;
 }
 
 /* Galería de trabajos */
 .trabajos-gallery-container {
-    padding: 3rem 1rem;
+    padding: var(--section-y) 1rem 0;
     text-align: center;
-    background: #232323;
-    border-radius: 1rem;
-    margin-bottom: 2rem;
+    background: var(--surface-soft);
+    border-radius: var(--r-card);
+    border: 1px solid var(--border);
+    margin-top: var(--section-y);
+    max-width: 1320px;
+    margin-inline: auto;
+    width: 100%;
 }
 
 .trabajos-gallery-container h3 {
+    font-family: var(--font-heading);
     font-size: 2rem;
-    margin-bottom: 2rem;
-    color: #e09ca6;
-    font-weight: 700;
+    font-weight: 600;
+    color: var(--brand-strong);
+    margin: 0 0 2rem;
 }
 
 .trabajos-grid {
     display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-  gap: 2rem;
-  max-width: 9000px;
-  margin: 0 auto;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 0 1rem 2.5rem;
 }
 
 .trabajo-item {
     overflow: hidden;
-    border-radius: 0.75rem;
-    box-shadow: 0 8px 24px rgba(224,156,166,0.18);
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    border-radius: var(--r-card);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .trabajo-item:hover {
-    transform: translateY(-8px) scale(1.03);
-    box-shadow: 0 8px 24px rgba(224,156,166,0.18);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
 }
 
 .trabajo-item img {
@@ -220,43 +419,84 @@ body {
     height: 100%;
     object-fit: cover;
     display: block;
+    aspect-ratio: 1 / 1;
+}
+
+/* Lista dinámica de reservas (la genera reservas.js) */
+.lista-reservas {
+    list-style: none;
+    margin: 1.5rem auto 0;
+    padding: 0;
+    max-width: 480px;
+    text-align: left;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-card);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.lista-reservas li {
+    padding: 0.9rem 1.25rem;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+}
+
+.lista-reservas li:last-child {
+    border-bottom: none;
 }
 
 /* ==========================================================================
-   5. FORMULARIO DE RESERVA (ESTILO ROSA)
+   5. FORMULARIO DE RESERVA
    ========================================================================== */
 .agenda {
-    background: #000;
-    padding: 5rem 1rem;
+    background: var(--surface-soft);
+    padding: var(--section-y) 1.25rem;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
 }
 
 .form-agenda {
-    background: #1d1d1d;
+    background: var(--surface);
     padding: 2.5rem;
-    border-radius: 1.5rem;
+    border-radius: var(--r-card);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
     width: 100%;
-    max-width: 450px;
-    border: 1px solid rgba(224, 156, 166, 0.3);
+    max-width: 480px;
+}
+
+.form-agenda h2 {
+    margin-top: 0;
+    text-align: center;
 }
 
 .form-agenda label {
     display: block;
     margin-top: 1rem;
-    color: #e09ca6;
-    font-weight: bold;
+    color: var(--text);
+    font-weight: 600;
 }
 
 .form-agenda input {
     width: 100%;
     padding: 12px;
     margin-top: 5px;
-    border-radius: 0.5rem;
-    border: 1px solid #444;
-    background: #fff; /* Fondo blanco para facilitar lectura */
-    color: #000;
-    box-sizing: border-box;
+    border-radius: var(--r-input);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-agenda input:focus {
+    outline: none;
+    border-color: var(--brand-strong);
+    box-shadow: 0 0 0 3px rgba(201, 107, 124, .25);
 }
 
 .form-buttons {
@@ -267,22 +507,57 @@ body {
 
 .btn-enviar {
     flex: 2;
-    background: #e09ca6;
-    color: white;
+    background: var(--brand);
+    color: var(--brand-ink);
     border: none;
     padding: 1rem;
-    border-radius: 2rem;
-    font-weight: bold;
+    border-radius: var(--r-pill);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1rem;
     cursor: pointer;
+    transition: background 0.2s, filter 0.2s;
+}
+
+.btn-enviar:hover {
+    background: var(--brand-strong);
+    color: var(--brand-ink);
+    filter: brightness(0.96);
 }
 
 .btn-cerrar {
     flex: 1;
     background: transparent;
-    color: #999;
-    border: 1px solid #444;
-    border-radius: 2rem;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    border-radius: var(--r-pill);
+    padding: 1rem;
+    font-family: var(--font-heading);
+    font-size: 1rem;
     cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+}
+
+.btn-cerrar:hover {
+    color: var(--brand-strong);
+    border-color: var(--brand-strong);
+}
+
+.mensaje-confirmacion {
+    max-width: 480px;
+    width: 100%;
+    padding: 1rem 1.25rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-input);
+    color: var(--text);
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+}
+
+.mis-reservas {
+    max-width: 480px;
+    width: 100%;
 }
 
 /* ==========================================================================
@@ -290,12 +565,27 @@ body {
    ========================================================================== */
 .contacto {
     text-align: center;
-    padding: 4rem 1rem;
-    background: #111;
+    padding: var(--section-y) 1rem;
+    background: var(--surface-soft);
+}
+
+.contacto-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.contacto-links a:hover {
+    color: var(--brand-strong);
 }
 
 .icono-red {
     width: 30px;
+    height: auto;
     vertical-align: middle;
     margin-right: 10px;
 }
@@ -303,202 +593,137 @@ body {
 /* Estilos para Modales */
 .modal-login {
     position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.8);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(36, 29, 32, .5);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 2000;
+    padding: 1rem;
 }
 
 .modal-content-login {
     position: relative;
-    background: #232323;
+    background: var(--surface);
+    color: var(--text);
     padding: 2rem 2.5rem;
-    border-radius: 1rem;
-    box-shadow: 0 8px 32px rgba(224,156,166,0.18);
+    border-radius: var(--r-card);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
     display: flex;
     flex-direction: column;
     align-items: center;
-    animation: fadeIn 0.5s;
+    animation: fadeIn 0.35s ease;
     min-width: 280px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.modal-content-login h2 {
+    color: var(--brand-strong);
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
 }
 
 .modal-content-login input {
     width: 100%;
     padding: 12px;
-    margin-bottom: 1.5rem;
-    border-radius: 0.5rem;
-    border: 1px solid #e09ca6;
-    background: #000;
-    color: #fff;
+    margin-bottom: 1rem;
+    border-radius: var(--r-input);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.modal-content-login input:focus {
+    outline: none;
+    border-color: var(--brand-strong);
+    box-shadow: 0 0 0 3px rgba(201, 107, 124, .25);
 }
 
 .modal-content-login button {
-  background: #e09ca6;
-  color: #fff;
-  border: none;
-  padding: 0.7rem 2rem;
-  border-radius: 1.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
-  margin-top: 15px;
+    background: var(--brand);
+    color: var(--brand-ink);
+    border: none;
+    padding: 0.7rem 2rem;
+    border-radius: var(--r-pill);
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, filter 0.2s;
+    margin-top: 10px;
+    width: 100%;
 }
 
-.modal-content-login h2 {
-  color: #e09ca6;
-  margin-bottom: 1.5rem;
+.modal-content-login button:hover {
+    background: var(--brand-strong);
+    color: var(--brand-ink);
+    filter: brightness(0.96);
+}
+
+.modal-content-login .btn-registro {
+    background: transparent;
+    color: var(--brand-strong);
+    border: 1px solid var(--border);
+}
+
+.modal-content-login .btn-registro:hover {
+    background: var(--surface-soft);
+    filter: none;
 }
 
 .close-login {
     position: absolute;
-    top: 10px; right: 20px;
+    top: 10px;
+    right: 20px;
     font-size: 2rem;
-    color: #e09ca6;
+    line-height: 1;
+    color: var(--text-muted);
     cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-login:hover {
+    color: var(--brand-strong);
 }
 
 /* ==========================================================================
-   7. FOOTER Y UTILIDADES
+   7. FOOTER
    ========================================================================== */
 footer {
     padding: 2rem;
     text-align: center;
-    background: #000;
-    border-top: 1px solid #1d1d1d;
-    color: #777;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
 }
 
-.oculto { display: none !important; }
-
-/* ==========================================================================
-   8. RESPONSIVE
-   ========================================================================== */
-@media (min-width: 1025px) {
-
-    .servicio-card:nth-child(5) {
-        grid-column: 2;
-    }
-    .servicio-card:nth-child(6) {
-        grid-column: 3;
-    }
-}
-
-@media (max-width: 1024px) {
-    .servicios-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    /* Quitamos el centrado especial en tablets */
-    .servicio-card:nth-child(5),
-    .servicio-card:nth-child(6) {
-        grid-column: auto;
-    }
-}
-
-@media (max-width: 900px) {
-    .main-header {
-        padding: 0.7rem 1rem;
-    }
-    .hero {
-        height: 220px;
-    }
-    .hero-text {
-        padding: 1rem 1.5rem;
-    }
-    .servicios-grid {
-        grid-template-columns: 1fr;
-    }
-    .agenda, .contacto {
-        max-width: 95vw;
-        padding: 1.2rem 0.5rem;
-    }
-}
-
-@media (max-width: 750px) {
-    /* 1. Header fijo y ordenado */
-    .main-header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 70px; 
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 1.5rem;
-        background: #000;
-        z-index: 1100; /* Aseguramos que esté sobre el nav */
-    }
-
-    /* Ajuste del logo para que no sea muy grande */
-    .logo-img {
-        height: 45px !important; 
-        width: auto;
-    }
-
-    /* ACTIVAR EL BOTÓN DE HAMBURGUESA */
-    .menu-toggle {
-        display: flex !important; /* Esto hará que aparezcan las 3 líneas */
-        z-index: 1200;
-    }
-
-    /* 2. El Menú de navegación (se despliega bajo el header) */
-    nav#main-nav {
-        position: fixed; 
-        top: 70px; 
-        right: 0;
-        background: rgba(0, 0, 0, 0.98); 
-        width: 220px;
-        height: auto;
-        border-radius: 0 0 0 1rem;
-        transform: translateX(110%);
-        transition: transform 0.3s ease-in-out;
-        z-index: 1000;
-        box-shadow: -5px 5px 15px rgba(0,0,0,0.8);
-    }
-
-    nav#main-nav.open {
-        transform: translateX(0); /* Entra desde la derecha */
-    }
-
-    nav#main-nav ul {
-        flex-direction: column;
-        padding: 15px 0;
-        gap: 0;
-        align-items: stretch; /* Ocupa todo el ancho del menú */
-    }
-
-    nav#main-nav a {
-        padding: 18px 25px;
-        display: block;
-        font-size: 1.1rem;
-        border-bottom: 1px solid rgba(224, 156, 166, 0.2);
-        text-align: left;
-    }
-
-    /* 3. Evitar que el header tape el inicio de la página */
-    body {
-        padding-top: 70px !important; 
-    }
+footer p {
+    margin: 0;
 }
 
 /* ==========================================================================
-   9. ALERTAS DINÁMICAS (MENSAJES DE ÉXITO Y ERROR)
+   8. ALERTAS DINÁMICAS (MENSAJES DE ÉXITO Y ERROR)
    ========================================================================== */
 
 /* Contenedor base de la alerta */
 .alert-message {
     position: fixed;
-    top: 100px; /* Debajo del header */
+    top: calc(var(--header-h) + 20px); /* Debajo del header */
     right: 20px;
     padding: 1rem 2rem;
-    border-radius: 10px;
+    border-radius: 12px;
     color: white;
-    font-weight: bold;
+    font-weight: 600;
     z-index: 3000; /* Por encima de modales y nav */
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    box-shadow: var(--shadow-md);
     min-width: 250px;
     text-align: center;
     animation: slideIn 0.5s ease-out forwards;
@@ -516,30 +741,114 @@ footer {
     border-left: 6px solid #a71d2a;
 }
 
-/* Animación de entrada (aparece desde la derecha) */
-@keyframes slideIn {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
+/* ==========================================================================
+   9. RESPONSIVE
+   ========================================================================== */
+@media (max-width: 1024px) {
+    .servicios {
+        padding-inline: 1.5rem;
     }
 }
 
-/* Clase para desvanecer antes de eliminar */
-.fade-out {
-    opacity: 0;
-    transition: opacity 0.5s ease;
+@media (max-width: 900px) {
+    .main-header {
+        padding: 0 1.25rem;
+    }
+    .hero-text {
+        padding: 1.25rem 1.5rem;
+    }
+    .agenda,
+    .contacto {
+        padding-inline: 1rem;
+    }
+    .form-agenda {
+        padding: 1.75rem;
+    }
 }
 
-/* Responsivo para móviles */
+@media (max-width: 750px) {
+    /* Ajuste del header y del área segura para el contenido */
+    :root {
+        --header-h: 64px;
+    }
+
+    .main-header {
+        padding: 0 1rem;
+    }
+
+    .logo-img {
+        height: 44px;
+        width: auto;
+    }
+
+    /* ACTIVAR EL BOTÓN DE HAMBURGUESA */
+    .menu-toggle {
+        display: flex;
+        z-index: 1200;
+    }
+
+    .user-controls {
+        margin-left: auto;
+        margin-right: 0.5rem;
+    }
+
+    /* El Menú de navegación (se despliega bajo el header) */
+    nav#main-nav {
+        position: fixed;
+        top: var(--header-h);
+        right: 0;
+        background: rgba(18, 12, 15, .92);
+        border-left: 1px solid rgba(255, 255, 255, .15);
+        width: 240px;
+        height: auto;
+        transform: translateX(110%);
+        transition: transform 0.3s ease-in-out;
+        z-index: 1000;
+        box-shadow: var(--shadow-md);
+    }
+
+    nav#main-nav.open {
+        transform: translateX(0); /* Entra desde la derecha */
+    }
+
+    nav#main-nav ul {
+        flex-direction: column;
+        padding: 0;
+        gap: 0;
+        align-items: stretch; /* Ocupa todo el ancho del menú */
+    }
+
+    nav#main-nav a {
+        padding: 16px 22px;
+        display: block;
+        font-size: 1.05rem;
+        color: rgba(255, 255, 255, .92);
+        border-bottom: 1px solid rgba(255, 255, 255, .12);
+        text-align: left;
+    }
+
+    nav#main-nav li:last-child a {
+        border-bottom: none;
+    }
+}
+
 @media (max-width: 600px) {
+    h2 {
+        font-size: 1.8rem;
+    }
+
+    .trabajos-gallery-container h3 {
+        font-size: 1.6rem;
+    }
+
+    .form-buttons {
+        flex-direction: column;
+    }
+
     .alert-message {
         right: 10px;
         left: 10px;
-        top: 90px;
+        top: calc(var(--header-h) + 16px);
         min-width: auto;
     }
 }

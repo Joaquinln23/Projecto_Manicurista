@@ -46,4 +46,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    // Header: barra negra al inicio, transparente al hacer scroll
+    const header = document.querySelector('.main-header');
+    if (header) {
+        const updateHeader = () => header.classList.toggle('scrolled', window.scrollY > 40);
+        window.addEventListener('scroll', updateHeader, { passive: true });
+        updateHeader();
+    }
 });
