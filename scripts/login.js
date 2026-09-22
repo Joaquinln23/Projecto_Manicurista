@@ -1,3 +1,7 @@
+// Importa la fuente única de API_URL y la función global de showMessage
+import API_URL from './config.js';
+import { showMessage } from './main.js';
+
 document.addEventListener('DOMContentLoaded', function() {
 
     // 1. DEFINICIÓN DE ELEMENTOS DEL DOM
