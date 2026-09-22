@@ -23,6 +23,10 @@
     .form-agenda {
         padding: 1.75rem;
     }
+    /* Servicios: 2 columnas en tablet */
+    .servicios-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 @media (max-width: 750px) {
@@ -94,6 +98,11 @@
 @media (max-width: 600px) {
     h2 {
         font-size: 1.8rem;
+    }
+
+    /* Servicios: columna única en móvil */
+    .servicios-grid {
+        grid-template-columns: 1fr;
     }
 
     .trabajos-gallery-container h3 {

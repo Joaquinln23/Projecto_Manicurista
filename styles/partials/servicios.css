@@ -5,23 +5,25 @@
 .servicios {
     background: var(--bg);
     color: var(--text);
-    padding: var(--section-y) 1.25rem;
+    /* Sin max-width propio: los gutters chicas dejan la galería casi a todo
+       el ancho del viewport; el heading y la grilla se centran por su cuenta */
+    padding: var(--section-y) clamp(12px, 3vw, 32px);
     text-align: center;
-    max-width: var(--container);
-    margin-inline: auto;
 }
 
 .servicios h2 {
     color: var(--brand-strong);
     font-size: 2.2rem;
-    margin: 0 0 2.5rem;
+    margin: 0 auto 2.5rem;
+    max-width: var(--container);
 }
 
 .servicios-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    max-width: var(--container);
+    /* Estricto 3+3 en desktop: 3 columnas → 2 filas de tarjetas grandes */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+    max-width: 1200px;
     margin-inline: auto;
 }
 
@@ -31,7 +33,8 @@
     border: 1px solid var(--border);
     border-radius: var(--r-card);
     box-shadow: var(--shadow-sm);
-    padding: 2rem 1.5rem;
+    padding: 2.5rem 2rem;
+    min-height: 240px; /* altura mínima para que la tarjeta se sienta sustancial */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -46,15 +49,16 @@
 }
 
 .servicio-card h3 {
-    margin: 0 0 0.7rem;
+    margin: 0 0 0.85rem;
     color: var(--text);
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     font-weight: 600;
 }
 
 .servicio-card p {
     color: var(--text-muted);
     margin: 0;
+    font-size: 1.08rem;
 }
 
 /* Galería de trabajos */
@@ -65,9 +69,10 @@
     border-radius: var(--r-card);
     border: 1px solid var(--border);
     margin-top: var(--section-y);
-    max-width: 1320px;
-    margin-inline: auto;
+    /* A todo el ancho de la sección (viewport − gutters), sin centrado angosto */
     width: 100%;
+    max-width: none;
+    margin-inline: 0;
 }
 
 .trabajos-gallery-container h3 {
@@ -81,8 +86,7 @@
 /* Cinta de trabajos: pista horizontal con ~3 tarjetas por vista en desktop */
 .trabajos-carousel {
     position: relative;
-    max-width: 1320px;
-    margin: 0 auto;
+    width: 100%;
 }
 
 .carousel-viewport {
