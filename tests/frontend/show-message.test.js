@@ -1,6 +1,6 @@
 import { loadScript } from './helpers.js';
 
-loadScript('scripts/main.js');
+await loadScript('scripts/main.js');
 
 beforeEach(() => {
   document.body.innerHTML = '';

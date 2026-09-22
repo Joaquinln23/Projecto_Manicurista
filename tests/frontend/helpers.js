@@ -1,11 +1,9 @@
-import { readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 export const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 
-/** Carga un script clásico del repo en el contexto global jsdom. */
-export function loadScript(relPath) {
-  const code = readFileSync(resolve(repoRoot, relPath), 'utf8');
-  (0, eval)(code);
+/** Carga un script del repo como módulo ES en el contexto jsdom. */
+export async function loadScript(relPath) {
+  await import(resolve(repoRoot, relPath));
 }

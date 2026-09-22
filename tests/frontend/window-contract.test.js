@@ -3,16 +3,16 @@ import { resolve } from 'node:path';
 
 import { loadScript, repoRoot } from './helpers.js';
 
-test('config.js define window.API_URL como única fuente', () => {
-  loadScript('scripts/config.js');
+test('config.js define window.API_URL como única fuente', async () => {
+  await loadScript('scripts/config.js');
   expect(typeof window.API_URL).toBe('string');
   expect(window.API_URL).toMatch(/^https:\/\//);
 });
 
-test('tras DOMContentLoaded, showMessage y cargarReservas son funciones de window', () => {
-  loadScript('scripts/config.js');
-  loadScript('scripts/main.js');
-  loadScript('scripts/reservas.js');
+test('tras DOMContentLoaded, showMessage y cargarReservas son funciones de window', async () => {
+  await loadScript('scripts/config.js');
+  await loadScript('scripts/main.js');
+  await loadScript('scripts/reservas.js');
 
   // Vacío para no disparar una carga de reservas real al iniciar
   localStorage.clear();
