@@ -90,7 +90,8 @@
 /* Botones especiales en el nav */
 .btn-ingresar {
     background: var(--brand);
-    color: var(--brand-ink) !important;
+    /* Letras blancas — igual que en el drawer móvil (decisión de marca) */
+    color: #ffffff !important;
     padding: 0.5rem 1.2rem;
     border: none;
     border-radius: var(--r-pill);
@@ -106,7 +107,7 @@
 
 .btn-ingresar:hover {
     background: var(--brand-strong);
-    color: var(--brand-ink) !important;
+    color: #ffffff !important;
     filter: brightness(0.96);
 }
 

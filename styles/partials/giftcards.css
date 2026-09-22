@@ -33,7 +33,8 @@
 }
 
 .giftcards-img {
-    width: min(52vw, 640px);
+    /* Más grande para que el "GIFT CARD" de la pieza lea con presencia */
+    width: min(58vw, 720px);
     max-width: 100%;
     height: auto;
     display: block;

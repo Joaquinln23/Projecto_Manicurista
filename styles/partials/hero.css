@@ -41,7 +41,7 @@
     max-width: min(90%, 40rem);
     padding: 0;
     margin: 0;
-    text-shadow: 0 3px 24px rgba(0, 0, 0, .85), 0 2px 6px rgba(0, 0, 0, .6);
+    text-shadow: 0 4px 28px rgba(0, 0, 0, .95), 0 2px 10px rgba(0, 0, 0, .85), 0 1px 3px rgba(0, 0, 0, .9);
 }
 
 .hero-text h1 {
@@ -51,10 +51,12 @@
     font-family: var(--font-script);
     font-weight: 400;
     /* El x-height de los scripts es chico: se compensa con más cuerpo */
-    font-size: clamp(2.8rem, 7vw, 4.6rem);
-    line-height: 1.18;
+    font-size: clamp(3.2rem, 8vw, 5.4rem);
+    line-height: 1.15;
     letter-spacing: 0.01em;
     margin: 0 0 0.75rem;
+    /* Sombra propia extra: el script fino necesita más contraste */
+    text-shadow: 0 5px 32px rgba(0, 0, 0, 1), 0 3px 12px rgba(0, 0, 0, .95), 0 1px 4px rgba(0, 0, 0, 1);
 }
 
 .hero-text p {
