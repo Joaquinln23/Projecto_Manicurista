@@ -1,0 +1,142 @@
+/* ==========================================================================
+   4. SERVICIOS Y GALERÍA
+   ========================================================================== */
+.servicios {
+    background: var(--bg);
+    color: var(--text);
+    padding: var(--section-y) 1.25rem;
+    text-align: center;
+    max-width: var(--container);
+    margin-inline: auto;
+}
+
+.servicios h2 {
+    color: var(--brand-strong);
+    font-size: 2.2rem;
+    margin: 0 0 2.5rem;
+}
+
+.servicios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    max-width: var(--container);
+    margin-inline: auto;
+}
+
+.servicio-card {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--r-card);
+    box-shadow: var(--shadow-sm);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.servicio-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.servicio-card h3 {
+    margin: 0.5rem 0 0.7rem;
+    color: var(--text);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.servicio-card p {
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.servicio-card img {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    aspect-ratio: 350 / 400;
+    object-fit: cover;
+    display: block;
+    border-radius: calc(var(--r-card) - 8px);
+    margin-bottom: 1rem;
+}
+
+/* Galería de trabajos */
+.trabajos-gallery-container {
+    padding: var(--section-y) 1rem 0;
+    text-align: center;
+    background: var(--surface-soft);
+    border-radius: var(--r-card);
+    border: 1px solid var(--border);
+    margin-top: var(--section-y);
+    max-width: 1320px;
+    margin-inline: auto;
+    width: 100%;
+}
+
+.trabajos-gallery-container h3 {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--brand-strong);
+    margin: 0 0 2rem;
+}
+
+.trabajos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 0 1rem 2.5rem;
+}
+
+.trabajo-item {
+    overflow: hidden;
+    border-radius: var(--r-card);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.trabajo-item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.trabajo-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    aspect-ratio: 1 / 1;
+}
+
+/* Lista dinámica de reservas (la genera reservas.js) */
+.lista-reservas {
+    list-style: none;
+    margin: 1.5rem auto 0;
+    padding: 0;
+    max-width: 480px;
+    text-align: left;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-card);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.lista-reservas li {
+    padding: 0.9rem 1.25rem;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+}
+
+.lista-reservas li:last-child {
+    border-bottom: none;
+}
+
