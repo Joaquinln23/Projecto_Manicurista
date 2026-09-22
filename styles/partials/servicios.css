@@ -31,10 +31,11 @@
     border: 1px solid var(--border);
     border-radius: var(--r-card);
     box-shadow: var(--shadow-sm);
-    padding: 1.5rem;
+    padding: 2rem 1.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center; /* solo texto: el contenido queda centrado sin huecos de imagen */
     text-align: center;
     transition: transform 0.2s, box-shadow 0.2s;
 }
@@ -45,7 +46,7 @@
 }
 
 .servicio-card h3 {
-    margin: 0.5rem 0 0.7rem;
+    margin: 0 0 0.7rem;
     color: var(--text);
     font-size: 1.2rem;
     font-weight: 600;
@@ -54,17 +55,6 @@
 .servicio-card p {
     color: var(--text-muted);
     margin: 0;
-}
-
-.servicio-card img {
-    width: 100%;
-    max-width: 300px;
-    height: auto;
-    aspect-ratio: 350 / 400;
-    object-fit: cover;
-    display: block;
-    border-radius: calc(var(--r-card) - 8px);
-    margin-bottom: 1rem;
 }
 
 /* Galería de trabajos */
@@ -135,7 +125,10 @@
     height: 100%;
     object-fit: cover;
     display: block;
-    aspect-ratio: 1 / 1;
+    /* Retrato 3/4: ~565 px de alto en desktop (ancho ~424 px) y ~373 px en
+       móvil; el min-height con clamp fija suelo ~360 px en pantallas chicas */
+    aspect-ratio: 3 / 4;
+    min-height: clamp(360px, 40vw, 560px);
     user-select: none;
     -webkit-user-drag: none;
 }
