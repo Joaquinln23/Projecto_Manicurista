@@ -20,6 +20,9 @@ function showMessage(message, type = 'success') {
 // Exponer showMessage en window (contrato de ventana congelado)
 window.showMessage = showMessage;
 
+// Exportar showMessage para consumidores ES-module (reservas.js, login.js)
+export { showMessage };
+
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Interfaz cargada correctamente');
 

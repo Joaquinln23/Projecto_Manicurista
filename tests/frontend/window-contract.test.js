@@ -22,6 +22,12 @@ test('tras DOMContentLoaded, showMessage y cargarReservas son funciones de windo
   expect(typeof window.cargarReservas).toBe('function');
 });
 
+test('main.js expone showMessage como alias explícito de window', async () => {
+  await loadScript('scripts/main.js');
+  expect(Object.prototype.hasOwnProperty.call(window, 'showMessage')).toBe(true);
+  expect(typeof window.showMessage).toBe('function');
+});
+
 test('scripts/ contiene exactamente una asignación de API_URL', () => {
   const scriptsDir = resolve(repoRoot, 'scripts');
   const archivos = readdirSync(scriptsDir).filter((f) => f.endsWith('.js'));
