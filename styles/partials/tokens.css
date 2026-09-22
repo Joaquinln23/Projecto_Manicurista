@@ -1,0 +1,123 @@
+/* ==========================================================================
+   1. TOKENS Y CONFIGURACIÓN GLOBAL
+   ========================================================================== */
+:root {
+    --font-heading: 'Jost', sans-serif;
+    --font-body: 'Questrial', sans-serif;
+    --bg: #fdf7f9;            /* blanco rosado */
+    --surface: #ffffff;
+    --surface-soft: #fceef2;  /* banda alternativa */
+    --text: #241d20;
+    --text-muted: #7a6b70;
+    --brand: #e09ca6;         /* identidad actual de la marca */
+    --brand-strong: #c96b7c;  /* hover, títulos, acentos con contraste */
+    --brand-ink: #2b1f24;     /* texto sobre botones rosa */
+    --border: #efd9de;
+    --shadow-sm: 0 2px 10px rgba(43, 31, 36, .06);
+    --shadow-md: 0 10px 30px rgba(43, 31, 36, .10);
+    --r-card: 20px;
+    --r-input: 14px;
+    --r-pill: 999px;
+    --container: 1140px;
+    --header-h: 72px;
+    --section-y: 4.5rem;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 100%;
+    scroll-behavior: smooth;
+    max-width: 100%;
+}
+
+body {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text);
+    background: var(--bg);
+    margin: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    line-height: 1.25;
+}
+
+/* Títulos de sección: texto grande, contraste AA sobre fondo claro */
+h2 {
+    color: var(--brand-strong);
+    font-size: 2.2rem;
+    font-weight: 600;
+}
+
+a {
+    color: var(--brand-strong);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+    outline: 2px solid var(--brand-strong);
+    outline-offset: 2px;
+}
+
+img {
+    max-width: 100%;
+}
+
+/* Accesibilidad: respetar preferencia de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Utilidades compartidas */
+/* Las anclas no quedan ocultas bajo el header fijo */
+section[id] {
+    scroll-margin-top: calc(var(--header-h) + 1rem);
+}
+
+.oculto { display: none !important; }
+
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
