@@ -69,7 +69,7 @@
 
 /* Galería de trabajos */
 .trabajos-gallery-container {
-    padding: var(--section-y) 1rem 0;
+    padding: var(--section-y) 1rem 2.5rem;
     text-align: center;
     background: var(--surface-soft);
     border-radius: var(--r-card);
@@ -88,16 +88,40 @@
     margin: 0 0 2rem;
 }
 
-.trabajos-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1.5rem;
+/* Carrusel de trabajos: pista horizontal con tarjetas grandes (~2 por vista) */
+.trabajos-carousel {
+    position: relative;
     max-width: 1320px;
     margin: 0 auto;
-    padding: 0 1rem 2.5rem;
+}
+
+.carousel-viewport {
+    overflow: hidden;
+    cursor: grab;
+    touch-action: pan-y; /* el scroll vertical sigue libre; el horizontal es del carrusel */
+    -webkit-tap-highlight-color: transparent;
+}
+
+.carousel-viewport:active {
+    cursor: grabbing;
+}
+
+.carousel-track {
+    display: flex;
+    gap: 1.5rem;
+    transition: transform 0.6s ease;
+    will-change: transform;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* Modo sin transición: arrastre en curso y wraps invisibles del looping */
+.carousel-track.no-transition {
+    transition: none;
 }
 
 .trabajo-item {
+    flex: 0 0 clamp(280px, 42vw, 560px); /* tarjeta grande: ~2 visibles en desktop */
     overflow: hidden;
     border-radius: var(--r-card);
     box-shadow: var(--shadow-sm);
@@ -115,6 +139,43 @@
     object-fit: cover;
     display: block;
     aspect-ratio: 1 / 1;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* Botones manuales prev/next (accesibilidad) */
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 2.75rem;
+    height: 2.75rem;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    color: var(--brand-strong);
+    font-size: 1.6rem;
+    line-height: 1;
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+.carousel-btn:hover {
+    background: var(--surface-soft);
+    box-shadow: var(--shadow-md);
+}
+
+.carousel-btn-prev {
+    left: 0.5rem;
+}
+
+.carousel-btn-next {
+    right: 0.5rem;
 }
 
 /* Lista dinámica de reservas (la genera reservas.js) */

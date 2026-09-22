@@ -91,17 +91,24 @@
 
             <div class="trabajos-gallery-container">
                 <h3>Nuestros Trabajos</h3>
-                <div class="trabajos-grid">
-                    <div class="trabajo-item"><img src="/Images/Trabajos/1.png" alt="Trabajo de manicura 1" loading="lazy"></div>
-                    <div class="trabajo-item"><img src="/Images/Trabajos/2.png" alt="Trabajo de manicura 2" loading="lazy"></div>
-                    <div class="trabajo-item"><img src="/Images/Trabajos/3.png" alt="Trabajo de manicura 3" loading="lazy"></div>
-                    <div class="trabajo-item"><img src="/Images/Trabajos/4.png" alt="Trabajo de manicura 4" loading="lazy"></div>
-                    <div class="trabajo-item"><img src="/Images/Trabajos/5.png" alt="Trabajo de manicura 5" loading="lazy"></div>
-                    <div class="trabajo-item"><img src="/Images/Trabajos/6.png" alt="Trabajo de manicura 6" loading="lazy"></div>
-                    <div class="trabajo-item"><img src="/Images/Trabajos/7.png" alt="Trabajo de manicura 7" loading="lazy"></div>
-                    <div class="trabajo-item"><img src="/Images/Trabajos/8.png" alt="Trabajo de manicura 8" loading="lazy"></div>
-                    <div class="trabajo-item"><img src="/Images/Trabajos/9.png" alt="Trabajo de manicura 9" loading="lazy"></div>
-                    <div class="trabajo-item"><img src="/Images/Trabajos/10.png" alt="Trabajo de manicura 10" loading="lazy"></div>
+                <!-- Carrusel arrastrable con autoplay: los clones laterales habilitan el looping -->
+                <div class="trabajos-carousel" id="trabajos-carousel" role="region" aria-label="Nuestros trabajos">
+                    <button type="button" class="carousel-btn carousel-btn-prev" aria-label="Trabajo anterior">&#8249;</button>
+                    <div class="carousel-viewport">
+                        <div class="carousel-track">
+                            <div class="trabajo-item"><img src="/Images/Trabajos/1.png" alt="Trabajo de manicura 1" loading="lazy"></div>
+                            <div class="trabajo-item"><img src="/Images/Trabajos/2.png" alt="Trabajo de manicura 2" loading="lazy"></div>
+                            <div class="trabajo-item"><img src="/Images/Trabajos/3.png" alt="Trabajo de manicura 3" loading="lazy"></div>
+                            <div class="trabajo-item"><img src="/Images/Trabajos/4.png" alt="Trabajo de manicura 4" loading="lazy"></div>
+                            <div class="trabajo-item"><img src="/Images/Trabajos/5.png" alt="Trabajo de manicura 5" loading="lazy"></div>
+                            <div class="trabajo-item"><img src="/Images/Trabajos/6.png" alt="Trabajo de manicura 6" loading="lazy"></div>
+                            <div class="trabajo-item"><img src="/Images/Trabajos/7.png" alt="Trabajo de manicura 7" loading="lazy"></div>
+                            <div class="trabajo-item"><img src="/Images/Trabajos/8.png" alt="Trabajo de manicura 8" loading="lazy"></div>
+                            <div class="trabajo-item"><img src="/Images/Trabajos/9.png" alt="Trabajo de manicura 9" loading="lazy"></div>
+                            <div class="trabajo-item"><img src="/Images/Trabajos/10.png" alt="Trabajo de manicura 10" loading="lazy"></div>
+                        </div>
+                    </div>
+                    <button type="button" class="carousel-btn carousel-btn-next" aria-label="Trabajo siguiente">&#8250;</button>
                 </div>
             </div>
         </section>
@@ -176,5 +183,6 @@
     <script type="module" src="scripts/main.js"></script>
     <script type="module" src="scripts/login.js"></script>
     <script type="module" src="scripts/reservas.js"></script>
+    <script type="module" src="scripts/carousel.js"></script>
 </body>
 </html>

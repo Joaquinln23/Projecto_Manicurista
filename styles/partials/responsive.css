@@ -100,6 +100,17 @@
         font-size: 1.6rem;
     }
 
+    /* Carrusel de trabajos: hueco más angosto y controles táctiles */
+    .carousel-track {
+        gap: 1rem;
+    }
+
+    .carousel-btn {
+        width: 2.25rem;
+        height: 2.25rem;
+        font-size: 1.3rem;
+    }
+
     .form-buttons {
         flex-direction: column;
     }
