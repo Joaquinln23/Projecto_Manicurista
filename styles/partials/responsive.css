@@ -15,6 +15,20 @@
     }
     .hero-text {
         padding: 1.25rem 1.5rem;
+        max-width: 100%;
+    }
+    /* Hero: el layout partido se apila — texto arriba, CTAs debajo */
+    .hero {
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 1.25rem;
+    }
+    .hero-ctas {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        margin-left: 1.5rem;
     }
     .agenda,
     .contacto {
