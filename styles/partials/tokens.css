@@ -4,8 +4,9 @@
    que consumen el resto de parciales vía var().
    ========================================================================== */
 :root {
-    --font-heading: 'Jost', sans-serif;
-    --font-body: 'Questrial', sans-serif;
+    --font-heading: "Playfair Display", Georgia, serif;
+    --font-body: "Lato", "Helvetica Neue", sans-serif;
+    --font-script: "Parisienne", cursive;
     --bg: #fdf7f9;            /* blanco rosado */
     --surface: #ffffff;
     --surface-soft: #fceef2;  /* banda alternativa */
@@ -50,8 +51,11 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
-    font-weight: 500;
+    /* Playfair se carga en 600/700: alinear el peso evita síntesis */
+    font-weight: 600;
     line-height: 1.25;
+    /* Tracking sutil: serifas display necesitan menos espaciado que Questrial */
+    letter-spacing: 0.02em;
 }
 
 /* Títulos de sección: texto grande, contraste AA sobre fondo claro */
@@ -90,7 +94,8 @@ img {
 
 /* Utilidades compartidas */
 /* Las anclas no quedan ocultas bajo el header fijo */
-section[id] {
+section[id],
+#trabajos {
     scroll-margin-top: calc(var(--header-h) + 1rem);
 }
 

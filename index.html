@@ -12,7 +12,7 @@
     <meta property="og:url" content="https://caterinaartist.netlify.app/">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Questrial&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lato:wght@400;700&family=Parisienne&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
@@ -36,6 +36,7 @@
         <nav id="main-nav">
             <ul>
                 <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#trabajos">Nuestros Trabajos</a></li>
                 <li><a href="#agenda">Reserva de Hora</a></li>
                 <li><a href="#giftcards">Gift Cards</a></li>
                 <li><a href="#contacto">Contacto</a></li>
@@ -84,7 +85,7 @@
                 </div>
             </div>
 
-            <div class="trabajos-gallery-container">
+            <div class="trabajos-gallery-container" id="trabajos">
                 <h3>Nuestros Trabajos</h3>
                 <!-- Cinta continua arrastrable: los clones laterales habilitan el loop infinito -->
                 <div class="trabajos-carousel" id="trabajos-carousel" role="region" aria-label="Nuestros trabajos">
@@ -134,27 +135,38 @@
         <!-- Gift Cards: tarjetas de regalo para ocasiones especiales -->
         <section id="giftcards" class="giftcards">
             <div class="giftcards-inner">
-                <p class="giftcards-eyebrow">Gift Cards</p>
-                <h2>Regala un momento de belleza</h2>
-                <p class="giftcards-copy">
-                    Nuestras tarjetas de regalo convierten un cumpleaños, un aniversario
-                    u otra ocasión especial en un detalle que se recuerda. Las coordinamos
-                    en formato digital o las preparamos personalizadas, y también puedes
-                    solicitarlas para obsequiar a tu equipo o a tus clientas.
-                </p>
-
-                <!-- Caja destacada: cómo conseguir la gift card (vía Instagram) -->
-                <div class="giftcards-box">
-                    <span class="giftcards-box-icon" aria-hidden="true">🎁</span>
-                    <div>
-                        <strong>¿Cómo la consigo?</strong>
-                        <p>Escríbenos por Instagram y la coordinamos contigo.</p>
-                    </div>
+                <!-- Pieza central: la tarjeta gráfica del usuario -->
+                <div class="giftcards-visual">
+                    <img
+                        src="/Images/gift-card.png"
+                        alt="Gift Card Caterina Artist Nails — Belleza en tus manos"
+                        loading="lazy"
+                        class="giftcards-img">
                 </div>
 
-                <div class="giftcards-ctas">
-                    <a href="https://www.instagram.com/caterinaartist/" target="_blank" rel="noopener noreferrer" class="btn-cta-primary">💬 Consultar por Instagram</a>
-                    <a href="#contacto" class="btn-cta-secondary">Ver contacto</a>
+                <div class="giftcards-copy-block">
+                    <p class="giftcards-eyebrow">Gift Cards</p>
+                    <h2>Regala un momento de belleza</h2>
+                    <p class="giftcards-copy">
+                        Nuestras tarjetas de regalo convierten un cumpleaños, un aniversario
+                        u otra ocasión especial en un detalle que se recuerda. Las coordinamos
+                        en formato digital o las preparamos personalizadas, y también puedes
+                        solicitarlas para obsequiar a tu equipo o a tus clientas.
+                    </p>
+
+                    <!-- Caja destacada: cómo conseguir la gift card (vía Instagram) -->
+                    <div class="giftcards-box">
+                        <span class="giftcards-box-icon" aria-hidden="true">🎁</span>
+                        <div>
+                            <strong>¿Cómo la consigo?</strong>
+                            <p>Escríbenos por Instagram y la coordinamos contigo.</p>
+                        </div>
+                    </div>
+
+                    <div class="giftcards-ctas">
+                        <a href="https://www.instagram.com/caterinaartist/" target="_blank" rel="noopener noreferrer" class="btn-cta-primary">💬 Consultar por Instagram</a>
+                        <a href="#contacto" class="btn-cta-secondary">Ver contacto</a>
+                    </div>
                 </div>
             </div>
         </section>
