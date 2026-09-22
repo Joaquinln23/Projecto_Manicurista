@@ -1,0 +1,126 @@
+/* ==========================================================================
+   6. GIFT CARDS
+   Rol: sección #giftcards — tarjetas de regalo, caja "¿Cómo la consigo?"
+   y CTAs (Instagram primario / contacto secundario).
+   ========================================================================== */
+.giftcards {
+    /* Banda sutil (blanco rosado) entre agenda y contacto; la tarjeta
+       interior en blanco aporta el contraste sobre los fondos rosa suave */
+    background: var(--bg);
+    padding: var(--section-y) clamp(16px, 4vw, 40px);
+    text-align: center;
+}
+
+.giftcards-inner {
+    max-width: 860px;
+    margin-inline: auto;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-card);
+    box-shadow: var(--shadow-md);
+    padding: clamp(2rem, 5vw, 3.25rem);
+}
+
+/* Etiqueta "eyebrow" en píldora sobre el título */
+.giftcards-eyebrow {
+    display: inline-block;
+    margin: 0 0 0.75rem;
+    padding: 0.3rem 0.9rem;
+    border-radius: var(--r-pill);
+    background: var(--surface-soft);
+    color: var(--brand-strong);
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.giftcards h2 {
+    margin: 0 0 1rem;
+    color: var(--brand-strong);
+}
+
+.giftcards-copy {
+    margin: 0 auto 1.75rem;
+    max-width: 620px;
+    color: var(--text-muted);
+    font-size: 1.08rem;
+}
+
+/* Caja destacada 🎁: cómo conseguir la gift card */
+.giftcards-box {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    text-align: left;
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: var(--r-input);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.75rem;
+}
+
+.giftcards-box-icon {
+    font-size: 1.75rem;
+    line-height: 1;
+}
+
+.giftcards-box strong {
+    display: block;
+    color: var(--text);
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    margin-bottom: 0.15rem;
+}
+
+.giftcards-box p {
+    margin: 0;
+    color: var(--text-muted);
+}
+
+/* CTAs: píldora primaria (Instagram) y secundaria (contacto) */
+.giftcards-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.9rem;
+}
+
+.btn-cta-primary,
+.btn-cta-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.85rem 1.75rem;
+    border-radius: var(--r-pill);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s, filter 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.btn-cta-primary {
+    background: var(--brand);
+    color: var(--brand-ink);
+    border: none;
+}
+
+.btn-cta-primary:hover {
+    background: var(--brand-strong);
+    color: var(--brand-ink);
+    filter: brightness(0.96);
+}
+
+.btn-cta-secondary {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+}
+
+.btn-cta-secondary:hover {
+    color: var(--brand-strong);
+    border-color: var(--brand-strong);
+}

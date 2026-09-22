@@ -1,5 +1,5 @@
 /* ==========================================================================
-   9. RESPONSIVE
+   10. RESPONSIVE
    Rol: media queries de adaptación a tablet/móvil.
    Nota: DEBE importarse la última en style.css para ganar la cascada.
    ========================================================================== */
@@ -107,6 +107,25 @@
 
     .trabajos-gallery-container h3 {
         font-size: 1.6rem;
+    }
+
+    /* Gift Cards: caja y CTAs apilan en una columna */
+    .giftcards-inner {
+        padding: 1.75rem 1.25rem;
+    }
+
+    .giftcards-box {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .giftcards-ctas {
+        flex-direction: column;
+    }
+
+    .giftcards-ctas a {
+        width: 100%;
     }
 
     /* Carrusel de trabajos: hueco más angosto y controles táctiles */

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   6. CONTACTO Y MODALES
+   7. CONTACTO Y MODALES
    Rol: enlaces de contacto y estilos de los modales de login/registro.
    Nota: los modales dependen de la clase .oculto que alteran login.js.
    ========================================================================== */
@@ -32,9 +32,9 @@
 
 /* Instagram destaca: ícono grande y handle prominente en el acento de marca */
 .contacto-links .link-instagram {
-    gap: 0.75rem;
+    gap: 1rem; /* respiración extra entre el ícono grande y el handle */
     color: var(--brand-strong);
-    font-size: 1.4rem;
+    font-size: clamp(1.8rem, 3vw, 2rem);
     font-weight: 600;
 }
 
@@ -44,8 +44,9 @@
 }
 
 .contacto-links .link-instagram .icono-red {
-    width: clamp(48px, 5vw, 64px); /* era 30px: el ícono de Instagram es el destacado */
+    width: clamp(72px, 6vw, 80px); /* era 48–64px: el ícono de Instagram es el destacado */
     margin-right: 0;
+    flex-shrink: 0; /* la fila icono+texto se mantiene centrada sin comprimir el ícono */
 }
 
 /* Estilos para Modales */

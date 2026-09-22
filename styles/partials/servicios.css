@@ -5,9 +5,11 @@
 .servicios {
     background: var(--bg);
     color: var(--text);
-    /* Sin max-width propio: los gutters chicas dejan la galería casi a todo
-       el ancho del viewport; el heading y la grilla se centran por su cuenta */
-    padding: var(--section-y) clamp(12px, 3vw, 32px);
+    /* Ancho moderado centrado: intermedio entre el tope de 1140px y el
+       casi a todo ancho; la galería hereda este ancho vía el contenedor */
+    max-width: 1280px;
+    margin-inline: auto;
+    padding: var(--section-y) clamp(16px, 4vw, 40px);
     text-align: center;
 }
 
@@ -69,7 +71,7 @@
     border-radius: var(--r-card);
     border: 1px solid var(--border);
     margin-top: var(--section-y);
-    /* A todo el ancho de la sección (viewport − gutters), sin centrado angosto */
+    /* Ocupa todo el ancho útil de la sección (ya centrada con su max-width) */
     width: 100%;
     max-width: none;
     margin-inline: 0;
@@ -110,9 +112,9 @@
 }
 
 .trabajo-item {
-    /* 3 tarjetas exactas + 2 huecos caben en el viewport; el min del clamp
-       deja ~1.2–1.4 tarjetas visibles en móvil */
-    flex: 0 0 clamp(280px, calc((100% - 2 * 1.5rem) / 3), 560px);
+    /* 3 tarjetas exactas + 2 huecos caben en el viewport de la sección
+       (1280px); el min del clamp deja ~1.2–1.4 tarjetas visibles en móvil */
+    flex: 0 0 clamp(240px, calc((100% - 2 * 1.5rem) / 3), 480px);
     overflow: hidden;
     border-radius: var(--r-card);
     box-shadow: var(--shadow-sm);
@@ -129,10 +131,10 @@
     height: 100%;
     object-fit: cover;
     display: block;
-    /* Retrato 3/4: ~565 px de alto en desktop (ancho ~424 px) y ~373 px en
-       móvil; el min-height con clamp fija suelo ~360 px en pantallas chicas */
+    /* Retrato 3/4: ~512 px de alto en desktop (ancho ~384 px); el min-height
+       con clamp fija suelo ~300 px en pantallas chicas */
     aspect-ratio: 3 / 4;
-    min-height: clamp(360px, 40vw, 560px);
+    min-height: clamp(300px, 34vw, 460px);
     user-select: none;
     -webkit-user-drag: none;
 }
