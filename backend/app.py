@@ -6,9 +6,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import mysql.connector
 from werkzeug.security import generate_password_hash, check_password_hash
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+import requests
 from datetime import datetime
 
 app = Flask(__name__)
@@ -25,28 +23,43 @@ def get_db_connection():
         database=os.getenv('DB_NAME', 'defaultdb')
     )
 
-# --- FUNCIÓN ASÍNCRONA PARA ENVIAR CORREO ---
+# --- ASYNC EMAIL SENDER (via Resend) ---
+# Required Render env vars: RESEND_API_KEY, EMAIL_RECEIVER, optional EMAIL_FROM
+# (defaults to onboarding@resend.dev).
+# Uses the Resend HTTPS API (port 443) because Render's free tier blocks
+# outbound SMTP ports 25/465/587, so smtplib can never connect in production.
 def enviar_correo_async(nombre, fecha, hora):
-    """Envía el aviso de nueva reserva por SMTP en un hilo aparte."""
-    remitente = os.getenv('EMAIL_USER')
-    contraseña = os.getenv('EMAIL_PASSWORD')
+    """Sends the new-booking notice via Resend in a background thread."""
+    api_key = os.getenv('RESEND_API_KEY')
+    if not api_key:
+        print("❌ Error enviando correo en segundo plano: missing RESEND_API_KEY")
+        return
+
+    remitente = os.getenv('EMAIL_FROM', 'onboarding@resend.dev')
     destinatario = os.getenv('EMAIL_RECEIVER')
-    
+
     asunto = f"Nueva Reserva: {nombre}"
     cuerpo = f"Cliente: {nombre}\nFecha: {fecha}\nHora: {hora}"
-    
-    mensaje = MIMEMultipart()
-    mensaje['From'] = remitente
-    mensaje['To'] = destinatario
-    mensaje['Subject'] = asunto
-    mensaje.attach(MIMEText(cuerpo, 'plain'))
-    
+
     try:
-        # SMTP_SSL es más seguro y rápido para el puerto 465 de Gmail
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465, timeout=10) as servidor:
-            servidor.login(remitente, contraseña)
-            servidor.send_message(mensaje)
+        response = requests.post(
+            "https://api.resend.com/emails",
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+            },
+            json={
+                "from": remitente,
+                "to": [destinatario],
+                "subject": asunto,
+                "text": cuerpo,
+            },
+            timeout=10,
+        )
+        if response.status_code == 200:
             print(f"✅ Correo enviado exitosamente para la reserva de: {nombre}")
+        else:
+            print(f"❌ Error enviando correo en segundo plano: status {response.status_code}: {response.text[:500]}")
     except Exception as e:
         print(f"❌ Error enviando correo en segundo plano: {e}")
 
