@@ -8,6 +8,33 @@
 import API_URL from './config.js';
 import { showMessage } from './main.js';
 
+// Registration validators (fidelizacion Unit 2, client side).
+// Single mirrored RUT rule, duplicated in backend/app.py; the server is
+// authoritative and the client only blocks the round-trip early.
+export function normalizeRut(value) {
+    return String(value ?? '').replace(/[.\s]/g, '').toUpperCase();
+}
+
+export function isValidRut(value) {
+    const normalized = normalizeRut(value);
+    const match = /^(\d{7,8})-([\dK])$/.exec(normalized);
+    if (!match) return false;
+    const weights = [2, 3, 4, 5, 6, 7];
+    let sum = 0;
+    const digits = match[1].split('').reverse();
+    for (let i = 0; i < digits.length; i++) {
+        sum += Number(digits[i]) * weights[i % weights.length];
+    }
+    const dv = 11 - (sum % 11);
+    const expected = dv === 11 ? '0' : dv === 10 ? 'K' : String(dv);
+    return match[2] === expected;
+}
+
+// Format-only email check (no MX/deliverability lookup, per spec).
+export function isValidEmail(value) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value ?? ''));
+}
+
 document.addEventListener('DOMContentLoaded', function() {
 
     // 1. DEFINICIÓN DE ELEMENTOS DEL DOM
@@ -86,12 +113,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 4. LÓGICA DE REGISTRO
     registerBtn.addEventListener('click', function() {
+        const rutValue = document.getElementById('register-rut').value;
+        const emailValue = document.getElementById('register-email').value;
+
+        // Client-side format gate; the server revalidates authoritatively.
+        if (!isValidRut(rutValue)) return showMessage('Revisa tu RUT e inténtalo de nuevo', 'error');
+        if (!isValidEmail(emailValue)) return showMessage('Revisa tu correo, parece que le falta algo', 'error');
+
         const payload = {
-            rut: document.getElementById('register-rut').value,
+            rut: rutValue,
             nombreusuario: document.getElementById('register-nombreusuario').value,
             nombre: document.getElementById('register-nombre').value,
             apellido: document.getElementById('register-apellido').value,
-            email: document.getElementById('register-email').value,
+            email: emailValue,
             password: document.getElementById('register-password').value
         };
 
@@ -103,7 +137,13 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                showMessage('¡Registro exitoso! Ya puedes iniciar sesión.', 'success');
+                // Welcome coupon (fidelizacion PR4): the register response
+                // carries the fresh BIENV- code, so show it right away.
+                if (data.cupon && data.cupon.codigo) {
+                    showMessage(`¡Registro exitoso! Tu cupón del 10% es ${data.cupon.codigo}. Úsalo en tus primeras uñitas.`, 'success');
+                } else {
+                    showMessage('¡Registro exitoso! Ya puedes iniciar sesión.', 'success');
+                }
                 registerModal.classList.add('oculto');
             } else {
                 showMessage(data.error || 'Error en el registro', 'error');

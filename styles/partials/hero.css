@@ -27,15 +27,20 @@
     overflow: hidden;
 }
 
-/* Velo doble: gradiente lateral fuerte + tinte global — el texto manda */
+/* Single gradient underlay: darker on the left (~45-60% where text/CTAs live),
+   diffused fade to transparent on the right so the photo stays clear. */
 .hero::before {
     content: "";
     position: absolute;
     inset: 0;
     z-index: 2;
-    background:
-        linear-gradient(90deg, rgba(8, 5, 7, .88) 0%, rgba(8, 5, 7, .55) 50%, rgba(8, 5, 7, .28) 80%),
-        rgba(8, 5, 7, .22);
+    background: linear-gradient(
+        90deg,
+        rgba(8, 5, 7, 0.86) 0%,
+        rgba(8, 5, 7, 0.72) 42%,
+        rgba(8, 5, 7, 0.38) 58%,
+        transparent 78%
+    );
     pointer-events: none;
 }
 
@@ -157,5 +162,23 @@
 .hero-btn-ghost:hover {
     background: rgba(255, 255, 255, .14);
     border-color: #ffffff;
+}
+
+/* ==========================================================================
+   PROMO STRIP (fidelizacion slice 1)
+   Rol: tira delgada adyacente al hero con el beneficio de primera reserva.
+   Estático: sin JS ni backend; solo publicidad con copy placeholder.
+   ========================================================================== */
+.promo-strip {
+    background: var(--brand-strong);
+    color: #ffffff;
+    text-align: center;
+    padding: 0.65rem 1rem;
+}
+
+.promo-strip p {
+    margin: 0;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
 }
 
