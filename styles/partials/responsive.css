@@ -150,13 +150,37 @@
         font-size: 1.8rem;
     }
 
+    /* Hero: pin text + CTAs to the left edge on mobile */
+    .hero {
+        align-items: flex-start;
+        text-align: left;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    .hero-text {
+        text-align: left;
+        padding-left: 0;
+        margin-left: 0;
+    }
+    .hero-ctas {
+        margin-left: 0;
+        justify-content: flex-start;
+    }
+
     /* Servicios: columna única en móvil */
     .servicios-grid {
         grid-template-columns: 1fr;
+        margin-bottom: 1rem;
+    }
+
+    .trabajos-gallery-container {
+        margin-top: 1rem;
+        padding-top: 1rem;
     }
 
     .trabajos-gallery-container h3 {
         font-size: 1.6rem;
+        margin-bottom: 1rem;
     }
 
     /* Gift Cards: caja y CTAs apilan en una columna */
@@ -182,10 +206,9 @@
         gap: 1rem;
     }
 
+    /* Work carousel arrows: hidden on mobile (swipe + marquee remain) */
     .carousel-btn {
-        width: 2.25rem;
-        height: 2.25rem;
-        font-size: 1.3rem;
+        display: none;
     }
 
     .form-buttons {
@@ -199,3 +222,48 @@
         min-width: auto;
     }
 }
+
+/* Galería de trabajos en móvil: sin caja blanca — full-bleed al borde.
+   Quita el borde, el radio y el fondo suave para que "Nuestros Trabajos"
+   fluya pegado al borde de la pantalla (el carrusel ya es el protagonista). */
+@media (max-width: 600px) {
+    .trabajos-gallery-container {
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        padding-inline: 0;
+        padding-top: 1rem;
+        margin-top: 1rem;
+        /* Full-bleed breakout: width:auto (NOT 100%) so BOTH negative
+           margins expand the box past the .servicios side padding
+           (1.5rem from the max-width:1024px rule). With width:100% the
+           block is over-constrained in LTR and the used right margin is
+           forced back to +1.5rem, leaving a 3rem background stripe on
+           the right edge while the left sits flush. */
+        width: auto;
+        margin-inline: -1.5rem;
+    }
+    /* Keep the heading clear of the screen edges once the container
+       goes full-bleed (the carousel itself stays edge-to-edge). */
+    .trabajos-gallery-container h3 {
+        padding-inline: 1.5rem;
+    }
+    /* Gallery touch policy: vertical scroll stays with the page and
+       horizontal drag stays with the carousel script, while browser
+       page-zoom gestures stay disabled (no pinch-zoom keyword). Zoom
+       is provided per-image by the carousel script instead, so the
+       page never zooms from a pinch over the gallery. */
+    .carousel-viewport {
+        touch-action: pan-y;
+    }
+    /* Page zoom off on mobile, scroll intact: pan-x pan-y keeps every
+       pan/scroll gesture while leaving pinch-zoom and double-tap-zoom
+       unlisted, so the browser never page-zooms from anywhere else
+       either. Scoped to mobile; desktop is untouched. */
+    body {
+        touch-action: pan-x pan-y;
+    }
+}
+
+/* Consolidated: single mobile rule for the trabajos gallery (no duplicates). */
+

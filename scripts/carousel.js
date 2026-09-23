@@ -19,7 +19,7 @@ export function wrapOffset(offset, cycle) {
 }
 
 /** Velocidad de la cinta en px/s (ciclo desktop ~4480 px ≈ 60 s). */
-export const MARQUEE_SPEED_PX_PER_SEC = 75;
+export const MARQUEE_SPEED_PX_PER_SEC = 45;
 
 /** Duración del empujón de los botones prev/next (ms). */
 const NUDGE_MS = 400;
@@ -90,6 +90,23 @@ function initCarousel() {
   let nudge = null; // { from, to, startedAt } mientras animan los botones
   let lastFrameAt = 0;
 
+  // Image-only pinch zoom: two fingers scale the touched gallery image
+  // (1x-3x via CSS transform, so layout never shifts). iOS Safari drives
+  // it through gesture events; every other browser uses the two-pointer
+  // Pointer Events fallback below. While zooming, marquee drift and
+  // one-finger drag stay paused and resume on release.
+  const PINCH_MAX_SCALE = 3;
+  const PINCH_SNAP_BACK_BELOW = 1.05; // under this the image snaps back to 1x
+  const pinchPointers = new Map(); // pointerId -> { x, y } of live touches
+  const pinchScales = new WeakMap(); // img -> last released zoom (>= threshold persists)
+  let pinching = false; // true while two pointers are scaling an image
+  let gestureZoom = false; // true while Safari gesture events own the zoom
+  let pinchImg = null; // the <img> under the pinch
+  let pinchScale = 1; // live scale being painted
+  let pinchStartDistance = 0;
+  let pinchStartScale = 1;
+  let gestureBaseScale = 1; // pinchScale captured at Safari gesturestart
+
   /** Mide el paso horizontal entre tarjetas y recalcula el ciclo. */
   function measure() {
     const first = track.children[0];
@@ -130,6 +147,7 @@ function initCarousel() {
       && !hovering
       && !dragging
       && !focused
+      && !pinching // two-finger zoom freezes the drift; it resumes on release
     ) {
       offset = wrapOffset(offset + MARQUEE_SPEED_PX_PER_SEC * (dt / 1000), cycle);
     }
@@ -137,10 +155,117 @@ function initCarousel() {
     window.requestAnimationFrame(tick);
   }
 
+  /** Scale kept for an image between pinches (1 when never zoomed). */
+  function pinchCurrentScale(img) {
+    return pinchScales.get(img) || 1;
+  }
+
+  /** Midpoint of the two live pointers, in client coordinates. */
+  function pinchMidpoint() {
+    const points = Array.from(pinchPointers.values());
+    return { x: (points[0].x + points[1].x) / 2, y: (points[0].y + points[1].y) / 2 };
+  }
+
+  /** Distance between the two live pointers, in client px. */
+  function pinchDistance() {
+    const points = Array.from(pinchPointers.values());
+    return Math.hypot(points[0].x - points[1].x, points[0].y - points[1].y);
+  }
+
+  /** Paint the scale on the image, snapping back to 1x under the threshold. */
+  function renderPinch(scale) {
+    pinchScale = Math.min(PINCH_MAX_SCALE, Math.max(1, scale));
+    if (!pinchImg) return pinchScale;
+    if (pinchScale < PINCH_SNAP_BACK_BELOW) {
+      pinchScale = 1;
+      pinchImg.style.transform = '';
+      pinchImg.style.transformOrigin = '';
+    } else {
+      pinchImg.style.transform = `scale(${pinchScale})`;
+    }
+    return pinchScale;
+  }
+
+  /** Clear zoom state from an image (snap back to 1x, restore stacking). */
+  function releasePinchZoom(img) {
+    img.style.transform = '';
+    img.style.transformOrigin = '';
+    const item = img.closest('.trabajo-item');
+    if (item) {
+      item.style.zIndex = '';
+      item.style.position = '';
+    }
+    pinchScales.delete(img);
+  }
+
+  /** Start scaling the touched image; freeze drift and drag. */
+  function beginPinch(img, originClient) {
+    // A pinch landing on another image releases the previous one first.
+    if (pinchImg && pinchImg !== img) releasePinchZoom(pinchImg);
+    pinchImg = img;
+    pinching = true;
+    dragging = false; // the two-finger gesture cancels any scrub in course
+    const item = img.closest('.trabajo-item');
+    if (item) {
+      // transform never disturbs layout; the raised z-index only lets the
+      // scaled image overlap its neighbors cleanly. Zoomed edges still
+      // clip at .carousel-viewport (overflow hidden) by design.
+      item.style.position = 'relative';
+      item.style.zIndex = '3';
+    }
+    if (originClient) {
+      const rect = img.getBoundingClientRect();
+      const originX = rect.width ? ((originClient.x - rect.left) / rect.width) * 100 : 50;
+      const originY = rect.height ? ((originClient.y - rect.top) / rect.height) * 100 : 50;
+      img.style.transformOrigin = `${originX.toFixed(1)}% ${originY.toFixed(1)}%`;
+    }
+    pinchStartScale = pinchCurrentScale(img);
+    pinchStartDistance = pinchDistance();
+    renderPinch(pinchStartScale);
+  }
+
+  /** End the active pinch: snap back under ~1.05x, else keep the zoom. */
+  function endPinch() {
+    if (pinchImg) {
+      if (pinchScale < PINCH_SNAP_BACK_BELOW) {
+        releasePinchZoom(pinchImg);
+      } else {
+        pinchScales.set(pinchImg, pinchScale); // zoom persists after release
+      }
+    }
+    pinchImg = null;
+    pinchScale = 1;
+    pinching = false;
+    gestureZoom = false;
+    dragging = false;
+    activePointerId = null;
+  }
+
+  /** Gallery image under the event, if the gesture started on one. */
+  function pinchTargetFromEvent(event) {
+    const target = event.target && event.target.closest
+      ? event.target.closest('.trabajo-item img')
+      : null;
+    return target && viewport.contains(target) ? target : null;
+  }
+
   /** pointerdown: congela la deriva y arranca el arrastre libre. */
   function handlePointerDown(event) {
     if (event.pointerType === 'mouse' && event.button !== 0) return;
     if (!cycle) return;
+    pinchPointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    if (pinchPointers.size >= 2) {
+      // Two fingers down: one-finger drag stays paused. The Pointer Events
+      // fallback owns the gesture only when it started on a gallery image
+      // (and Safari gesture events are not driving it).
+      dragging = false;
+      if (pinchPointers.size === 2 && !gestureZoom && !pinching) {
+        const target = pinchTargetFromEvent(event);
+        if (target) beginPinch(target, pinchMidpoint());
+      }
+      return;
+    }
+    if (pinching) return;
     dragging = true;
     nudge = null; // el gesto manual cancela un empujón en curso
     activePointerId = event.pointerId;
@@ -150,12 +275,36 @@ function initCarousel() {
 
   /** pointermove: traslada la pista siguiendo al puntero (scrub libre). */
   function handlePointerMove(event) {
+    if (pinchPointers.has(event.pointerId)) {
+      pinchPointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    }
+    // Two-pointer fallback (skipped while Safari gesture events drive).
+    if (pinching && !gestureZoom && pinchImg && pinchPointers.size >= 2) {
+      const distance = pinchDistance();
+      if (pinchStartDistance > 0 && distance > 0) {
+        renderPinch(pinchStartScale * (distance / pinchStartDistance));
+      }
+      return;
+    }
     if (!dragging || event.pointerId !== activePointerId) return;
     offset = wrapOffset(dragStartOffset - (event.clientX - dragStartX), cycle);
   }
 
   /** pointerup/cancel: suelta sin snap; la deriva retoma desde el offset. */
   function handlePointerUp(event) {
+    pinchPointers.delete(event.pointerId);
+    if (pinching && pinchPointers.size < 2) {
+      endPinch();
+      // Resume the scrub with the finger that stayed down, if any, so the
+      // release hands control straight back to drift + drag.
+      if (pinchPointers.size === 1) {
+        const remaining = Array.from(pinchPointers.entries())[0];
+        activePointerId = remaining[0];
+        dragStartX = remaining[1].x;
+        dragStartOffset = offset;
+        dragging = true;
+      }
+    }
     if (!dragging || event.pointerId !== activePointerId) return;
     dragging = false;
     activePointerId = null;
@@ -184,6 +333,36 @@ function initCarousel() {
   window.addEventListener('pointermove', handlePointerMove, { passive: true });
   window.addEventListener('pointerup', handlePointerUp);
   window.addEventListener('pointercancel', handlePointerUp);
+
+  // Safari gesture events (iOS path): the script owns the pinch, and
+  // preventDefault() plus the CSS touch-action policy (no pinch-zoom
+  // keyword anywhere on mobile) keep the browser page zoom off.
+  // Browsers without these events use the two-pointer fallback above;
+  // Android pinch is best-effort and works wherever Pointer Events
+  // keep firing for both touches (no gesturestart/gesturechange there).
+  viewport.addEventListener('gesturestart', (event) => {
+    event.preventDefault();
+    const target = pinchTargetFromEvent(event);
+    if (!target) return;
+    gestureZoom = true;
+    if (!pinching) {
+      beginPinch(target, pinchPointers.size >= 2 ? pinchMidpoint() : null);
+    }
+    gestureBaseScale = pinchScale;
+  });
+  viewport.addEventListener('gesturechange', (event) => {
+    event.preventDefault();
+    if (!pinching || !pinchImg) return;
+    renderPinch(gestureBaseScale * event.scale);
+  });
+  viewport.addEventListener('gestureend', (event) => {
+    if (event.cancelable) event.preventDefault();
+    if (!pinching) {
+      gestureZoom = false;
+      return;
+    }
+    endPinch();
+  });
 
   // Botones manuales (opcionales) para accesibilidad
   if (prevButton) prevButton.addEventListener('click', () => nudgeBy(-1));
