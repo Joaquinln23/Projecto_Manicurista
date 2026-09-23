@@ -160,6 +160,12 @@
         </div>
     </section>
 
+    <!-- Promo banner: welcome-coupon advertising. Static markup only:
+         no backend calls, no discount logic. -->
+    <div class="promo-strip" role="note" aria-label="Promoción primera reserva">
+        <p>10% de descuento en tu primera reserva — regístrate y recibe tu cupón de bienvenida para tus primeras uñitas.</p>
+    </div>
+
     <main>
         <!-- Servicios: tarjetas de catálogo y galería de trabajos -->
         <section id="servicios" class="servicios">
@@ -220,6 +226,7 @@
         <section id="agenda" class="agenda">
             <form id="form-agenda" class="form-agenda">
                 <h2>Reserva tu hora</h2>
+                <p class="agenda-promo">Si te registras tendrás un cupón del 10% en tus primeras uñitas.</p>
                 <label for="nombre">Nombre:</label>
                 <input type="text" id="nombre" name="nombre" required>
 
@@ -334,6 +341,12 @@
             <div class="modal-content-login">
                 <span class="close-login" id="close-register">&times;</span>
                 <h2 id="register-title">Registrar Usuario</h2>
+                <!-- Promo banner: welcome-coupon advertising. Static markup only:
+                     no backend calls, no discount logic. -->
+                <div class="promo-register" role="note" aria-label="Promoción primera reserva">
+                    <p class="promo-register-title">¿Primera vez? 10% de descuento en tu primera reserva</p>
+                    <p class="promo-register-copy">Si te registras tendrás un cupón del 10% en tus primeras uñitas. Lo verás aquí mismo después de registrarte.</p>
+                </div>
                 <input type="text" id="register-rut" placeholder="RUT" autocomplete="off" required>
                 <input type="text" id="register-nombre" placeholder="Nombre" autocomplete="given-name" required>
                 <input type="text" id="register-apellido" placeholder="Apellido" autocomplete="family-name" required>

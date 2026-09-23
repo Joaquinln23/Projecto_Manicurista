@@ -114,3 +114,30 @@
     width: 100%;
 }
 
+/* ==========================================================================
+   PROMO REGISTER BLOCK (fidelizacion slice 1)
+   Rol: bloque fuller en contexto de registro con el beneficio de primera
+   reserva. Estático: sin JS ni backend; solo publicidad con copy placeholder.
+   ========================================================================== */
+.promo-register {
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: var(--r-input);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.promo-register-title {
+    margin: 0 0 0.35rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--brand-strong);
+}
+
+.promo-register-copy {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
