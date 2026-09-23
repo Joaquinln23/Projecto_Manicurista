@@ -141,7 +141,7 @@
     -webkit-user-drag: none;
 }
 
-/* Botones manuales prev/next (accesibilidad) */
+/* Manual prev/next buttons (accessibility) */
 .carousel-btn {
     position: absolute;
     top: 50%;

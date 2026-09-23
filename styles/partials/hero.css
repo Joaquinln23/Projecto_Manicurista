@@ -5,6 +5,10 @@
 .hero {
     position: relative;
     margin-top: var(--header-h);
+    /* Altura: en móvil el "vh" salta porque la barra del navegador se oculta
+       al scrollear. svh = la altura estable con la barra visible (sin saltos);
+       vh queda como fallback para navegadores sin soporte de svh. */
+    min-height: clamp(360px, 62svh, 640px);
     min-height: clamp(360px, 62vh, 640px);
     display: flex;
     /* Columna a la izquierda: texto arriba, CTAs debajo */
@@ -12,7 +16,14 @@
     align-items: flex-start;
     justify-content: center;
     gap: 1.5rem;
-    padding: 2rem clamp(1.5rem, 7vw, 6rem);
+    /* Pegado a la izquierda: padding izquierdo chico (el bloque de texto
+       arranca pegado al borde) y derecho generoso para descansar el ojo */
+    padding: 2rem clamp(3rem, 8vw, 8rem) 2rem clamp(1.25rem, 4vw, 4rem);
+    /* iPhone: el padding respeta el notch (arriba, detrás del header al
+       scrollear) y el home indicator (abajo). env() se ignora en navegadores
+       sin safe-area, así que no rompe Android ni desktop. */
+    padding-top: calc(2rem + env(safe-area-inset-top, 0px));
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
     overflow: hidden;
 }
 
@@ -56,6 +67,9 @@
     font-family: "Prata", Georgia, serif;
     font-weight: 400;
     font-size: clamp(2.4rem, 4.8vw, 4rem);
+    /* Equilibra las envolturas para que el título no deje líneas huérfanas
+       (improve mucho en pantallas chicas) */
+    text-wrap: balance;
     line-height: 1.15;
     letter-spacing: 0.01em;
     margin: 0 0 0.75rem;
@@ -84,6 +98,9 @@
 .hero-btn {
     display: inline-block;
     padding: 0.75rem 1.8rem;
+    /* Objetivo táctil mínimo (44px) sin inflar el diseño: los CTAs del hero
+       son acción primaria y deben tocarse fácil en móvil */
+    min-height: 2.75rem;
     border-radius: var(--r-pill);
     font-family: var(--font-heading);
     font-weight: 600;
